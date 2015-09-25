@@ -25,14 +25,65 @@ MySceneGraph.prototype.onXMLReady=function()
 {
 	console.log("XML Loading finished.");
 	var rootElement = this.reader.xmlDoc.documentElement;
+	if (rootElement != "SCENE")
+	{
+		this.onXMLError("SCENE block not found.");
+		return;
+	}
+
+	var error;
 	
 	// Here should go the calls for different functions to parse the various blocks
-	var error = this.parseGlobalsExample(rootElement);
-
+	/********************to delete this block***********************************/
+	error = this.parseGlobalsExample(rootElement);	
 	if (error != null) {
 		this.onXMLError(error);
 		return;
 	}	
+	/********************delete until this block***********************************/	
+
+	error = this.parseInitials(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
+	error = this.parseIllumination(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+	
+	error = this.parseLights(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+	
+	error = this.parseTextures(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+	
+	error = this.parseMaterials(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+	
+	error = this.parseLeaves(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+	
+	error = this.parseNodes(rootElement);
+	if (error != null) {
+		this.onXMLError(error);
+		return;
+	}	
+
 
 	this.loadedOk=true;
 	
@@ -94,4 +145,25 @@ MySceneGraph.prototype.onXMLError=function (message) {
 	this.loadedOk=false;
 };
 
+
+MySceneGraph.prototype.parseInitials= function(rootElement) {
+};
+
+MySceneGraph.prototype.parseIllumination= function(rootElement) {
+};
+
+MySceneGraph.prototype.parseLights= function(rootElement) {
+};
+
+MySceneGraph.prototype.parseTextures= function(rootElement) {
+};
+
+MySceneGraph.prototype.parseMaterials= function(rootElement) {
+};
+
+MySceneGraph.prototype.parseLeaves= function(rootElement) {
+};
+
+MySceneGraph.prototype.parseNodes= function(rootElement) {
+};
 
