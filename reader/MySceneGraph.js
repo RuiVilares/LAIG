@@ -171,7 +171,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
     }
     
     if (elems.length == 0) {
-        return;
+        return "materials missing.";
     }
     
     var materialsElems = elems[0].getElementsByTagName('MATERIAL');
@@ -260,7 +260,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
     }
     
     if (elems.length == 0) {
-        return;
+        return "leaves missing";
     }
     
     var leaf = elems[0].getElementsByTagName('LEAF');
@@ -278,7 +278,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
         			{
         				id: idVar,
         				type: typeVar,
-        				args: argsVar //args is a string
+        				args: argsVar //args is a string (http://stackoverflow.com/questions/4291447/convert-string-into-array-of-integers)
         			});
         /*
 			How to access?
@@ -290,6 +290,28 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 };
 
 MySceneGraph.prototype.parseNodes = function(rootElement) {
+	console.log("Started to read the nodes' section.");
+    
+    var elems = rootElement.getElementsByTagName('NODES');
+    if (elems == null ) {
+        return "NODES element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "nodes missing.";
+    }
+    
+    var rootElem = elems[0].getElementsByTagName('ROOT');
+    if (rootElem == null)
+    	return "missing root node.";
+
+    rootElem = this.reader.getString(rootElem[0], 'id', "id of root not found.");
+
+    /***************************
+	don't forget the root id
+    *///////////////////////////
+    
+    console.log("Finished to read the nodes' section.");
 };
 
 MySceneGraph.prototype.parseField = function(root, field) {
