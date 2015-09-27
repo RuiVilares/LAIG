@@ -227,7 +227,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
             return "one of the components of the material " + idVar + " isn't correctly defined.";
         
         if (this.isRepeatedId(this.materialList, idVar))
-            return "id " + idVar + " already exists.";
+            return "material " + idVar + " already exists.";
         
         this.materialList.push(
         {
@@ -274,6 +274,9 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
         typeVar = this.reader.getItem(leaf[i], 'type', ["rectangle", "cylinder", "sphere", "triangle"]);
         argsVar = this.reader.getString(leaf[i], 'args', "args of leaf " + idVar + " not found.");
 
+        if (this.isRepeatedId(this.leafList, idVar))
+            return "leaf " + idVar + " already exists.";
+
         this.leafList.push(
         			{
         				id: idVar,
@@ -310,6 +313,38 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     /***************************
 	don't forget the root id
     *///////////////////////////
+
+    var nodes = elems[0].getElementsByTagName('NODE');
+    if (nodes.length == 0)
+    	return "at least one node must be present.";
+
+    this.nodeList = [];
+    var idVar;
+    var materialId, textureId;
+    var transformation = [];
+
+    for (var i = 0; i < nodes.length; i++)
+	{
+		idVar = this.reader.getString(nodes[i], 'id', "id of node " + i + " not found.");
+		if (this.isRepeatedId(this.nodeList, idVar))
+					return "node " + idVar + " already exists.";
+
+		materialId = nodes[i].getElementsByTagName('MATERIAL');
+		if (materialId == null || materialId.length == 0)
+			return "missing material in node " + idVar + ".";
+		materialId = this.reader.getString(materialId[0], 'id', "id of material of node " + idVar + " not found.");
+		if (!this.isRepeatedId(this.materialList, materialId))
+					return "material " + materialId + " of node " + idVar + " already exists.";
+
+		/*****************************************for now it won't work
+		textureId = nodes[i].getElementsByTagName('TEXTURE');
+		if (textureId == null || textureId.length == 0)
+			return "missing texture in node " + idVar + ".";
+		textureId = this.reader.getString(textureId[0], 'id', "id of texture of node " + idVar + " not found.");
+		if (!this.isRepeatedId(this.textureList, textureId))
+					return "texture " + textureId + " of node " + idVar + " already exists.";
+					*/
+    }
     
     console.log("Finished to read the nodes' section.");
 };
