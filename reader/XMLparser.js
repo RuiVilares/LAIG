@@ -1,7 +1,5 @@
 
-function XMLparser(true1, false1) {
-    this.TRUE = true1;
-    this.FALSE = false1;
+function XMLparser() {
 }
 
 XMLparser.prototype.parseField = function(root, field) {

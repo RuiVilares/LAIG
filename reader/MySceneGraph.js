@@ -1,10 +1,7 @@
 
 function MySceneGraph(filename, scene) {
     this.loadedOk = null ;
-    
-    this.TRUE = 1;
-    this.FALSE = 0;
-    
+        
     // Establish bidirectional references between scene and graph
     this.scene = scene;
     scene.graph = this;
@@ -12,7 +9,7 @@ function MySceneGraph(filename, scene) {
     // File reading 
     this.reader = new CGFXMLreader();
 
-    this.parser = new XMLparser(this.TRUE, this.FALSE);
+    this.parser = new XMLparser();
     
     /*
 	 * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -396,8 +393,8 @@ MySceneGraph.prototype.isRepeatedId = function(array, id) {
     for (var i = 0; i < array.length; i++) 
     {
         if (array[i].id == id)
-            return this.TRUE;
+            return true;
     }
     
-    return this.FALSE;
+    return false;
 };
