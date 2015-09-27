@@ -277,11 +277,16 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
         if (this.isRepeatedId(this.leafList, idVar))
             return "leaf " + idVar + " already exists.";
 
+		//argsParser returns number and not text
+		argsVar = this.argsParser(typeVar, argsVar);
+        if (argsVar == null)
+        	return "args of leave " + idVar + " are incorrect.";
+
         this.leafList.push(
         			{
         				id: idVar,
         				type: typeVar,
-        				args: argsVar //args is a string (http://stackoverflow.com/questions/4291447/convert-string-into-array-of-integers)
+        				args: argsVar
         			});
         /*
 			How to access?
@@ -343,7 +348,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 		textureId = this.reader.getString(textureId[0], 'id', "id of texture of node " + idVar + " not found.");
 		if (!this.isRepeatedId(this.textureList, textureId))
 					return "texture " + textureId + " of node " + idVar + " already exists.";
-					*/
+					********************************************************************************/
     }
     
     console.log("Finished to read the nodes' section.");
@@ -384,4 +389,84 @@ MySceneGraph.prototype.isRepeatedId = function(array, id) {
     }
     
     return this.FALSE;
+};
+
+
+MySceneGraph.prototype.argsParser = function(typeVar, argsVar) {
+
+	var argsElems;
+
+	switch (typeVar)
+	{
+		case "rectangle":
+			argsElems = argsVar.split(" ");
+			if (argsElems.length != 4)
+				return null;
+
+			// 2D coordinates for left-top and right-bottom vertices.
+			return {
+				xl: parseFloat(argsElems[0]),
+				yl: parseFloat(argsElems[1]),
+				xr: parseFloat(argsElems[2]),
+				yr: parseFloat(argsElems[3])
+			};
+
+		case "cylinder":
+			argsElems = argsVar.split(" ");
+			if (argsElems.length != 5)
+				return null;
+
+			// height, bottom radius, top radius, sections along height, parts per section
+			return {
+				h: parseFloat(argsElems[0]),
+				br: parseFloat(argsElems[1]),
+				tr: parseFloat(argsElems[2]),
+				sh: parseInt(argsElems[3]),
+				ps: parseInt(argsElems[4])
+			};
+
+		case "sphere":
+			argsElems = argsVar.split(" ");
+			if (argsElems.length != 3)
+				return null;
+
+			// radius, parts along radius, parts per section
+			return {
+				r: parseFloat(argsElems[0]),
+				pr: parseInt(argsElems[1]),
+				ps: parseInt(argsElems[2])
+			};
+
+		case "triangle":
+			argsVar = argsVar.split("  ");
+			if (argsVar.length != 3)
+				return null;
+
+			var argsElems2, argsElems3;
+			argsElems = argsVar[0].split(" ");
+			argsElems2 = argsVar[1].split(" ");
+			argsElems3 = argsVar[2].split(" ");
+			if (argsElems.length != 3 || argsElems2.length != 3 || argsElems3.length != 3)
+				return null;
+
+			// coordinates of each vertex
+			return {
+				x1: parseFloat(argsElems[0]),
+				y1: parseFloat(argsElems[1]),
+				z1: parseFloat(argsElems[2]),
+
+				x2: parseFloat(argsElems2[0]),
+				y2: parseFloat(argsElems2[1]),
+				z2: parseFloat(argsElems2[2]),
+
+				x3: parseFloat(argsElems3[0]),
+				y3: parseFloat(argsElems3[1]),
+				z3: parseFloat(argsElems3[2])
+			};
+
+		default:
+			return null;
+	}
+
+	return null;
 };
