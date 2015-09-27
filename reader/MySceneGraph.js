@@ -11,6 +11,8 @@ function MySceneGraph(filename, scene) {
     
     // File reading 
     this.reader = new CGFXMLreader();
+
+    this.parser = new XMLparser(this.TRUE, this.FALSE);
     
     /*
 	 * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -203,20 +205,20 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
             {
             case "shininess":
                 shininessVar = {
-                    value: this.parseField(children[j].attributes, "value")
+                    value: this.parser.parseField(children[j].attributes, "value")
                 };
                 break;
             case "specular":
-                specularVar = this.parseRGBA(children[j].attributes);
+                specularVar = this.parser.parseRGBA(children[j].attributes);
                 break;
             case "diffuse":
-                diffuseVar = this.parseRGBA(children[j].attributes);
+                diffuseVar = this.parser.parseRGBA(children[j].attributes);
                 break;
             case "ambient":
-                ambientVar = this.parseRGBA(children[j].attributes);
+                ambientVar = this.parser.parseRGBA(children[j].attributes);
                 break;
             case "emission":
-                emissionVar = this.parseRGBA(children[j].attributes);
+                emissionVar = this.parser.parseRGBA(children[j].attributes);
                 break;
             default:
                 return "compoment " + children.nodeName + " out of place.";
@@ -278,7 +280,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
             return "leaf " + idVar + " already exists.";
 
 		//argsParser returns number and not text
-		argsVar = this.argsParser(typeVar, argsVar);
+		argsVar = this.parser.argsParser(typeVar, argsVar);
         if (argsVar == null)
         	return "args of leave " + idVar + " are incorrect.";
 
@@ -327,6 +329,8 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     var idVar;
     var materialIdVar, textureIdVar;
     var transformation = []; var transform;
+    var descendantId = [];
+    var descendantElems; var descendantIdField;
 
     for (var i = 0; i < nodes.length; i++)
 	{
@@ -352,43 +356,40 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 
 		for (var j = 0; j < nodes[i].children.length; j++)
 		{
-			transform = this.parseTranslation(nodes[i].children[j]);
+			transform = this.parser.parseTranslation(nodes[i].children[j]);
 			if (transform == null)
 				return "transformation incorrectly defined in node " + idVar + ".";
 			
 			if (transform != "")
 				transformation.push(transform);
 		}
+
+		descendantElems = nodes[i].getElementsByTagName('DESCENDANTS');
+		if (descendantElems == null || descendantElems == 0)
+			return "node " + idVar + " must have one descendant block.";
+		descendantElems = descendantElems[0].getElementsByTagName('DESCENDANT');
+		if (descendantElems == null || descendantElems == 0)
+			return "node " + idVar + " must have at least one descendant element.";
+		
+		for (var j = 0; j < descendantElems.length; j++)
+		{
+			descendantIdField = descendantElems[j].attributes.getNamedItem("id");
+			if (descendantIdField == null)
+				return "at least one descendant of node " + idVar + "doesn't have id.";
+			
+			descendantId.push(descendantIdField);
+		}
+
+		this.nodeList.push({
+			id: idVar,
+			material: materialIdVar,
+			texture: textureIdVar,
+			transformations: transformation,
+			descendants: descendantId
+		});
     }
     
     console.log("Finished to read the nodes' section.");
-};
-
-MySceneGraph.prototype.parseField = function(root, field) {
-    var fieldTemp = root.getNamedItem(field);
-    if (fieldTemp == null )
-        return null ;
-    
-    return fieldTemp.value;
-};
-
-MySceneGraph.prototype.parseRGBA = function(root) {
-    var rVar, gVar, bVar, aVar;
-    
-    rVar = this.parseField(root, "r");
-    gVar = this.parseField(root, "g");
-    bVar = this.parseField(root, "b");
-    aVar = this.parseField(root, "a");
-    
-    if (rVar == null  || gVar == null  || bVar == null  || aVar == null )
-        return null ;
-    
-    return {
-        r: rVar,
-        g: gVar,
-        b: bVar,
-        a: aVar
-    };
 };
 
 MySceneGraph.prototype.isRepeatedId = function(array, id) {
@@ -399,137 +400,4 @@ MySceneGraph.prototype.isRepeatedId = function(array, id) {
     }
     
     return this.FALSE;
-};
-
-MySceneGraph.prototype.parseTranslation = function(children) {
-
-    switch (children.tagName)
-	{
-		case 'TRANSLATION':
-				var xVar, yVar, zVar;
-				xVar = children.attributes.getNamedItem("x").value;
-				yVar = children.attributes.getNamedItem("y").value;
-				zVar = children.attributes.getNamedItem("z").value;
-				if (xVar == null || yVar == null || zVar == null)
-					return null;
-
-				return ({
-					type: "translation",
-					x: xVar,
-					y: yVar,
-					z: zVar
-				});
-
-		case 'ROTATION':
-				var axisVar, angleVar;
-				axisVar = children.attributes.getNamedItem("axis").value;
-				angleVar = children.attributes.getNamedItem("angle").value;
-				if (axisVar == null || angleVar == null)
-					return null;
-
-				return ({
-					type: "rotation",
-					axis: axisVar,
-					angle: angleVar
-				});
-
-		case 'SCALE':
-				var sxVar, syVar, szVar;
-				sxVar = children.attributes.getNamedItem("sx").value;
-				syVar = children.attributes.getNamedItem("sy").value;
-				szVar = children.attributes.getNamedItem("sz").value;
-				if (sxVar == null || syVar == null || szVar == null)
-					return null;
-
-				return ({
-					type: "scale",
-					sx: sxVar,
-					sy: syVar,
-					sz: szVar
-				});
-
-		default:
-			return "";
-	}
-
-	return null;
-};
-
-MySceneGraph.prototype.argsParser = function(typeVar, argsVar) {
-
-	var argsElems;
-
-	switch (typeVar)
-	{
-		case "rectangle":
-			argsElems = argsVar.split(" ");
-			if (argsElems.length != 4)
-				return null;
-
-			// 2D coordinates for left-top and right-bottom vertices.
-			return {
-				xl: parseFloat(argsElems[0]),
-				yl: parseFloat(argsElems[1]),
-				xr: parseFloat(argsElems[2]),
-				yr: parseFloat(argsElems[3])
-			};
-
-		case "cylinder":
-			argsElems = argsVar.split(" ");
-			if (argsElems.length != 5)
-				return null;
-
-			// height, bottom radius, top radius, sections along height, parts per section
-			return {
-				h: parseFloat(argsElems[0]),
-				br: parseFloat(argsElems[1]),
-				tr: parseFloat(argsElems[2]),
-				sh: parseInt(argsElems[3]),
-				ps: parseInt(argsElems[4])
-			};
-
-		case "sphere":
-			argsElems = argsVar.split(" ");
-			if (argsElems.length != 3)
-				return null;
-
-			// radius, parts along radius, parts per section
-			return {
-				r: parseFloat(argsElems[0]),
-				pr: parseInt(argsElems[1]),
-				ps: parseInt(argsElems[2])
-			};
-
-		case "triangle":
-			argsVar = argsVar.split("  ");
-			if (argsVar.length != 3)
-				return null;
-
-			var argsElems2, argsElems3;
-			argsElems = argsVar[0].split(" ");
-			argsElems2 = argsVar[1].split(" ");
-			argsElems3 = argsVar[2].split(" ");
-			if (argsElems.length != 3 || argsElems2.length != 3 || argsElems3.length != 3)
-				return null;
-
-			// coordinates of each vertex
-			return {
-				x1: parseFloat(argsElems[0]),
-				y1: parseFloat(argsElems[1]),
-				z1: parseFloat(argsElems[2]),
-
-				x2: parseFloat(argsElems2[0]),
-				y2: parseFloat(argsElems2[1]),
-				z2: parseFloat(argsElems2[2]),
-
-				x3: parseFloat(argsElems3[0]),
-				y3: parseFloat(argsElems3[1]),
-				z3: parseFloat(argsElems3[2])
-			};
-
-		default:
-			return null;
-	}
-
-	return null;
 };
