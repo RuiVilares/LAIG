@@ -148,16 +148,95 @@ MySceneGraph.prototype.onXMLError = function(message) {
 
 
 MySceneGraph.prototype.parseInitials = function(rootElement) {
+	
+	console.log("Started to read the initials' section.");
+	
+	var elems = rootElement.getElementsByTagName('INITIALS');
+    if (elems == null ) {
+        return "INITIALS element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "initials missing";
+    }
+	
+	var initialsElems = elems[0].getElementsByTagName('INITIALS');
+		
+	this.initialsList = [];
+	var children;
+	var frustumVar, translateVar, rotationVar, scaleVar, referenceVar;
+	var tempArray;
+	
 }
 ;
 
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
+	
+	console.log("Started to read the illumination' section.");
+	
+	var elems = rootElement.getElementsByTagName('ILLUMINATION');
+    if (elems == null ) {
+        return "ILLUMINATION element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "illumination missing";
+    }
+	
+	var illuminationElems = elems[0].getElementsByTagName('ILLUMINATION');
+	
+	this.illuminationList = [];
+    var children;
+    var ambientVar, doublesideVar, backgroundVar;
+    var tempArray;
+	
+	
 };
 
 MySceneGraph.prototype.parseLights = function(rootElement) {
+	
+    
+    console.log("Started to read the lights' section.");
+    
+    var elems = rootElement.getElementsByTagName('LIGHTS');
+    if (elems == null ) {
+        return "LIGHTS element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "lights missing.";
+    }
+    
+    var lightsElems = elems[0].getElementsByTagName('LIGHTS');
+    
+    this.lightsList = [];
+    var children;
+    var idVar;
+    var enableVar, positionVar, ambientVar, diffuseVar, specularVar;
+    var tempArray;
 };
 
 MySceneGraph.prototype.parseTextures = function(rootElement) {
+	
+    
+    console.log("Started to read the textures' section.");
+    
+    var elems = rootElement.getElementsByTagName('TEXTURES');
+    if (elems == null ) {
+        return "TEXTURES element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "textures missing.";
+    }
+    
+    var texturesElems = elems[0].getElementsByTagName('TEXTURES');
+    
+    this.TexturesList = [];
+    var children;
+    var idVar;
+    var enableVar, positionVar, ambientVar, diffuseVar, specularVar;
+    var tempArray;
 };
 
 MySceneGraph.prototype.parseMaterials = function(rootElement) {
