@@ -177,7 +177,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
     var materialsElems = elems[0].getElementsByTagName('MATERIAL');
     
     this.materialList = [];
-    var childrens;
+    var children;
     var idVar;
     var shininessVar, specularVar, diffuseVar, ambientVar, emissionVar;
     var tempArray;
@@ -195,31 +195,31 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
             return "Material " + idVar + " misses components";
         }
         
-        childrens = materialsElems[i].children;
+        children = materialsElems[i].children;
         
-        for (var j = 0; j < childrens.length; j++) 
+        for (var j = 0; j < children.length; j++) 
         {
-            switch (childrens[j].nodeName) 
+            switch (children[j].nodeName) 
             {
             case "shininess":
                 shininessVar = {
-                    value: this.parseField(childrens[j].attributes, "value")
+                    value: this.parseField(children[j].attributes, "value")
                 };
                 break;
             case "specular":
-                specularVar = this.parseRGBA(childrens[j].attributes);
+                specularVar = this.parseRGBA(children[j].attributes);
                 break;
             case "diffuse":
-                diffuseVar = this.parseRGBA(childrens[j].attributes);
+                diffuseVar = this.parseRGBA(children[j].attributes);
                 break;
             case "ambient":
-                ambientVar = this.parseRGBA(childrens[j].attributes);
+                ambientVar = this.parseRGBA(children[j].attributes);
                 break;
             case "emission":
-                emissionVar = this.parseRGBA(childrens[j].attributes);
+                emissionVar = this.parseRGBA(children[j].attributes);
                 break;
             default:
-                return "compoment " + childrens.nodeName + " out of place.";
+                return "compoment " + children.nodeName + " out of place.";
             }
         }
         
@@ -325,8 +325,8 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 
     this.nodeList = [];
     var idVar;
-    var materialId, textureId;
-    var transformation = [];
+    var materialIdVar, textureIdVar;
+    var transformation = []; var transform;
 
     for (var i = 0; i < nodes.length; i++)
 	{
@@ -334,21 +334,31 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 		if (this.isRepeatedId(this.nodeList, idVar))
 					return "node " + idVar + " already exists.";
 
-		materialId = nodes[i].getElementsByTagName('MATERIAL');
-		if (materialId == null || materialId.length == 0)
+		materialIdVar = nodes[i].getElementsByTagName('MATERIAL');
+		if (materialIdVar == null || materialIdVar.length == 0)
 			return "missing material in node " + idVar + ".";
-		materialId = this.reader.getString(materialId[0], 'id', "id of material of node " + idVar + " not found.");
-		if (!this.isRepeatedId(this.materialList, materialId))
-					return "material " + materialId + " of node " + idVar + " already exists.";
+		materialIdVar = this.reader.getString(materialIdVar[0], 'id', "id of material of node " + idVar + " not found.");
+		if (!this.isRepeatedId(this.materialList, materialIdVar))
+					return "material " + materialIdVar + " of node " + idVar + " already exists.";
 
 		/*****************************************for now it won't work
-		textureId = nodes[i].getElementsByTagName('TEXTURE');
-		if (textureId == null || textureId.length == 0)
+		textureIdVar = nodes[i].getElementsByTagName('TEXTURE');
+		if (textureIdVar == null || textureIdVar.length == 0)
 			return "missing texture in node " + idVar + ".";
-		textureId = this.reader.getString(textureId[0], 'id', "id of texture of node " + idVar + " not found.");
-		if (!this.isRepeatedId(this.textureList, textureId))
-					return "texture " + textureId + " of node " + idVar + " already exists.";
+		textureIdVar = this.reader.getString(textureIdVar[0], 'id', "id of texture of node " + idVar + " not found.");
+		if (!this.isRepeatedId(this.textureList, textureIdVar))
+					return "texture " + textureIdVar + " of node " + idVar + " already exists.";
 					********************************************************************************/
+
+		for (var j = 0; j < nodes[i].children.length; j++)
+		{
+			transform = this.parseTranslation(nodes[i].children[j]);
+			if (transform == null)
+				return "transformation incorrectly defined in node " + idVar + ".";
+			
+			if (transform != "")
+				transformation.push(transform);
+		}
     }
     
     console.log("Finished to read the nodes' section.");
@@ -391,6 +401,59 @@ MySceneGraph.prototype.isRepeatedId = function(array, id) {
     return this.FALSE;
 };
 
+MySceneGraph.prototype.parseTranslation = function(children) {
+
+    switch (children.tagName)
+	{
+		case 'TRANSLATION':
+				var xVar, yVar, zVar;
+				xVar = children.attributes.getNamedItem("x").value;
+				yVar = children.attributes.getNamedItem("y").value;
+				zVar = children.attributes.getNamedItem("z").value;
+				if (xVar == null || yVar == null || zVar == null)
+					return null;
+
+				return ({
+					type: "translation",
+					x: xVar,
+					y: yVar,
+					z: zVar
+				});
+
+		case 'ROTATION':
+				var axisVar, angleVar;
+				axisVar = children.attributes.getNamedItem("axis").value;
+				angleVar = children.attributes.getNamedItem("angle").value;
+				if (axisVar == null || angleVar == null)
+					return null;
+
+				return ({
+					type: "rotation",
+					axis: axisVar,
+					angle: angleVar
+				});
+
+		case 'SCALE':
+				var sxVar, syVar, szVar;
+				sxVar = children.attributes.getNamedItem("sx").value;
+				syVar = children.attributes.getNamedItem("sy").value;
+				szVar = children.attributes.getNamedItem("sz").value;
+				if (sxVar == null || syVar == null || szVar == null)
+					return null;
+
+				return ({
+					type: "scale",
+					sx: sxVar,
+					sy: syVar,
+					sz: szVar
+				});
+
+		default:
+			return "";
+	}
+
+	return null;
+};
 
 MySceneGraph.prototype.argsParser = function(typeVar, argsVar) {
 
