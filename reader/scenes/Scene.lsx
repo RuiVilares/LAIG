@@ -904,7 +904,7 @@
 		</NODE>	
 		
 		<NODE id="carTyre">
-			<MATERIAL id="tyre" />
+			<MATERIAL id="black" />
 			<TEXTURE id="clear" />
 
 			<TRANSLATION x="0" y="0" z="-0.2" />
@@ -987,7 +987,7 @@
 
 		<NODE id="fourTyresBuilder">
 			<MATERIAL id="black" />
-			<TEXTURE id="tyre" />
+			<TEXTURE id="clear" />
 			
 			<DESCENDANTS>
 				<DESCENDANT id="tyreFL" /> 
