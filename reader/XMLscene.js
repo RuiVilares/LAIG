@@ -18,9 +18,18 @@ XMLscene.prototype.init = function (application) {
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
+
     this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.frontFace(this.gl.CCW);
+    this.gl.cullFace(this.gl.BACK);
 
 	this.axis=new CGFaxis(this);
+
+	/*************************************
+	lighting   = enable (i think this one is to start every lights on)
+shading    = Gouraud
+polygon mode = fill************************/
+
 };
 
 XMLscene.prototype.initLights = function () {
@@ -49,7 +58,7 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
 };
