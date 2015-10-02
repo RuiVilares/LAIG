@@ -995,7 +995,235 @@
 				<DESCENDANT id="tyreFR" />  
 				<DESCENDANT id="tyreBR" />           
 			</DESCENDANTS>
+		</NODE>
+		
+		
+	<!-- CAR -->
+		<NODE id="glass">
+			<MATERIAL id="white" />
+			
+			<TEXTURE id="glass" />
+			
+			<SCALE sx="1.6" sy="0.45" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />              
+			</DESCENDANTS>
 		</NODE>	
+		
+		<NODE id="glassFront">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="-0.8" y="0.8" z="0.6" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="glass" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="glassBack">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="-0.8" y="0.8" z="-0.6" />
+			<ROTATION axis="y" angle="180" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="glass" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="cover">
+			<MATERIAL id="white" />
+			
+			<TEXTURE id="null" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="rectangle" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverTop">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.9" y="1.25" z="0.8" />
+			<ROTATION axis="z" angle="90" />
+			<ROTATION axis="y" angle="90" />
+			<SCALE sx="1.4" sy="1.8" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverTopFront">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.9" y="0.8" z="1.2" />
+			<ROTATION axis="z" angle="90" />
+			<ROTATION axis="y" angle="90" />
+			<SCALE sx="1.2" sy="1.8" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverTopBack">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.9" y="0.8" z="-0.6" />
+			<ROTATION axis="z" angle="90" />
+			<ROTATION axis="y" angle="90" />
+			<SCALE sx="1.2" sy="1.8" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverFront">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="-0.8" y="0.2" z="1.9" />
+			<SCALE sx="1.6" sy="0.6" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverBack">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.8" y="0.2" z="-1.9" />
+			<ROTATION axis="y" angle="180" />
+			<SCALE sx="1.6" sy="0.6" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverFrontRigth">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="-0.8" y="0.2" z="0.7" />
+			<ROTATION axis="y" angle="-90" />
+			<SCALE sx="1.2" sy="0.6" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverFrontLeft">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.8" y="0.2" z="1.9" />
+			<ROTATION axis="y" angle="90" />
+			<SCALE sx="1.2" sy="0.6" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverMiddleRigth">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="-0.525" y="0.2" z="-0.8" />
+			<ROTATION axis="y" angle="-90" />
+			<SCALE sx="1.6" sy="1.05" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverMiddleLeft">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.525" y="0.2" z="0.8" />
+			<ROTATION axis="y" angle="90" />
+			<SCALE sx="1.6" sy="1.05" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverBackRigth">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="-0.8" y="0.2" z="-0.7" />
+			<ROTATION axis="y" angle="-90" />
+			<SCALE sx="1.2" sy="0.6" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="coverBackLeft">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+			
+			<TRANSLATION x="0.8" y="0.2" z="-0.7" />
+			<ROTATION axis="y" angle="90" />
+			<SCALE sx="1.2" sy="0.6" sz="1" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="cover" />              
+			</DESCENDANTS>
+		</NODE>
+		
+		<NODE id="carBuilder">
+			<MATERIAL id="null" />
+			
+			<TEXTURE id="clear" />
+
+			<DESCENDANTS>
+				<DESCENDANT id="glassBack" />
+				<DESCENDANT id="glassFront" />
+				<DESCENDANT id="coverBack" />
+				<DESCENDANT id="coverFront" />
+				<DESCENDANT id="coverTop" />
+				<DESCENDANT id="coverBackLeft" />
+				<DESCENDANT id="coverBackRigth" />
+				<DESCENDANT id="coverFrontLeft" />
+				<DESCENDANT id="coverFrontRigth" />
+				<DESCENDANT id="coverMiddleLeft" />
+				<DESCENDANT id="coverMiddleRigth" />
+				<DESCENDANT id="coverTopBack" />
+				<DESCENDANT id="coverTopFront" />
+				
+			</DESCENDANTS>
+		</NODE>
 		
 		
 </NODES>
