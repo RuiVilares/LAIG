@@ -148,16 +148,225 @@ MySceneGraph.prototype.onXMLError = function(message) {
 
 
 MySceneGraph.prototype.parseInitials = function(rootElement) {
+	
+	console.log("Started to read the initials' section.");
+	
+	var elems = rootElement.getElementsByTagName('INITIALS');
+    if (elems == null ) {
+        return "INITIALS element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "initials missing";
+    }
+	
+	var initialsElems = elems[0].getElementsByTagName('INITIALS');
+		
+	this.initialsList = [];
+	var frustumVar, translateVar, rotationVar, scaleVar, referenceVar;
+	
+	this.initialsList.push(
+        {
+			frustum: frustumVar,
+            translate: translateVar,
+			rotation: rotationVar,
+			scale: scaleVar,
+			reference: referenceVar
+        });
+	
 }
 ;
 
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
+	
+	console.log("Started to read the illumination' section.");
+	
+	var elems = rootElement.getElementsByTagName('ILLUMINATION');
+    if (elems == null ) {
+        return "ILLUMINATION element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "illumination missing";
+    }
+	
+	var illuminationElems = elems[0].getElementsByTagName('ILLUMINATION');
+	
+	this.illuminationList = [];
+    var ambientVar, doublesideVar, backgroundVar;
+	
+	this.illuminationList.push(
+        {
+			ambient: ambientVar,
+            doubleside: doublesideVar,
+			background: backgroundVar,
+        });
+
+	
 };
 
 MySceneGraph.prototype.parseLights = function(rootElement) {
+	
+    
+    console.log("Started to read the lights' section.");
+    
+    var elems = rootElement.getElementsByTagName('LIGHTS');
+    if (elems == null ) {
+        return "LIGHTS element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "lights missing.";
+    }
+    
+    var lightsElems = elems[0].getElementsByTagName('LIGHTS');
+    
+    this.lightsList = [];
+    var children;
+    var idVar;
+    var enableVar, positionVar, ambientVar, diffuseVar, specularVar;
+    var tempArray;
+	
+	// iterate over every element
+    for (var i = 0; i < lightsElems.length; i++) 
+    {
+        idVar = lightsElems[i].id;
+        if (idVar == null )
+            return "id of light number " + i + " not found.";
+        
+        // iterate over every element
+        if (lightsElems[i].children.length != 5) // Será 2??? ------------------------------------------
+        {
+            return "Light " + idVar + " misses components";
+        }
+        
+        children = lightsElems[i].children;
+        
+        for (var j = 0; j < children.length; j++) 
+        {
+            switch (children[j].nodeName) 
+            {
+            case "enableVar":
+                filePathVar = this.parser.parseField(children[j].attributes);
+                break;
+            case "positionVar":
+                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                break;
+			case "ambientVar":
+                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                break;
+			case "diffuseVar":
+                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                break;
+			case "specularVar":
+                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                break;
+            default:
+                return "compoment " + children.nodeName + " out of place.";
+            }
+        }
+        
+        if (enableVar == null  || positionVar == null || ambientVar == null || diffuseVar == null || specularVar == null)
+            return "one of the components of the light " + idVar + " isn't correctly defined.";
+        
+        if (this.isRepeatedId(this.lightsList, idVar))
+            return "light " + idVar + " already exists.";
+        
+        this.lightsList.push(
+        {
+            id: idVar,
+			enable: enableVar,
+            position: positionVar,
+			ambient: ambientVar,
+			diffuse: diffuseVar,
+            specular: specularVar
+        });
+        /*
+			How to access?
+				this.lightsList(index).id;
+				or
+				this.lightsList(index).diffuse.g;
+		*/
+    }
+    ;
+    
+    console.log("Finished to read the textures' section.");
 };
 
 MySceneGraph.prototype.parseTextures = function(rootElement) {
+	
+    
+    console.log("Started to read the textures' section.");
+    
+    var elems = rootElement.getElementsByTagName('TEXTURES');
+    if (elems == null ) {
+        return "TEXTURES element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "textures missing.";
+    }
+    
+    var texturesElems = elems[0].getElementsByTagName('TEXTURES');
+    
+    this.texturesList = [];
+    var children;
+    var idVar;
+    var filePathVar, amplifVar;
+    var tempArray;
+	
+	// iterate over every element
+    for (var i = 0; i < texturesElems.length; i++) 
+    {
+        idVar = texturesElems[i].id;
+        if (idVar == null )
+            return "id of texture number " + i + " not found.";
+        
+        // iterate over every element
+        if (texturesElems[i].children.length != 2) // Será 2??? ------------------------------------------
+        {
+            return "Texture " + idVar + " misses components";
+        }
+        
+        children = texturesElems[i].children;
+        
+        for (var j = 0; j < children.length; j++) 
+        {
+            switch (children[j].nodeName) 
+            {
+            case "file":
+                filePathVar = this.parser.parseField(children[j].attributes);
+                break;
+            case "amplif_factor":
+                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                break;
+            default:
+                return "compoment " + children.nodeName + " out of place.";
+            }
+        }
+        
+        if (filePathVar == null  || amplifVar == null)
+            return "one of the components of the material " + idVar + " isn't correctly defined.";
+        
+        if (this.isRepeatedId(this.texturesList, idVar))
+            return "material " + idVar + " already exists.";
+        
+        this.texturesList.push(
+        {
+            id: idVar,
+            file: filePathVar,
+            amplif_factor: amplifVar
+        });
+        /*
+			How to access?
+				this.texturesList(index).id;
+				or
+				this.texturesList(index).diffuse.g;
+		*/
+    }
+    ;
+    
+    console.log("Finished to read the textures' section.");
 };
 
 MySceneGraph.prototype.parseMaterials = function(rootElement) {
