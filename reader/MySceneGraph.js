@@ -545,7 +545,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 					return "node " + idVar + " already exists.";
 
 		materialIdVar = nodes[i].getElementsByTagName('MATERIAL');
-		if (materialIdVar == null || materialIdVar.length == 0)
+		if (materialIdVar == null || materialIdVar.length != 1)
 			return "missing material in node " + idVar + ".";
 		materialIdVar = this.reader.getString(materialIdVar[0], 'id', "id of material of node " + idVar + " not found.");
 		if (!this.isRepeatedId(this.materialList, materialIdVar))
@@ -553,7 +553,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 
 		/*****************************************for now it won't work
 		textureIdVar = nodes[i].getElementsByTagName('TEXTURE');
-		if (textureIdVar == null || textureIdVar.length == 0)
+		if (textureIdVar == null || textureIdVar.length != 1)
 			return "missing texture in node " + idVar + ".";
 		textureIdVar = this.reader.getString(textureIdVar[0], 'id', "id of texture of node " + idVar + " not found.");
 		if (!this.isRepeatedId(this.textureList, textureIdVar))
