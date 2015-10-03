@@ -179,18 +179,18 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	
-	console.log("Started to read the illumination' section.");
+	console.log("Started to read the ilumination' section.");
 	
-	var elems = rootElement.getElementsByTagName('ILLUMINATION');
+	var elems = rootElement.getElementsByTagName('ILUMINATION');
     if (elems == null ) {
-        return "ILLUMINATION element is missing.";
+        return "ILUMINATION element is missing.";
     }
     
     if (elems.length == 0) {
-        return "illumination missing";
+        return "ilumination missing";
     }
 	
-	var illuminationElems = elems[0].getElementsByTagName('ILLUMINATION');
+	var illuminationElems = elems[0].getElementsByTagName('ILUMINATION');
 	
 	this.illuminationList = [];
     var ambientVar, doublesideVar, backgroundVar;
@@ -202,7 +202,7 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 			background: backgroundVar,
         });
 
-	
+    console.log("Finished to read the ilumination's section.");
 };
 
 MySceneGraph.prototype.parseLights = function(rootElement) {
@@ -545,19 +545,19 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 					return "node " + idVar + " already exists.";
 
 		materialIdVar = nodes[i].getElementsByTagName('MATERIAL');
-		if (materialIdVar == null || materialIdVar.length == 0)
+		if (materialIdVar == null || materialIdVar.length != 1)
 			return "missing material in node " + idVar + ".";
 		materialIdVar = this.reader.getString(materialIdVar[0], 'id', "id of material of node " + idVar + " not found.");
-		if (!this.isRepeatedId(this.materialList, materialIdVar))
-					return "material " + materialIdVar + " of node " + idVar + " already exists.";
+		if ("null" != materialIdVar && !this.isRepeatedId(this.materialList, materialIdVar))
+					return "material " + materialIdVar + " of node " + idVar + " is incorrect.";
 
 		/*****************************************for now it won't work
 		textureIdVar = nodes[i].getElementsByTagName('TEXTURE');
-		if (textureIdVar == null || textureIdVar.length == 0)
+		if (textureIdVar == null || textureIdVar.length != 1)
 			return "missing texture in node " + idVar + ".";
 		textureIdVar = this.reader.getString(textureIdVar[0], 'id', "id of texture of node " + idVar + " not found.");
-		if (!this.isRepeatedId(this.textureList, textureIdVar))
-					return "texture " + textureIdVar + " of node " + idVar + " already exists.";
+		if ("null" != textureIdVar && "clear" != textureIdVar && !this.isRepeatedId(this.textureList, textureIdVar))
+					return "texture " + textureIdVar + " of node " + idVar + " is incorrect.";
 					********************************************************************************/
 
 		for (var j = 0; j < nodes[i].children.length; j++)
@@ -593,7 +593,8 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			transformations: transformation,
 			descendants: descendantId
 		});
-    }
+
+}
     
     console.log("Finished to read the nodes' section.");
 };
