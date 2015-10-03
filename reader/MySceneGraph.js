@@ -43,7 +43,7 @@ MySceneGraph.prototype.onXMLReady = function()
 	}*/
     /********************delete until this block***********************************/
     
-    /*error = this.parseInitials(rootElement);
+    error = this.parseInitials(rootElement);
     if (error != null ) {
         this.onXMLError(error);
         return;
@@ -65,7 +65,7 @@ MySceneGraph.prototype.onXMLReady = function()
     if (error != null ) {
         this.onXMLError(error);
         return;
-    }*/
+    }
     
     error = this.parseMaterials(rootElement);
     if (error != null ) {
@@ -179,18 +179,18 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	
-	console.log("Started to read the illumination' section.");
+	console.log("Started to read the ilumination' section.");
 	
-	var elems = rootElement.getElementsByTagName('ILLUMINATION');
+	var elems = rootElement.getElementsByTagName('ILUMINATION');
     if (elems == null ) {
-        return "ILLUMINATION element is missing.";
+        return "ILUMINATION element is missing.";
     }
     
     if (elems.length == 0) {
-        return "illumination missing";
+        return "ilumination missing";
     }
 	
-	var illuminationElems = elems[0].getElementsByTagName('ILLUMINATION');
+	var illuminationElems = elems[0].getElementsByTagName('ILUMINATION');
 	
 	this.illuminationList = [];
     var ambientVar, doublesideVar, backgroundVar;
@@ -202,7 +202,7 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 			background: backgroundVar,
         });
 
-	
+    console.log("Finished to read the ilumination's section.");
 };
 
 MySceneGraph.prototype.parseLights = function(rootElement) {
