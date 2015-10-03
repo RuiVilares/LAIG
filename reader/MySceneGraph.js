@@ -221,7 +221,7 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	
 	var illuminationElems = elems[0].getElementsByTagName('ILLUMINATION');
 	
-    var ambientVar, doublesideVar, backgroundVar;
+    var ambientVar, backgroundVar;
 	
 	if (illuminationElems.length != 3)
     {
@@ -247,7 +247,6 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	this.illuminationList.push(
     {
 		ambient: ambientVar,
-        doubleside: doublesideVar,
 		background: backgroundVar,
     });
 
