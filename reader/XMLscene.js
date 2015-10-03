@@ -24,6 +24,10 @@ XMLscene.prototype.init = function (application) {
     this.gl.cullFace(this.gl.BACK);
 
 	this.axis=new CGFaxis(this);
+	this.square = new MyQuad(this,0,1,0,1);
+	this.triangle = new MyTriangle(this,0,1,0,1);
+	this.lamp = new MyLamp(this,20,10);
+	this.cylinder = new MyCylinder(this,20,10,0.1,1);
 
 	/*************************************
 	lighting   = enable (i think this one is to start every lights on)
@@ -91,7 +95,12 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.lights[0].update();
-	};	
+	};
+
+	//this.square.display();
+	this.triangle.display();
+	//this.lamp.display();
+	//this.cylinder.display();
 
     this.shader.unbind();
 };

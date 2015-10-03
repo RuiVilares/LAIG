@@ -43,7 +43,7 @@ MySceneGraph.prototype.onXMLReady = function()
 	}*/
     /********************delete until this block***********************************/
     
-    error = this.parseInitials(rootElement);
+    /*error = this.parseInitials(rootElement);
     if (error != null ) {
         this.onXMLError(error);
         return;
@@ -65,7 +65,7 @@ MySceneGraph.prototype.onXMLReady = function()
     if (error != null ) {
         this.onXMLError(error);
         return;
-    }
+    }*/
     
     error = this.parseMaterials(rootElement);
     if (error != null ) {
@@ -548,16 +548,16 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 		if (materialIdVar == null || materialIdVar.length != 1)
 			return "missing material in node " + idVar + ".";
 		materialIdVar = this.reader.getString(materialIdVar[0], 'id', "id of material of node " + idVar + " not found.");
-		if (!this.isRepeatedId(this.materialList, materialIdVar))
-					return "material " + materialIdVar + " of node " + idVar + " already exists.";
+		if ("null" != materialIdVar && !this.isRepeatedId(this.materialList, materialIdVar))
+					return "material " + materialIdVar + " of node " + idVar + " is incorrect.";
 
 		/*****************************************for now it won't work
 		textureIdVar = nodes[i].getElementsByTagName('TEXTURE');
 		if (textureIdVar == null || textureIdVar.length != 1)
 			return "missing texture in node " + idVar + ".";
 		textureIdVar = this.reader.getString(textureIdVar[0], 'id', "id of texture of node " + idVar + " not found.");
-		if (!this.isRepeatedId(this.textureList, textureIdVar))
-					return "texture " + textureIdVar + " of node " + idVar + " already exists.";
+		if ("null" != textureIdVar && "clear" != textureIdVar && !this.isRepeatedId(this.textureList, textureIdVar))
+					return "texture " + textureIdVar + " of node " + idVar + " is incorrect.";
 					********************************************************************************/
 
 		for (var j = 0; j < nodes[i].children.length; j++)
@@ -593,7 +593,8 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			transformations: transformation,
 			descendants: descendantId
 		});
-    }
+
+}
     
     console.log("Finished to read the nodes' section.");
 };
