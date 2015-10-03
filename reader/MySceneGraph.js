@@ -189,7 +189,6 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
     if (elems.length == 0) {
         return "illumination missing";
     }
-	
 	var illuminationElems = elems[0].getElementsByTagName('ILLUMINATION');
 	
 	this.illuminationList = [];
@@ -201,7 +200,6 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
             doubleside: doublesideVar,
 			background: backgroundVar,
         });
-
 	
 };
 
@@ -290,7 +288,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
     }
     ;
     
-    console.log("Finished to read the textures' section.");
+    console.log("Finished to read the lights' section.");
 };
 
 MySceneGraph.prototype.parseTextures = function(rootElement) {
