@@ -12,6 +12,7 @@ XMLscene.prototype.init = function (application) {
     this.initCameras();
 
     this.initLights();
+	this.enableTextures(true);
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -24,10 +25,17 @@ XMLscene.prototype.init = function (application) {
     this.gl.cullFace(this.gl.BACK);
 
 	this.axis=new CGFaxis(this);
-	this.square = new MyQuad(this,0,1,0,1);
-	this.triangle = new MyTriangle(this,0,1,0,1);
-	this.lamp = new MyLamp(this,20,10);
-	this.cylinder = new MyCylinder(this,20,10,0.1,1);
+	this.square = new MyRectangle(this,0,1,1,0); //MyRectangle(scene, minX, maxY, maxX, minY)
+	this.triangle = new MyTriangle(this,0,0,0,0.5,1,0,1,0,0); //MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3)
+	this.sphere = new MySphere(this,0.5,20,10); //MySphere(scene, radius, slices, stacks)
+	this.cylinder = new MyCylinder(this,5,0,1,20,50); //MyCylinder(scene, height, bottomRadius, topRadius, stacks, slices)
+
+	this.slidesAppearance = new CGFappearance(this);
+	this.slidesAppearance.loadTexture("scenes/textures/parkingSign.png");
+	this.slidesAppearance.setAmbient(0.3,0.3,0.3,1);
+	this.slidesAppearance.setDiffuse(0.8,0.8,0.8,1);
+	this.slidesAppearance.setSpecular(0.2,0.2,0.2,1);
+	this.slidesAppearance.setShininess(10);
 
 	/*************************************
 	lighting   = enable (i think this one is to start every lights on)
@@ -97,9 +105,10 @@ XMLscene.prototype.display = function () {
 		this.lights[0].update();
 	};
 
+	this.slidesAppearance.apply();
 	//this.square.display();
 	this.triangle.display();
-	//this.lamp.display();
+	//this.sphere.display();
 	//this.cylinder.display();
 
     this.shader.unbind();
