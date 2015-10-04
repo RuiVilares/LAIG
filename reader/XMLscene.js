@@ -109,11 +109,14 @@ XMLscene.prototype.display = function () {
 		this.lights[0].update();
 	};
 
+this.pushMatrix();
+	this.rotate(Math.PI/6,0,1,0);
 	this.slidesAppearance.apply();
 	this.rectangle.display();
 	//this.triangle.display();
 	//this.sphere.display();
 	//this.cylinder.display();
+this.popMatrix();
 
     this.shader.unbind();
 };
