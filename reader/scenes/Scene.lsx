@@ -89,47 +89,47 @@
 
 <TEXTURES>
     <TEXTURE id="parkingSpace">
-        <file path="parkingSpace.png" />           <!-- path to file -->
+        <file path="textures/parkingSpace.png" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="clay">
-        <file path="clay.jpg" />           <!-- path to file -->
+        <file path="textures/clay.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="glass">
-        <file path="glass.jpg" />           <!-- path to file -->
+        <file path="textures/glass.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="tyre">
-        <file path="tyre.jpg" />           <!-- path to file -->
+        <file path="textures/tyre.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="brick">
-        <file path="brick.jpg" />           <!-- path to file -->
+        <file path="textures/brick.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="house">
-        <file path="house.jpg" />           <!-- path to file -->
+        <file path="textures/house.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="leaves">
-        <file path="leaves.jpg" />           <!-- path to file -->
+        <file path="textures/leaves.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="tree">
-        <file path="tree.jpg" />           <!-- path to file -->
+        <file path="textures/tree.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
     <TEXTURE id="parkingSign">
-        <file path="parkingSign.jpg" />           <!-- path to file -->
+        <file path="textures/parkingSign.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
     
