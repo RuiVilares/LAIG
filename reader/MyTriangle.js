@@ -52,14 +52,13 @@ MyTriangle.prototype.initBuffers = function () {
 	normal.x, normal.y, normal.z
 	];
 
-	var maxX = Math.max(this.x1, this.x2, this.x3);
-	var maxY = Math.max(this.y1, this.y2, this.y3);
-	var maxZ = Math.max(this.z1, this.z2, this.z3);
+	this.maxX = Math.max(this.x1, this.x2, this.x3);
+	this.maxY = Math.max(this.y1, this.y2, this.y3);
 	
 	this.texCoords = [
-	this.x1/maxX,1-this.y1/maxY,
-	this.x2/maxX,1-this.y2/maxY,
-	this.x3/maxX,1-this.y3/maxY
+	this.x1/this.maxX,1-this.y1/this.maxY,
+	this.x2/this.maxX,1-this.y2/this.maxY,
+	this.x3/this.maxX,1-this.y3/this.maxY
 	];
 
 	this.initGLBuffers();
@@ -78,4 +77,22 @@ MyTriangle.prototype.getNormalVector = function () {
 		y: Math.abs(vector1.z * vector2.x - vector1.x * vector2.z),
 		z: Math.abs(vector1.x * vector2.y - vector1.y * vector2.x)
 		};
-}
+};
+
+MyTriangle.prototype.scaleTexture = function (s, t) {
+	this.texCoords = [
+		(this.x1/this.maxX)/s,(1-this.y1/this.maxY)/t,
+		(this.x2/this.maxX)/s,(1-this.y2/this.maxY)/t,
+		(this.x3/this.maxX)/s,(1-this.y3/this.maxY)/t
+		];
+	this.initGLBuffers();
+};
+
+MyTriangle.prototype.defaultTextureScale = function () {
+	this.texCoords = [
+		this.x1/this.maxX,1-this.y1/this.maxY,
+		this.x2/this.maxX,1-this.y2/this.maxY,
+		this.x3/this.maxX,1-this.y3/this.maxY
+		];
+	this.initGLBuffers();
+};

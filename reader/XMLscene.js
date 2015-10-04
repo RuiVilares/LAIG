@@ -30,8 +30,11 @@ XMLscene.prototype.init = function (application) {
 	this.sphere = new MySphere(this,0.5,20,10); //MySphere(scene, radius, slices, stacks)
 	this.cylinder = new MyCylinder(this,5,0,1,20,50); //MyCylinder(scene, height, bottomRadius, topRadius, stacks, slices)
 
+	//this.triangle.scaleTexture(0.30,1);
+
 	this.slidesAppearance = new CGFappearance(this);
 	this.slidesAppearance.loadTexture("scenes/textures/parkingSign.png");
+	this.slidesAppearance.setTextureWrap('REPEAT','REPEAT');
 	this.slidesAppearance.setAmbient(0.3,0.3,0.3,1);
 	this.slidesAppearance.setDiffuse(0.8,0.8,0.8,1);
 	this.slidesAppearance.setSpecular(0.2,0.2,0.2,1);
@@ -107,8 +110,8 @@ XMLscene.prototype.display = function () {
 
 	this.slidesAppearance.apply();
 	//this.square.display();
-	//this.triangle.display();
-	this.sphere.display();
+	this.triangle.display();
+	//this.sphere.display();
 	//this.cylinder.display();
 
     this.shader.unbind();
