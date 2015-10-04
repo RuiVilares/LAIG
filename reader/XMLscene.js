@@ -25,12 +25,13 @@ XMLscene.prototype.init = function (application) {
     this.gl.cullFace(this.gl.BACK);
 
 	this.axis=new CGFaxis(this);
-	this.square = new MyRectangle(this,0,1,1,0); //MyRectangle(scene, minX, maxY, maxX, minY)
+	this.rectangle = new MyRectangle(this,0,1,1,0); //MyRectangle(scene, minX, maxY, maxX, minY)
 	this.triangle = new MyTriangle(this,0,0,0,0.5,1,0,1,0,0); //MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3)
 	this.sphere = new MySphere(this,0.5,20,10); //MySphere(scene, radius, slices, stacks)
 	this.cylinder = new MyCylinder(this,5,0,1,20,50); //MyCylinder(scene, height, bottomRadius, topRadius, stacks, slices)
 
 	//this.triangle.scaleTexture(0.30,1);
+	this.rectangle.scaleTexture(0.30,1);
 
 	this.slidesAppearance = new CGFappearance(this);
 	this.slidesAppearance.loadTexture("scenes/textures/parkingSign.png");
@@ -109,8 +110,8 @@ XMLscene.prototype.display = function () {
 	};
 
 	this.slidesAppearance.apply();
-	//this.square.display();
-	this.triangle.display();
+	this.rectangle.display();
+	//this.triangle.display();
 	//this.sphere.display();
 	//this.cylinder.display();
 

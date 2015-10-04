@@ -52,3 +52,23 @@ MyRectangle.prototype.initBuffers = function () {
 
 	this.initGLBuffers();
 };
+
+MyRectangle.prototype.scaleTexture = function (s, t) {
+	this.texCoords = [
+	0,1/t,
+	1/s,1/t,
+	0,0,
+	1/s,0
+	];
+	this.initGLBuffers();
+};
+
+MyRectangle.prototype.defaultTextureScale = function () {
+	this.texCoords = [
+	0,1,
+	1,1,
+	0,0,
+	1,0
+	];
+	this.initGLBuffers();
+};
