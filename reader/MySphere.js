@@ -24,6 +24,18 @@
  	this.indices = [];
  	this.texCoords = [];
 
+	for (var j = -this.stacks; j < 0; j++)
+	{
+		var teta = j * (Math.PI/2)/this.stacks;
+
+ 		for (var i = 0; i <= this.slices; i++)
+ 		{
+ 			this.vertices.push( Math.cos(alpha*i)*Math.cos( teta )*this.radius , Math.sin(alpha*i)*Math.cos(teta)*this.radius, Math.sin(teta)*this.radius);
+ 			
+ 			this.normals.push( Math.cos(alpha*i)*Math.cos( teta )*this.radius , Math.sin(alpha*i)*Math.cos(teta)*this.radius , Math.sin(teta)*this.radius);
+ 		}
+	}
+
 	for (var j = 0; j <= this.stacks; j++)
 	{
 		var teta = j * (Math.PI/2)/this.stacks;
@@ -36,30 +48,17 @@
  		}
 	}
 
-	for (var j = -this.stacks; j <= 0; j++)
-	{
-		var teta = j * (Math.PI/2)/this.stacks;
-
- 		for (var i = 0; i <= this.slices; i++)
- 		{
- 			this.vertices.push( Math.cos(alpha*i)*Math.cos( teta )*this.radius , Math.sin(alpha*i)*Math.cos(teta)*this.radius, Math.sin(teta)*this.radius);
- 			
- 			this.normals.push( Math.cos(alpha*i)*Math.cos( teta )*this.radius , Math.sin(alpha*i)*Math.cos(teta)*this.radius , Math.sin(teta)*this.radius);
- 		}
-	}
-
 	for (var j = this.stacks*2; j >= 0; j--)
 	{
  		for (var i = 0 ; i <= this.slices; i++)
  		{
 			this.texCoords.push( (1/this.slices)*i, (1/(this.stacks*2))*j);
-			console.log( (1/this.slices)*i+", "+(1/(this.stacks*2))*j);
  		}
 	}
 
 	var n = this.slices + 1;
 
-	for (var j = 0; j <= this.stacks*2; j++)
+	for (var j = 0; j < this.stacks*2; j++)
 	{
 		for (var i = 0; i < this.slices; i++)
 		{

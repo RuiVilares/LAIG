@@ -107,8 +107,8 @@ XMLscene.prototype.display = function () {
 
 	this.slidesAppearance.apply();
 	//this.square.display();
-	this.triangle.display();
-	//this.sphere.display();
+	//this.triangle.display();
+	this.sphere.display();
 	//this.cylinder.display();
 
     this.shader.unbind();
