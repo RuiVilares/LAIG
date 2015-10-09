@@ -161,3 +161,89 @@ XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 
 	return null;
 };
+
+XMLparser.prototype.parseFrustum = function(root) {
+    var nearVar, farVar;
+    
+    nearVar = this.parseField(root, "near");
+    farVar = this.parseField(root, "far");
+    
+    if (nearVar == null  || farVar == null)
+        return null ;
+    
+    return {
+        near: nearVar,
+        far: farVar
+    };
+};
+
+XMLparser.prototype.parseReference = function(root) {
+    var referenceVar;
+    
+    referenceVar = this.parseField(root, "reference");
+    
+    if (referenceVar == null)
+        return null ;
+    
+    return {
+        reference: referenceVar
+    };
+};
+
+XMLparser.prototype.parseEnable = function(root) {
+    var enableVar;
+    
+    enableVar = this.parseField(root, "enable");
+    
+    if (enableVar == null)
+        return null ;
+    
+    return {
+        enable: enableVar
+    };
+};
+
+XMLparser.prototype.parsePosition = function(root) {
+    var xVar, yVar, zVar, wVar;
+    
+    xVar = this.parseField(root, "x");
+	yVar = this.parseField(root, "y");
+	zVar = this.parseField(root, "z");
+	wVar = this.parseField(root, "w");
+    
+    if (xVar == null || yVar == null || zVar == null || wVar == null)
+        return null ;
+    
+    return {
+        x: xVar,
+		y: yVar,
+		z: zVar, 
+		w: wVar
+    };
+};
+
+XMLparser.prototype.parseFile = function(root) {
+    var fileVar;
+    
+    fileVar = this.parseField(root, "file");
+    
+    if (fileVar == null)
+        return null ;
+    
+    return {
+        file: fileVar
+    };
+};
+
+XMLparser.prototype.parseAmplif_factor = function(root) {
+    var amplif_factorVar;
+    
+    amplif_factorVar = this.parseField(root, "amplif_factor");
+    
+    if (amplif_factorVar == null)
+        return null ;
+    
+    return {
+        amplif_factor: amplif_factorVar
+    };
+};

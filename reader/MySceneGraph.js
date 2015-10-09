@@ -162,8 +162,37 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 	
 	var initialsElems = elems[0].getElementsByTagName('INITIALS');
 		
-	this.initialsList = [];
 	var frustumVar, translateVar, rotationVar, scaleVar, referenceVar;
+	
+	if (initialsElems.length != 5)
+    {
+		return "Initials misses components";
+    }
+	
+        
+    for (var j = 0; j < initialsElems.length; j++) 
+	{
+        switch (initialsElems[j].nodeName) 
+        {
+			case "frustum":
+				ambientVar = this.parser.parseFrustum(initialsElems[j].attributes);
+				break;
+			case "translate":
+				translateVar = this.parser.parseTranslation(initialsElems[j].attributes);
+				break;
+			case "rotation":
+				rotationVar = this.parser.parseTranslation(initialsElems[j].attributes);
+				break;
+			case "scale":
+				scaleVar = this.parser.parseTranslation(initialsElems[j].attributes);
+				break;
+			case "reference":
+				referenceVar = this.parser.parseReference(initialsElems[j].attributes);
+				break;
+			default:
+				return "compoment " + initialsElems.nodeName + " out of place.";
+        }
+    }
 	
 	this.initialsList.push(
         {
@@ -192,15 +221,34 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	
 	var illuminationElems = elems[0].getElementsByTagName('ILUMINATION');
 	
-	this.illuminationList = [];
-    var ambientVar, doublesideVar, backgroundVar;
+    var ambientVar, backgroundVar;
+	
+	if (illuminationElems.length != 3)
+    {
+		return "Illumination misses components";
+    }
+	
+        
+    for (var j = 0; j < illuminationElems.length; j++) 
+	{
+        switch (illuminationElems[j].nodeName) 
+        {
+			case "ambient":
+				ambientVar = this.parser.parseRGBA(illuminationElems[j].attributes);
+				break;
+			case "background":
+				backgroundVar = this.parser.parseRGBA(illuminationElems[j].attributes);
+				break;
+			default:
+				return "compoment " + illuminationElems.nodeName + " out of place.";
+        }
+    }
 	
 	this.illuminationList.push(
-        {
-			ambient: ambientVar,
-            doubleside: doublesideVar,
-			background: backgroundVar,
-        });
+    {
+		ambient: ambientVar,
+		background: backgroundVar,
+    });
 
     console.log("Finished to read the ilumination's section.");
 };
@@ -225,7 +273,6 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
     var children;
     var idVar;
     var enableVar, positionVar, ambientVar, diffuseVar, specularVar;
-    var tempArray;
 	
 	// iterate over every element
     for (var i = 0; i < lightsElems.length; i++) 
@@ -235,7 +282,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
             return "id of light number " + i + " not found.";
         
         // iterate over every element
-        if (lightsElems[i].children.length != 5) // Será 2??? ------------------------------------------
+        if (lightsElems[i].children.length != 5)
         {
             return "Light " + idVar + " misses components";
         }
@@ -246,19 +293,19 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
         {
             switch (children[j].nodeName) 
             {
-            case "enableVar":
-                filePathVar = this.parser.parseField(children[j].attributes);
+            case "enable":
+                enableVar = this.parser.parseEnable(children[j].attributes);
                 break;
-            case "positionVar":
+            case "position":
+                amplifVar = this.parser.parsePosition(children[j].attributes);
+                break;
+			case "ambient":
                 amplifVar = this.parser.parseRGBA(children[j].attributes);
                 break;
-			case "ambientVar":
+			case "diffuse":
                 amplifVar = this.parser.parseRGBA(children[j].attributes);
                 break;
-			case "diffuseVar":
-                amplifVar = this.parser.parseRGBA(children[j].attributes);
-                break;
-			case "specularVar":
+			case "specular":
                 amplifVar = this.parser.parseRGBA(children[j].attributes);
                 break;
             default:
@@ -313,7 +360,6 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
     var children;
     var idVar;
     var filePathVar, amplifVar;
-    var tempArray;
 	
 	// iterate over every element
     for (var i = 0; i < texturesElems.length; i++) 
@@ -323,7 +369,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
             return "id of texture number " + i + " not found.";
         
         // iterate over every element
-        if (texturesElems[i].children.length != 2) // Será 2??? ------------------------------------------
+        if (texturesElems[i].children.length != 2)
         {
             return "Texture " + idVar + " misses components";
         }
@@ -335,10 +381,10 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
             switch (children[j].nodeName) 
             {
             case "file":
-                filePathVar = this.parser.parseField(children[j].attributes);
+                filePathVar = this.parser.parseFile(children[j].attributes); 
                 break;
             case "amplif_factor":
-                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                amplifVar = this.parser.parseAmplif_factor(children[j].attributes);
                 break;
             default:
                 return "compoment " + children.nodeName + " out of place.";
@@ -388,7 +434,6 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
     var children;
     var idVar;
     var shininessVar, specularVar, diffuseVar, ambientVar, emissionVar;
-    var tempArray;
     
     // iterate over every element
     for (var i = 0; i < materialsElems.length; i++) 
