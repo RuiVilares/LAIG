@@ -112,7 +112,7 @@ XMLscene.prototype.display = function () {
 this.pushMatrix();
 	this.rotate(Math.PI/6,0,1,0);
 	this.slidesAppearance.apply();
-	this.rectangle.display();
+	//this.rectangle.display();
 	//this.triangle.display();
 	//this.sphere.display();
 	//this.cylinder.display();

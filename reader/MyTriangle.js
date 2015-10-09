@@ -54,6 +54,11 @@ MyTriangle.prototype.initBuffers = function () {
 
 	this.maxX = Math.max(this.x1, this.x2, this.x3);
 	this.maxY = Math.max(this.y1, this.y2, this.y3);
+
+	/*this.c = Math.sqrt(
+				Math.pow(this.x3-this.x1 ,2) + 
+				Math.pow( ,2) +
+				Math.pow( ,2) );*/
 	
 	this.texCoords = [
 	this.x1/this.maxX,1-this.y1/this.maxY,
