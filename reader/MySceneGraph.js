@@ -568,10 +568,6 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 
     rootElem = this.reader.getString(rootElem[0], 'id', "id of root not found.");
 
-    /***************************
-	don't forget the root id
-    *///////////////////////////
-
     var nodes = elems[0].getElementsByTagName('NODE');
     if (nodes.length == 0)
     	return "at least one node must be present.";
@@ -639,6 +635,8 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			descendants: descendantId
 		});
 
+	if(!this.isRepeatedId(this.nodeList, rootElem))
+		return "definition of root element " + rootElem + " is missing.";
 }
     
     console.log("Finished to read the nodes' section.");
