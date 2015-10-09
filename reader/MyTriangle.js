@@ -16,11 +16,11 @@ function MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
 	this.z3 = z3;
 
 	/*
-				2
+				1
 			  /  \
 			 /	  \	
 			/	   \
-			1------3
+			2------3
 	*/
 	
 	this.initBuffers();
@@ -39,7 +39,7 @@ MyTriangle.prototype.initBuffers = function () {
 
 	this.indices = [
 		//triangles
-            2, 1, 0
+            0, 1, 2
         ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
@@ -52,21 +52,44 @@ MyTriangle.prototype.initBuffers = function () {
 	normal.x, normal.y, normal.z
 	];
 
-	this.maxX = Math.max(this.x1, this.x2, this.x3);
-	this.maxY = Math.max(this.y1, this.y2, this.y3);
+	this.a = 0; this.b = 0; this.c = 0;
+	this.setTriangleSizes();
 
-	/*this.c = Math.sqrt(
-				Math.pow(this.x3-this.x1 ,2) + 
-				Math.pow( ,2) +
-				Math.pow( ,2) );*/
-	
-	this.texCoords = [
-	this.x1/this.maxX,1-this.y1/this.maxY,
-	this.x2/this.maxX,1-this.y2/this.maxY,
-	this.x3/this.maxX,1-this.y3/this.maxY
-	];
+	this.sinB = 0; this.cosB = 0;
+	this.setTrignometry();
+
+	this.p2x = this.c - this.a * this.cosB;
+	this.p2y = this.a * this.sinB;
+
+	this.defaultTextureScale();
 
 	this.initGLBuffers();
+};
+
+MyTriangle.prototype.setTrignometry = function () {
+
+	this.cosB = (Math.pow(this.a, 2) - Math.pow(this.b, 2) + Math.pow(this.c, 2)) / (2 * this.a * this.c);
+
+	this.sinB = Math.sin(Math.acos(this.cosB));
+
+};
+
+MyTriangle.prototype.setTriangleSizes = function () {
+		
+	this.a = Math.sqrt(
+				Math.pow(this.x1-this.x3 ,2) + 
+				Math.pow(this.y1-this.y3 ,2) +
+				Math.pow(this.z1-this.z3 ,2) );
+	
+	this.b = Math.sqrt(
+				Math.pow(this.x2-this.x1 ,2) + 
+				Math.pow(this.y2-this.y1 ,2) +
+				Math.pow(this.z2-this.z1 ,2) );
+	
+	this.c = Math.sqrt(
+				Math.pow(this.x3-this.x2 ,2) + 
+				Math.pow(this.y3-this.y2 ,2) +
+				Math.pow(this.z3-this.z2 ,2) );
 };
 
 MyTriangle.prototype.getNormalVector = function () {
@@ -86,18 +109,18 @@ MyTriangle.prototype.getNormalVector = function () {
 
 MyTriangle.prototype.scaleTexture = function (s, t) {
 	this.texCoords = [
-		(this.x1/this.maxX)/s,(1-this.y1/this.maxY)/t,
-		(this.x2/this.maxX)/s,(1-this.y2/this.maxY)/t,
-		(this.x3/this.maxX)/s,(1-this.y3/this.maxY)/t
+		this.p2x/s,1-this.p2y/t,
+		0,1,
+		this.c/s,1
 		];
 	this.initGLBuffers();
 };
 
 MyTriangle.prototype.defaultTextureScale = function () {
 	this.texCoords = [
-		this.x1/this.maxX,1-this.y1/this.maxY,
-		this.x2/this.maxX,1-this.y2/this.maxY,
-		this.x3/this.maxX,1-this.y3/this.maxY
-		];
+		this.p2x, 1-this.p2y,
+		0, 1,
+		this.c, 1
+	];
 	this.initGLBuffers();
 };

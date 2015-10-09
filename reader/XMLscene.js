@@ -26,11 +26,11 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 	this.rectangle = new MyRectangle(this,0,1,1,0); //MyRectangle(scene, minX, maxY, maxX, minY)
-	this.triangle = new MyTriangle(this,0,0,0,0.5,1,0,1,0,0); //MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3)
+	this.triangle = new MyTriangle(this,2,2,0, 0,0,0, 2,0,0); //MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3)
 	this.sphere = new MySphere(this,0.5,20,10); //MySphere(scene, radius, slices, stacks)
 	this.cylinder = new MyCylinder(this,5,0,1,20,50); //MyCylinder(scene, height, bottomRadius, topRadius, stacks, slices)
 
-	//this.triangle.scaleTexture(0.30,1);
+	this.triangle.scaleTexture(2,2);
 	this.rectangle.scaleTexture(0.30,1);
 
 	this.slidesAppearance = new CGFappearance(this);
@@ -110,10 +110,10 @@ XMLscene.prototype.display = function () {
 	};
 
 this.pushMatrix();
-	this.rotate(Math.PI/6,0,1,0);
+	//this.rotate(Math.PI/6,0,1,0);
 	this.slidesAppearance.apply();
 	//this.rectangle.display();
-	//this.triangle.display();
+	this.triangle.display();
 	//this.sphere.display();
 	//this.cylinder.display();
 this.popMatrix();
