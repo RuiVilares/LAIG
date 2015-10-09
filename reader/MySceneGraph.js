@@ -43,7 +43,7 @@ MySceneGraph.prototype.onXMLReady = function()
 	}*/
     /********************delete until this block***********************************/
     
-    error = this.parseInitials(rootElement);
+    /*error = this.parseInitials(rootElement);
     if (error != null ) {
         this.onXMLError(error);
         return;
@@ -65,7 +65,7 @@ MySceneGraph.prototype.onXMLReady = function()
     if (error != null ) {
         this.onXMLError(error);
         return;
-    }
+    }*/
     
     error = this.parseMaterials(rootElement);
     if (error != null ) {

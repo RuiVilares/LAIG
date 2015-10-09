@@ -12,6 +12,7 @@ XMLscene.prototype.init = function (application) {
     this.initCameras();
 
     this.initLights();
+	this.enableTextures(true);
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -24,10 +25,13 @@ XMLscene.prototype.init = function (application) {
     this.gl.cullFace(this.gl.BACK);
 
 	this.axis=new CGFaxis(this);
-	this.square = new MyQuad(this,0,1,0,1);
-	this.triangle = new MyTriangle(this,0,1,0,1);
-	this.lamp = new MyLamp(this,20,10);
+	this.square = new MyQuad(this,0,1,1,0);
+	this.triangle = new MyTriangle(this,2,2,0, 0,0,0, 2,0,0);
+	this.sphere = new MySphere(this,0.5, 20,10);
 	this.cylinder = new MyCylinder(this,20,10,0.1,1);
+
+	this.slidesAppearance = new CGFappearance(this);
+	this.slidesAppearance.loadTexture("scenes/Texturas/parkingSign.png");
 
 	/*************************************
 	lighting   = enable (i think this one is to start every lights on)
@@ -40,9 +44,13 @@ XMLscene.prototype.initLights = function () {
 
     this.shader.bind();
 
-	this.lights[0].setPosition(2, 3, 3, 1);
+	this.lights[0].setPosition(0, 1, 1.5, 1);
     this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
     this.lights[0].update();
+
+	this.lights[1].setPosition(0, 1, -1.5, 1);
+    this.lights[1].setDiffuse(1.0,1.0,1.0,1.0);
+    this.lights[1].update();
  
     this.shader.unbind();
 };
@@ -65,6 +73,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 	/*this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);*/
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
+
+    this.lights[1].setVisible(true);
+    this.lights[1].enable();
 };
 
 XMLscene.prototype.display = function () {
@@ -95,12 +106,16 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.lights[0].update();
+		this.lights[1].update();
 	};
 
-	//this.square.display();
-	this.triangle.display();
-	//this.lamp.display();
-	//this.cylinder.display();
+	this.pushMatrix();
+		this.slidesAppearance.apply();
+		//this.square.display();
+		//this.triangle.display();
+		this.sphere.display();
+		//this.cylinder.display();
+	this.popMatrix();
 
     this.shader.unbind();
 };

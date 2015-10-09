@@ -3,12 +3,12 @@
  * @param gl {WebGLRenderingContext}
  * @constructor
  */
-function MyQuad(scene, minS, maxS, minT, maxT) {
+function MyQuad(scene, xl, yl, xr, yr) {
 	CGFobject.call(this,scene);
-	this.minS = minS;
-	this.maxS = maxS;
-	this.minT = minT;
-	this.maxT = maxT;
+	this.xl = xl;
+	this.yl = yl;
+	this.xr = xr;
+	this.yr = yr;
 	
 	this.initBuffers();
 };
@@ -20,10 +20,10 @@ MyQuad.prototype.constructor=MyQuad;
 MyQuad.prototype.initBuffers = function () {
 	this.vertices = [
 		//square
-            -0.5, -0.5, 0,
-            0.5, -0.5, 0,
-            -0.5, 0.5, 0,
-            0.5, 0.5, 0
+            this.xl, this.yr, 0,
+            this.xr, this.yr, 0,
+            this.xl, this.yl, 0,
+            this.xr, this.yl, 0
 			];
 
 	this.indices = [
@@ -44,12 +44,16 @@ MyQuad.prototype.initBuffers = function () {
 	];
 
 	
-	this.texCoords = [
-	this.minS,this.maxT,
-	this.maxS,this.maxT,
-	this.minS,this.minT,
-	this.maxS,this.minT
-	];
+	this.scaleTexture(1,1);
 
 	this.initGLBuffers();
+};
+
+MyQuad.prototype.scaleTexture = function (s, t) {
+	this.texCoords = [
+	0,1/t,
+	1/s,1/t,
+	0,0,
+	1/s,0
+	];
 };
