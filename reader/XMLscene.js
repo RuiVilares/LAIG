@@ -19,6 +19,8 @@ XMLscene.prototype.init = function (application) {
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
+	this.gl.enable(this.gl.BLEND);
+	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA); 
 
     this.gl.depthFunc(this.gl.LEQUAL);
     this.gl.frontFace(this.gl.CCW);
@@ -27,8 +29,8 @@ XMLscene.prototype.init = function (application) {
 	this.axis=new CGFaxis(this);
 	this.square = new MyQuad(this,0,1,1,0);
 	this.triangle = new MyTriangle(this,2,2,0, 0,0,0, 2,0,0);
-	this.sphere = new MySphere(this,0.5, 20,10);
-	this.cylinder = new MyCylinder(this,20,10,0.1,1);
+	this.sphere = new MySphere(this,1.0, 200,100);
+	this.cylinder = new MyCylinder(this,3,0.1,1,200,100);
 
 	this.slidesAppearance = new CGFappearance(this);
 	this.slidesAppearance.loadTexture("scenes/Texturas/parkingSign.png");
@@ -113,8 +115,8 @@ XMLscene.prototype.display = function () {
 		this.slidesAppearance.apply();
 		//this.square.display();
 		//this.triangle.display();
-		this.sphere.display();
-		//this.cylinder.display();
+		//this.sphere.display();
+		this.cylinder.display();
 	this.popMatrix();
 
     this.shader.unbind();

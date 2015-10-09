@@ -2,13 +2,14 @@
  * MyCylinder
  * @constructor
  */
- function MyCylinder(scene, slices, stacks, minRadius, maxRadius) {
+ function MyCylinder(scene, height, minRadius, maxRadius, stacks, slices) {
  	CGFobject.call(this,scene);
 	
 	this.slices=slices;
 	this.stacks=stacks;
 	this.minRadius=minRadius;
 	this.maxRadius=maxRadius;
+	this.height = height;
 
  	this.initBuffers();
  };
@@ -37,9 +38,9 @@
 	{
  		for (var i = 0; i <= this.slices; i++)
  		{
- 			this.vertices.push(Math.cos(alpha*i)*(this.minRadius+j/radiusDenominator), Math.sin(alpha*i)*(this.minRadius+j/radiusDenominator), j/this.stacks);
+ 			this.vertices.push(Math.cos(alpha*i)*(this.minRadius+j/radiusDenominator), Math.sin(alpha*i)*(this.minRadius+j/radiusDenominator), (j/this.stacks) * this.height);
  			
- 			this.normals.push(Math.cos(alpha*i)*(this.minRadius+j/radiusDenominator), Math.sin(alpha*i)*(this.minRadius+j/radiusDenominator), j/this.stacks);
+ 			this.normals.push(Math.cos(alpha*i)*(this.minRadius+j/radiusDenominator), Math.sin(alpha*i)*(this.minRadius+j/radiusDenominator), (j/this.stacks) * this.height);
 
  			//this.texCoords.push( i%2, (1/this.stacks)*j);
 

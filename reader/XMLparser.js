@@ -177,10 +177,56 @@ XMLparser.prototype.parseFrustum = function(root) {
     };
 };
 
+XMLparser.prototype.parseScaleInitials = function(root) {
+    var sxVar, syVar, szVar;
+    
+    sxVar = this.parseField(root, "sx");
+    syVar = this.parseField(root, "sy");
+    szVar = this.parseField(root, "sz");
+    
+    if (sxVar == null  || syVar == null  || szVar == null)
+        return null ;
+    
+    return {
+    	sx: sxVar,
+    	sy: syVar,
+    	sz: szVar
+    };
+};
+
+XMLparser.prototype.parseRotationInitials = function(root) {
+
+    var axisVar, angleVar;
+	axisVar = this.parseField(root, "axis");
+	angleVar = this.parseField(root, "angle");
+	if (axisVar == null || angleVar == null)
+		return null;
+
+	return ({
+		axis: axisVar,
+		angle: angleVar
+	});
+};
+
+XMLparser.prototype.parseTranslationInitials = function(root) {
+	var xVar, yVar, zVar;
+	xVar = this.parseField(root, "x");
+	yVar = this.parseField(root, "y");
+	zVar = this.parseField(root, "z");
+	if (xVar == null || yVar == null || zVar == null)
+		return null;
+
+	return ({
+		x: xVar,
+		y: yVar,
+		z: zVar
+	});
+};
+
 XMLparser.prototype.parseReference = function(root) {
     var referenceVar;
     
-    referenceVar = this.parseField(root, "reference");
+    referenceVar = this.parseField(root, "length");
     
     if (referenceVar == null)
         return null ;
@@ -193,7 +239,7 @@ XMLparser.prototype.parseReference = function(root) {
 XMLparser.prototype.parseEnable = function(root) {
     var enableVar;
     
-    enableVar = this.parseField(root, "enable");
+    enableVar = this.parseField(root, "value");
     
     if (enableVar == null)
         return null ;
@@ -225,7 +271,7 @@ XMLparser.prototype.parsePosition = function(root) {
 XMLparser.prototype.parseFile = function(root) {
     var fileVar;
     
-    fileVar = this.parseField(root, "file");
+    fileVar = this.parseField(root, "path");
     
     if (fileVar == null)
         return null ;
@@ -236,14 +282,16 @@ XMLparser.prototype.parseFile = function(root) {
 };
 
 XMLparser.prototype.parseAmplif_factor = function(root) {
-    var amplif_factorVar;
+    var sVar, tVar;
     
-    amplif_factorVar = this.parseField(root, "amplif_factor");
+    sVar = this.parseField(root, "s");
+    tVar = this.parseField(root, "t");
     
-    if (amplif_factorVar == null)
+    if (sVar == null || tVar == null)
         return null ;
     
     return {
-        amplif_factor: amplif_factorVar
+        s: sVar,
+        t: tVar
     };
 };

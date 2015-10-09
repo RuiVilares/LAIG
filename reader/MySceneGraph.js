@@ -43,7 +43,7 @@ MySceneGraph.prototype.onXMLReady = function()
 	}*/
     /********************delete until this block***********************************/
     
-    /*error = this.parseInitials(rootElement);
+    error = this.parseInitials(rootElement);
     if (error != null ) {
         this.onXMLError(error);
         return;
@@ -65,7 +65,7 @@ MySceneGraph.prototype.onXMLReady = function()
     if (error != null ) {
         this.onXMLError(error);
         return;
-    }*/
+    }
     
     error = this.parseMaterials(rootElement);
     if (error != null ) {
@@ -159,32 +159,47 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
     if (elems.length == 0) {
         return "initials missing";
     }
-	
-	var initialsElems = elems[0].getElementsByTagName('INITIALS');
+
+	var initialsElems = elems[0].children;
 		
-	var frustumVar, translateVar, rotationVar, scaleVar, referenceVar;
+	var frustumVar, translateVar, rotationVar, rotationXVar, rotationYVar, rotationZVar, scaleVar, referenceVar;
 	
-	if (initialsElems.length != 5)
+	if (initialsElems.length != 7)
     {
 		return "Initials misses components";
     }
 	
+	this.initialsList = [];
         
     for (var j = 0; j < initialsElems.length; j++) 
 	{
         switch (initialsElems[j].nodeName) 
         {
 			case "frustum":
-				ambientVar = this.parser.parseFrustum(initialsElems[j].attributes);
+				frustumVar = this.parser.parseFrustum(initialsElems[j].attributes);
 				break;
 			case "translate":
-				translateVar = this.parser.parseTranslation(initialsElems[j].attributes);
+				translateVar = this.parser.parseTranslationInitials(initialsElems[j].attributes);
 				break;
 			case "rotation":
-				rotationVar = this.parser.parseTranslation(initialsElems[j].attributes);
+				rotationVar = this.parser.parseRotationInitials(initialsElems[j].attributes);
+				switch(rotationVar.axis)
+				{
+					case "x":
+						rotationXVar = rotationVar.angle;
+						break;
+
+					case "y":
+						rotationYVar = rotationVar.angle;
+						break;
+
+					case "z":
+						rotationZVar = rotationVar.angle;
+						break;
+				}
 				break;
 			case "scale":
-				scaleVar = this.parser.parseTranslation(initialsElems[j].attributes);
+				scaleVar = this.parser.parseScaleInitials(initialsElems[j].attributes);
 				break;
 			case "reference":
 				referenceVar = this.parser.parseReference(initialsElems[j].attributes);
@@ -193,18 +208,19 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 				return "compoment " + initialsElems.nodeName + " out of place.";
         }
     }
-	
+
 	this.initialsList.push(
         {
 			frustum: frustumVar,
             translate: translateVar,
-			rotation: rotationVar,
+			rotationX: rotationXVar,
+			rotationY: rotationYVar,
+			rotationZ: rotationZVar,
 			scale: scaleVar,
 			reference: referenceVar
         });
 	
-}
-;
+};
 
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	
@@ -219,15 +235,16 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
         return "ilumination missing";
     }
 	
-	var illuminationElems = elems[0].getElementsByTagName('ILUMINATION');
+	var illuminationElems = elems[0].children;
 	
     var ambientVar, backgroundVar;
 	
-	if (illuminationElems.length != 3)
+	if (illuminationElems.length != 2)
     {
 		return "Illumination misses components";
     }
-	
+
+    this.illuminationList = [];	
         
     for (var j = 0; j < illuminationElems.length; j++) 
 	{
@@ -243,11 +260,11 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 				return "compoment " + illuminationElems.nodeName + " out of place.";
         }
     }
-	
+
 	this.illuminationList.push(
     {
 		ambient: ambientVar,
-		background: backgroundVar,
+		background: backgroundVar
     });
 
     console.log("Finished to read the ilumination's section.");
@@ -255,7 +272,6 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 
 MySceneGraph.prototype.parseLights = function(rootElement) {
 	
-    
     console.log("Started to read the lights' section.");
     
     var elems = rootElement.getElementsByTagName('LIGHTS');
@@ -267,7 +283,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
         return "lights missing.";
     }
     
-    var lightsElems = elems[0].getElementsByTagName('LIGHTS');
+    var lightsElems = elems[0].getElementsByTagName('LIGHT');
     
     this.lightsList = [];
     var children;
@@ -297,16 +313,16 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
                 enableVar = this.parser.parseEnable(children[j].attributes);
                 break;
             case "position":
-                amplifVar = this.parser.parsePosition(children[j].attributes);
+                positionVar = this.parser.parsePosition(children[j].attributes);
                 break;
 			case "ambient":
-                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                ambientVar = this.parser.parseRGBA(children[j].attributes);
                 break;
 			case "diffuse":
-                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                diffuseVar = this.parser.parseRGBA(children[j].attributes);
                 break;
 			case "specular":
-                amplifVar = this.parser.parseRGBA(children[j].attributes);
+                specularVar = this.parser.parseRGBA(children[j].attributes);
                 break;
             default:
                 return "compoment " + children.nodeName + " out of place.";
@@ -318,7 +334,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
         
         if (this.isRepeatedId(this.lightsList, idVar))
             return "light " + idVar + " already exists.";
-        
+           
         this.lightsList.push(
         {
             id: idVar,
@@ -337,7 +353,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
     }
     ;
     
-    console.log("Finished to read the textures' section.");
+    console.log("Finished to read the lights' section.");
 };
 
 MySceneGraph.prototype.parseTextures = function(rootElement) {
@@ -354,7 +370,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
         return "textures missing.";
     }
     
-    var texturesElems = elems[0].getElementsByTagName('TEXTURES');
+    var texturesElems = elems[0].getElementsByTagName('TEXTURE');
     
     this.texturesList = [];
     var children;
@@ -381,7 +397,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
             switch (children[j].nodeName) 
             {
             case "file":
-                filePathVar = this.parser.parseFile(children[j].attributes); 
+                filePathVar = this.parser.parseFile(children[j].attributes);
                 break;
             case "amplif_factor":
                 amplifVar = this.parser.parseAmplif_factor(children[j].attributes);
