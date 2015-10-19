@@ -29,10 +29,6 @@ XMLscene.prototype.init = function (application) {
     this.gl.cullFace(this.gl.BACK);
 
 	this.axis=new CGFaxis(this);
-	this.square = new MyQuad(this,0,1,1,0);
-	this.triangle = new MyTriangle(this,2,2,0, 0,0,0, 2,0,0);
-	this.sphere = new MySphere(this,1.0, 200,100);
-	this.cylinder = new MyCylinder(this,3,0.1,1,200,100);
 	
 	this.lightsBoolean = [false,false,false,false,false,false,false,false];
 };
@@ -69,21 +65,27 @@ XMLscene.prototype.onGraphLoaded = function ()
 {
 	this.leavesToDraw = this.graph.leafList;
 	
-	this.camera.near = this.graph.initialsList[0].frustum.near;
-	this.camera.far = this.graph.initialsList[0].frustum.far;
+	this.camera.near = this.graph.initialsList.frustum.near;
+	this.camera.far = this.graph.initialsList.frustum.far;
 
-	this.setGlobalAmbientLight(this.graph.illuminationList[0].ambient.r, this.graph.illuminationList[0].ambient.g, this.graph.illuminationList[0].ambient.b, this.graph.illuminationList[0].ambient.a);
+	this.setGlobalAmbientLight(this.graph.illuminationList.ambient.r, this.graph.illuminationList.ambient.g, this.graph.illuminationList.ambient.b, this.graph.illuminationList.ambient.a);
 
-	var axisLength = this.graph.initialsList[0].reference;
+	var axisLength = this.graph.initialsList.reference;
 	this.axis = new CGFaxis(this, axisLength);
 	
-	var background = this.graph.illuminationList[0].background;
+	var background = this.graph.illuminationList.background;
 	this.gl.clearColor(background.r,background.g,background.b,background.a);
+
+	var processLights = new ProcessLights(this);
 	
 	for (var i = 0; i < this.graph.lightsList.length; i++)
 	{
-		this.graph.transformToLight(this.graph.lightsList[i]);
+		processLights.transformToLight(this.graph.lightsList[i]);
 	}
+
+	this.materialIndex = 0;
+	this.matrixIndex = 1;
+	this.textureIndex = 2;
 };
 
 XMLscene.prototype.display = function () {
@@ -109,7 +111,7 @@ XMLscene.prototype.display = function () {
 
 	if (this.graph.loadedOk)
 	{
-		this.multMatrix(this.graph.initialsList[0].transformation);
+		this.multMatrix(this.graph.initialsList.transformation);
 		
 		// Draw axis
 		this.axis.display();
@@ -119,22 +121,30 @@ XMLscene.prototype.display = function () {
 		
 		var tex = null;
 		var textureHasBeenWritten = false;
+		//go through all the leaves
 		for (var i = 0; i < this.leavesToDraw.length; i++)
 		{
+			//go through all the leaf's transformations
 			for (var j = 0; j < this.leavesToDraw[i].matrixToApply.length; j++)
 			{
-				tex = this.graph.textureList[this.leavesToDraw[i].matrixToApply[j][2]];
-				
+				//copy of the texture to a new variable
+				tex = this.graph.textureList[this.leavesToDraw[i].matrixToApply[j][this.textureIndex]];
+				//push current scene's matrix
 				this.pushMatrix();
-					this.multMatrix(this.leavesToDraw[i].matrixToApply[j][1]);
-					this.leavesToDraw[i].matrixToApply[j][0].apply();
+					//apply node's transformation
+					this.multMatrix(this.leavesToDraw[i].matrixToApply[j][this.matrixIndex]);
+					
+					//apply node's material
+					this.leavesToDraw[i].matrixToApply[j][this.materialIndex].apply();
 
 					if (tex != null && tex.id != "clear")
 					{
 						if (this.leavesToDraw[i].type == "triangle" || this.leavesToDraw[i].type == "rectangle")
 						{
+							//apply texture scaling in case of triangle or rectangle
 							this.leavesToDraw[i].object.scaleTexture(tex.amplif_factor.s, tex.amplif_factor.t);
 						}
+						//draw texture
 						tex.obj.bind();
 						textureHasBeenWritten = true;
 					}
@@ -146,6 +156,7 @@ XMLscene.prototype.display = function () {
 
 					if (textureHasBeenWritten)
 					{
+						//undraw texture
 						tex.obj.unbind();
 					}
 				this.popMatrix();

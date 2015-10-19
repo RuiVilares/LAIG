@@ -214,9 +214,7 @@ XMLparser.prototype.parseEnable = function(root) {
     
     enableVar = (enableVar == 1);
     	
-    return {
-        value: enableVar
-    };
+    return enableVar;
 };
 
 XMLparser.prototype.parsePosition = function(root) {

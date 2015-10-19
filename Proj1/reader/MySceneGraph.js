@@ -78,7 +78,8 @@ MySceneGraph.prototype.onXMLReady = function()
         return;
     }
     
-    this.fillTexturesMaterialsAndProcessMatrix();
+    var processTree = new ProcessTree(this, this.scene);
+    processTree.fillTexturesMaterialsAndProcessMatrix();
 
     this.loadedOk = true;
     
@@ -89,13 +90,14 @@ MySceneGraph.prototype.onXMLReady = function()
 /*
  * Callback to be executed on any read error
  */
-
 MySceneGraph.prototype.onXMLError = function(message) {
     console.error("XML Loading Error: " + message);
     this.loadedOk = false;
 };
 
-
+/*
+ * Parse initials' block on lsx
+ */
 MySceneGraph.prototype.parseInitials = function(rootElement) {
 	
 	console.log("Started to read the initials' section.");
@@ -118,7 +120,6 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 		return "Initials misses components";
     }
 	
-	this.initialsList = [];
 	var matrix = mat4.create(); mat4.identity(matrix);
 	var computeMatrix = new MyMatrix();
 
@@ -130,14 +131,20 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 				frustumVar = this.parser.parseFrustum(initialsElems[j]);
 				break;
 			case "translation":
+				if (j != 1)
+					console.log("Warning: Initial translation isn't on the right place");
 				translateVar = this.parser.parseTranslation(initialsElems[j]);
 				computeMatrix.computeMatrix(translateVar, matrix);
 				break;
 			case "rotation":
+				if (j < 2 || j > 4)
+					console.log("Warning: Initial rotation isn't on the right place");
 				rotationVar = this.parser.parseTranslation(initialsElems[j]);
 				computeMatrix.computeMatrix(rotationVar, matrix);
 				break;
 			case "scale":
+				if (j != 5)
+					console.log("Warning: Initial scale isn't on the right place");
 				scaleVar = this.parser.parseTranslation(initialsElems[j]);
 				computeMatrix.computeMatrix(scaleVar, matrix);
 				break;
@@ -149,15 +156,18 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
         }
     }
 
-	this.initialsList.push(
+	this.initialsList = 
         {
         	frustum: frustumVar,
             transformation: matrix,
 			reference: referenceVar
-        });
+        };
 	
 };
 
+/*
+ * Parse illumination's block on lsx
+ */
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	
 	console.log("Started to read the illumination' section.");
@@ -179,8 +189,6 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
     {
 		return "Illumination misses components";
     }
-
-    this.illuminationList = [];	
         
     for (var j = 0; j < illuminationElems.length; j++) 
 	{
@@ -197,15 +205,18 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
         }
     }
 
-	this.illuminationList.push(
+	this.illuminationList = 
     {
 		ambient: ambientVar,
 		background: backgroundVar
-    });
+    };
 
     console.log("Finished to read the illumination's section.");
 };
 
+/*
+ * Parse lights'block on lsx
+ */
 MySceneGraph.prototype.parseLights = function(rootElement) {
 	
     console.log("Started to read the lights' section.");
@@ -297,6 +308,9 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
     console.log("Finished to read the lights' section.");
 };
 
+/*
+ * Parse texture's block on lsx
+ */
 MySceneGraph.prototype.parseTextures = function(rootElement) {
 	
     
@@ -377,6 +391,9 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
     console.log("Finished to read the textures' section.");
 };
 
+/*
+ * Parse material's block on lsx
+ */
 MySceneGraph.prototype.parseMaterials = function(rootElement) {
     
     console.log("Started to read the materials' section.");
@@ -465,6 +482,9 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
     console.log("Finished to read the materials' section.");
 };
 
+/*
+ * Parse leaf's block on lsx
+ */
 MySceneGraph.prototype.parseLeaves = function(rootElement) {
     
     console.log("Started to read the leaves' section.");
@@ -515,6 +535,9 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
     console.log("Finished to read the leaves' section.");
 };
 
+/*
+ * Parse node's block on lsx
+ */
 MySceneGraph.prototype.parseNodes = function(rootElement) {
 	console.log("Started to read the nodes' section.");
     
@@ -611,6 +634,9 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     console.log("Finished to read the nodes' section.");
 };
 
+/*
+ * Search for a repeated id on a given array
+ */
 MySceneGraph.prototype.isRepeatedId = function(array, id) {
     for (var i = 0; i < array.length; i++) 
     {
@@ -621,137 +647,9 @@ MySceneGraph.prototype.isRepeatedId = function(array, id) {
     return false;
 };
 
-MySceneGraph.prototype.fillTexturesMaterialsAndProcessMatrix = function() {
-	console.log("Started to process the information read.");
-	var currentNode;
-
-	var matrix = mat4.create();
-	mat4.identity(matrix);
-
-	for (var w = 0; w < this.nodeList.length; w++)
-	{
-		if (this.nodeList[w].id == this.rootElem)
-		{
-			currentNode = this.nodeList[w];
-
-			if (currentNode.material == "null")
-				console.log("Warning: using default values for the root's material.");
-			if (currentNode.texture == "null" || currentNode.texture == "clear")
-				console.log("Warning: using default values for the root's texture.");
-
-			this.processInformation(currentNode.id, "null", "clear", matrix);
-			console.log("Finished to process the information read.");
-			return;
-		}
-	}
-};
-
-MySceneGraph.prototype.processInformation = function(currentNode, material, texture, matrix) {
-	var index = this.findId(this.leafList, currentNode);
-	//if it's a leaf...
-	if (index != -1)
-	{
-		var mat = new CGFappearance(this.scene);
-		this.setMaterial(material, mat);
-		
-		var w;
-		for (w = 0; w < this.textureList.length; w++)
-		{
-			if (this.textureList[w].id == texture)
-			{
-				break;
-			}
-		}
-
-		//now the fully computed matrix is on the leaves
-		this.leafList[index].matrixToApply.push([mat, matrix, w]);
-
-		return;
-	}
-
-	index = this.findId(this.nodeList, currentNode);
-	currentNode = this.nodeList[index];
-	
-	var tex = this.getTexture(currentNode.texture, texture);
-	
-	//multiply matrix
-	var m = mat4.create();
-	mat4.multiply(m, matrix, currentNode.transformationsMatrix);
-
-	//recursive
-	for (var i = 0; i < currentNode.descendants.length; i++)
-	{
-		if (currentNode.material == "null")
-			this.processInformation(currentNode.descendants[i], material, tex, m);
-		else
-			this.processInformation(currentNode.descendants[i], currentNode.material, tex, m);
-	}
-};
-
-MySceneGraph.prototype.setMaterial = function(materialId, material) {
-	if (!(typeof materialId === "string" || materialId instanceof String))
-	{
-		//already processed this node
-		console.log("error -> already processed this node");
-		return;
-	}
-
-	if (materialId == "null")
-	{
-		material.setAmbient(1,1,1,1);
-		material.setDiffuse(1,1,1,1);
-		material.setSpecular(1,1,1,1);
-		material.setShininess(10);
-		return;
-	}
-
-	var index = this.findId(this.materialList, materialId);
-	var node = this.materialList[index];
-
-	material.setAmbient(node.ambient.r, node.ambient.g, node.ambient.b, node.ambient.a);
-	material.setDiffuse(node.diffuse.r, node.diffuse.g, node.diffuse.b, node.diffuse.a);
-	material.setSpecular(node.specular.r, node.specular.g, node.specular.b, node.specular.a);
-	material.setEmission(node.emission.r, node.emission.g, node.emission.b, node.emission.a)
-	material.setShininess(node.shininess.value);
-};
-
-MySceneGraph.prototype.getTexture = function(textureId, texture) {
-	if (textureId == "null")
-	{
-		return texture;
-	}
-
-	return textureId;
-};
-
-MySceneGraph.prototype.findId = function(array, id) {
-	for (var i = 0; i < array.length; i++)
-	{
-		if (array[i].id == id)
-			return i;
-	}
-
-	return -1;
-};
-
-MySceneGraph.prototype.transformToLight = function(lightInfo) {
-	this.scene.lights[lightInfo.id].setPosition(lightInfo.position.x, lightInfo.position.y, lightInfo.position.z, lightInfo.position.w);
-	this.scene.lights[lightInfo.id].setAmbient(lightInfo.ambient.r, lightInfo.ambient.g, lightInfo.ambient.b, lightInfo.ambient.a);
-	this.scene.lights[lightInfo.id].setDiffuse(lightInfo.diffuse.r, lightInfo.diffuse.g, lightInfo.diffuse.b, lightInfo.diffuse.a);
-	this.scene.lights[lightInfo.id].setSpecular(lightInfo.specular.r, lightInfo.specular.g, lightInfo.specular.b, lightInfo.specular.a);
-    this.scene.lights[lightInfo.id].setVisible(true);
-    if(lightInfo.enable){
-        this.scene.lights[lightInfo.id].enable();
-		this.scene.lightsBoolean[lightInfo.id] = true;
-		//this.scene.myInterface.addLightController(lightInfo.id, true);
-	}
-    else{
-        this.scene.lights[lightInfo.id].disable();
-		//this.scene.myInterface.addLightController(lightInfo.id, false);
-	}
-	this.scene.myInterface.addLightController(lightInfo.id, lightInfo.name);
-};
-
+/*
+ * Transform the information fecthed from lsx to a primitive
+ */
 MySceneGraph.prototype.transformToObj = function(type, argsVar) {
 	switch (type)
 	{

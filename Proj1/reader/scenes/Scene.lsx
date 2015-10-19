@@ -3,23 +3,23 @@
 
 <INITIALS>
     <frustum near="0.1" far="500"/>                      <!-- frustum planes-->
-    <translation x="-20" y="-15" z="0" />                 <!-- initial translate -->
+    <translation x="-10" y="0" z="0" />                 <!-- initial translate (-47,-30,-30)-->
     <rotation axis="x" angle="0" />                  <!-- initial rotation 3 -->
     <rotation axis="y" angle="45" />                  <!-- initial rotation 2 -->
     <rotation axis="z" angle="0" />                  <!-- initial rotation 1 -->
-    <scale sx="1" sy="1" sz="1" />                  <!-- initial scaling -->
+    <scale sx="0.5" sy="0.5" sz="0.5" />                  <!-- initial scaling -->
     <reference length="0" />                          <!-- axis length; "0" means no axis-->
 </INITIALS>
 
  
 <ILLUMINATION> 
-    <ambient r="1" g="1" b="0.1" a="1" />            <!-- global ambient -->
+    <ambient r="0.1" g="0.1" b="0.1" a="1" />            <!-- global ambient -->
     <background r="0" g="0" b="0" a="1" />         <!-- background color -->
 </ILLUMINATION>
 
 
 <LIGHTS>
-    <LIGHT id="doormanLight">                                    <!-- light identifier -->
+    <LIGHT id="Sconce 1">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="15.5" y="2" z="3" w="1" />       <!-- light position -->
         <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
@@ -27,7 +27,7 @@
         <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
     </LIGHT>
 	
-    <LIGHT id="light2">                                    <!-- light identifier -->
+    <LIGHT id="Sconce 2">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="8.6" y="2" z="3" w="1" />       <!-- light position -->
         <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
@@ -35,7 +35,7 @@
         <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
     </LIGHT>
 	
-    <LIGHT id="light3">                                    <!-- light identifier -->
+    <LIGHT id="Sconce 3">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="14.6" y="2" z="21" w="1" />       <!-- light position -->
         <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
@@ -43,7 +43,7 @@
         <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
     </LIGHT>
 	
-    <LIGHT id="light4">                                    <!-- light identifier -->
+    <LIGHT id="Sconce 4">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="9.6" y="2" z="21" w="1" />       <!-- light position -->
         <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
@@ -51,7 +51,7 @@
         <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
     </LIGHT>
 	
-    <LIGHT id="light5">                                    <!-- light identifier -->
+    <LIGHT id="Sconce 5">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="20.7" y="2" z="13.9" w="1" />       <!-- light position -->
         <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
@@ -59,7 +59,7 @@
         <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
     </LIGHT>
 	
-    <LIGHT id="light6">                                    <!-- light identifier -->
+    <LIGHT id="Sconce 6">                                    <!-- light identifier -->
         <enable value ="1" />                         <!-- enable/disable -->
         <position x="3.5" y="2" z="13.9" w="1" />       <!-- light position -->
         <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
@@ -67,12 +67,12 @@
         <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
     </LIGHT>
 	
-    <LIGHT id="sunLight">                                    <!-- light identifier -->
-        <enable value ="1" />                         <!-- enable/disable -->
+    <LIGHT id="Sun">                                    <!-- light identifier -->
+        <enable value ="0" />                         <!-- enable/disable -->
         <position x="12.1" y="10" z="12.1" w="1" />       <!-- light position -->
-        <ambient r="0.1" g="0.1" b="0.1" a="1" />        <!-- ambient component -->
-        <diffuse r="0.1" g="0.1" b="0.1" a="1" />        <!-- diffuse component -->
-        <specular r="0.1" g="0.1" b="0.1" a="1" />       <!-- specular component -->
+        <ambient r="0.7" g="0.7" b="0.7" a="1" />        <!-- ambient component -->
+        <diffuse r="0.7" g="0.7" b="0.7" a="1" />        <!-- diffuse component -->
+        <specular r="0.7" g="0.7" b="0.7" a="1" />       <!-- specular component -->
     </LIGHT>
     
 </LIGHTS>
@@ -135,11 +135,11 @@
 <MATERIALS>
 
     <MATERIAL id="black">                                  
-        <shininess value="10.0" />
-        <ambient r="0" g="0" b="0" a="1" />        <!-- ambient component -->
-        <diffuse r="0" g="0" b="0" a="1" />        <!-- diffuse component -->
-        <specular r="0" g="0" b="0" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="1" />        <!-- emission component -->
+        <shininess value="15.0" />
+        <ambient r="0.01" g="0.01" b="0.01" a="1" />        <!-- ambient component -->
+        <diffuse r="0.01" g="0.01" b="0.01" a="1" />        <!-- diffuse component -->
+        <specular r="0.01" g="0.01" b="0.01" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
      </MATERIAL>
 	 
     <MATERIAL id="sconceLight">                                  
@@ -147,14 +147,14 @@
         <ambient r="1" g="1" b="1" a="0.5" />        <!-- ambient component -->
         <diffuse r="1" g="1" b="1" a="0.5" />        <!-- diffuse component -->
         <specular r="1" g="1" b="1" a="0.5" />         <!-- ambient reflection -->
-        <emission r="1" g="1" b="1" a="0.5" />        <!-- emission component -->
+        <emission r="1" g="1" b="1" a="0" />        <!-- emission component -->
      </MATERIAL>
 	 
     <MATERIAL id="sconceCylinder">                                  
         <shininess value="1.0" />
-        <ambient r="0" g="0" b="0" a="1" />        <!-- ambient component -->
-        <diffuse r="0" g="0" b="0" a="1" />        <!-- diffuse component -->
-        <specular r="0" g="0" b="0" a="1" />         <!-- ambient reflection -->
+        <ambient r="0.01" g="0.01" b="0.01" a="1" />        <!-- ambient component -->
+        <diffuse r="0.01" g="0.01" b="0.01" a="1" />        <!-- diffuse component -->
+        <specular r="0.01" g="0.01" b="0.01" a="1" />         <!-- ambient reflection -->
         <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
      </MATERIAL>
 	 
@@ -163,7 +163,7 @@
         <ambient r="1" g="0.5" b="0.25" a="1" />        <!-- ambient component -->
         <diffuse r="1" g="0.5" b="0.25" a="1" />        <!-- diffuse component -->
         <specular r="1" g="0.5" b="0.25" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="0.5" />        <!-- emission component -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
      </MATERIAL>
 	 
     <MATERIAL id="wheel">                                  
@@ -171,7 +171,7 @@
         <ambient r="0.7" g="0.7" b="0.7" a="1" />        <!-- ambient component -->
         <diffuse r="0.7" g="0.7" b="0.7" a="1" />        <!-- diffuse component -->
         <specular r="0.7" g="0.7" b="0.7" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="0.5" />        <!-- emission component -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
      </MATERIAL>
 	 
 	<MATERIAL id="brown">                                  
@@ -179,39 +179,55 @@
         <ambient r="0.5" g="0.25" b="0" a="1" />        <!-- ambient component -->
         <diffuse r="0.5" g="0.25" b="0" a="1" />        <!-- diffuse component -->
         <specular r="0.5" g="0.25" b="0" a="1" />         <!-- ambient reflection -->
-        <emission r="0.5" g="0.25" b="0" a="1" />        <!-- emission component -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 	
 	<MATERIAL id="white">                                  
         <shininess value="1.0" />
-        <ambient r="1" g="1" b="1" a="1" />        <!-- ambient component -->
-        <diffuse r="1" g="1" b="1" a="1" />        <!-- diffuse component -->
-        <specular r="1" g="1" b="1" a="1" />         <!-- ambient reflection -->
-        <emission r="1" g="1" b="1" a="0" />        <!-- emission component -->
+        <ambient r="0.9" g="0.9" b="0.9" a="1" />        <!-- ambient component -->
+        <diffuse r="0.9" g="0.9" b="0.9" a="1" />        <!-- diffuse component -->
+        <specular r="0.9" g="0.9" b="0.9" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 	
 	<MATERIAL id="green">                                  
         <shininess value="1.0" />
-        <ambient r="0" g="1" b="0" a="1" />        <!-- ambient component -->
-        <diffuse r="0" g="1" b="0" a="1" />        <!-- diffuse component -->
-        <specular r="0.1" g="1" b="0.1" a="1" />         <!-- ambient reflection -->
+        <ambient r="0" g="0.4" b="0" a="1" />        <!-- ambient component -->
+        <diffuse r="0" g="0.4" b="0" a="1" />        <!-- diffuse component -->
+        <specular r="0.2" g="0.7" b="0.2" a="1" />         <!-- ambient reflection -->
         <emission r="0" g="1" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 	
 	<MATERIAL id="blue">                                  
         <shininess value="1.0" />
-        <ambient r="0" g="0" b="1" a="1" />        <!-- ambient component -->
-        <diffuse r="0" g="0" b="1" a="1" />        <!-- diffuse component -->
-        <specular r="0.1" g="0.1" b="1" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="1" a="0" />        <!-- emission component -->
+        <ambient r="0" g="0" b="0.5" a="1" />        <!-- ambient component -->
+        <diffuse r="0" g="0" b="0.5" a="1" />        <!-- diffuse component -->
+        <specular r="0.2" g="0.2" b="0.7" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 	
 	<MATERIAL id="carRed">                                  
         <shininess value="1.0" />
         <ambient r="0.43" g="0" b="0" a="1" />        <!-- ambient component -->
         <diffuse r="0.43" g="0" b="0" a="1" />        <!-- diffuse component -->
-        <specular r="0.43" g="0" b="0.1" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="1" a="0" />        <!-- emission component -->
+        <specular r="0.6" g="0.2" b="0.2" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
+    </MATERIAL>
+	
+	<MATERIAL id="carGrey">                                  
+        <shininess value="1.0" />
+        <ambient r="0.6" g="0.6" b="0.6" a="1" />        <!-- ambient component -->
+        <diffuse r="0.6" g="0.6" b="0.6" a="1" />        <!-- diffuse component -->
+        <specular r="0.8" g="0.8" b="0.8" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
+    </MATERIAL>
+	
+	<MATERIAL id="carPink">                                  
+        <shininess value="1.0" />
+        <ambient r="0.5" g="0" b="0.25" a="1" />        <!-- ambient component -->
+        <diffuse r="0.5" g="0" b="0.25" a="1" />        <!-- diffuse component -->
+        <specular r="0.6" g="0" b="0.4" a="1" />         <!-- ambient reflection -->
+        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 
     <!-- NOTE: the "MATERIAL" block may be repeated as required. Each defined material requires a distinct "id" -->
@@ -225,10 +241,10 @@
     <LEAF id="rectangle" type="rectangle" args="0 1 1 0" />      <!-- 2D coordinates for left-top and right-bottom vertices. -->
 	
 	<!-- altura e raios = 1 -->
-	<LEAF id="sconceCylinderTopLeaf" type="cylinder" args="1 0.1 0.5 10 10" />    <!-- height, bottom radius, top radius, sections along height, parts per section -->
-	<LEAF id="sconceCylinderBaseLeaf" type="cylinder" args="1 0.5 0.1 10 10" />
+	<LEAF id="sconceCylinderTopLeaf" type="cylinder" args="1 0.1 0.5 10 20" />    <!-- height, bottom radius, top radius, sections along height, parts per section -->
+	<LEAF id="sconceCylinderBaseLeaf" type="cylinder" args="1 0.5 0.1 10 20" />
 
-	<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 10 10" />    <!-- height, bottom radius, top radius, sections along height, parts per section -->    <!-- height, bottom radius, top radius, sections along height, parts per section -->
+	<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 20 50" />    <!-- height, bottom radius, top radius, sections along height, parts per section -->    <!-- height, bottom radius, top radius, sections along height, parts per section -->
 	<LEAF id="tyreVehicle" type="cylinder" args="0.2 0.2 0.2 20 30" /> 
 	
 	<!-- esfera de raio 1 -->
@@ -620,13 +636,14 @@
 			</DESCENDANTS>
 		</NODE>
 		
-		<NODE id="signalF">
+		<NODE id="signal">
 			<MATERIAL id="white" />
 			
 			<TEXTURE id="parkingSign" />
 
 			<DESCENDANTS>
-				<DESCENDANT id="rectangle" />              
+				<DESCENDANT id="rectangle" />   
+				<DESCENDANT id="signalB" />              
 			</DESCENDANTS>
 		</NODE>
 		
@@ -636,7 +653,7 @@
 			<TEXTURE id="metal" />
 
 			<TRANSLATION x="1" y="0" z="0" />
-			<ROTATION axis="y" angle="180" />
+			<SCALE sx="-1" sy="1" sz="1" />
 
 			<DESCENDANTS>
 				<DESCENDANT id="rectangle" />              
@@ -651,9 +668,8 @@
 			<TRANSLATION x="1" y="1" z="0" />
 			<ROTATION axis="y" angle="180" />
 
-			<DESCENDANTS>
-				<DESCENDANT id="signalB" /> 	
-				<DESCENDANT id="signalF" />              
+			<DESCENDANTS>	
+				<DESCENDANT id="signal" />              
 			</DESCENDANTS>
 		</NODE>
 		
@@ -665,8 +681,7 @@
 			<TRANSLATION x="0" y="1" z="12.6" />
 
 			<DESCENDANTS>
-				<DESCENDANT id="signalB" /> 	
-				<DESCENDANT id="signalF" />              
+				<DESCENDANT id="signal" />              
 			</DESCENDANTS>
 		</NODE>
 		
@@ -897,8 +912,8 @@
 		</NODE>	
 		
 		<NODE id="carTyre">
-			<MATERIAL id="black" />
-			<TEXTURE id="clear" />
+			<MATERIAL id="white" />
+			<TEXTURE id="tyre" />
 
 			<TRANSLATION x="0" y="0" z="-0.2" />
 			
@@ -1215,7 +1230,6 @@
 				<DESCENDANT id="coverTopBack" />
 				<DESCENDANT id="coverTopFront" />
 				<DESCENDANT id="fourTyresBuilder" />
-				
 			</DESCENDANTS>
 		</NODE>
 		
@@ -1257,7 +1271,7 @@
 		</NODE>
 		
 		<NODE id="car4">
-			<MATERIAL id="white" />
+			<MATERIAL id="carPink" />
 			
 			<TEXTURE id="clear" />
 	
@@ -1270,7 +1284,7 @@
 		</NODE>
 		
 		<NODE id="car5">
-			<MATERIAL id="black" />
+			<MATERIAL id="carGrey" />
 			
 			<TEXTURE id="clear" />
 	
