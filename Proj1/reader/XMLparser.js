@@ -91,14 +91,19 @@ XMLparser.prototype.parseTranslation = function(children) {
 XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 
 	var argsElems;
+	argsVar = argsVar.trim();
 
 	switch (typeVar)
 	{
 		case "rectangle":
+			while(argsVar.indexOf('  ')!=-1)
+				argsVar = argsVar.replace('  ',' ');
 			argsElems = argsVar.split(" ");
 			if (argsElems.length != 4)
+			{
 				return null;
-
+			}
+			
 			// 2D coordinates for left-top and right-bottom vertices.
 			return {
 				xl: parseFloat(argsElems[0]),
@@ -108,6 +113,8 @@ XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 			};
 
 		case "cylinder":
+			while(argsVar.indexOf('  ')!=-1)
+				argsVar = argsVar.replace('  ',' ');
 			argsElems = argsVar.split(" ");
 			if (argsElems.length != 5)
 				return null;
@@ -122,6 +129,8 @@ XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 			};
 
 		case "sphere":
+			while(argsVar.indexOf('  ')!=-1)
+				argsVar = argsVar.replace('  ',' ');
 			argsElems = argsVar.split(" ");
 			if (argsElems.length != 3)
 				return null;
@@ -134,27 +143,13 @@ XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 			};
 
 		case "triangle":
-			var argsElems2, argsElems3;
-			argsVar = argsVar.split("  ");
-			if (argsVar.length != 3)
+			while(argsVar.indexOf('  ')!=-1)
+				argsVar = argsVar.replace('  ',' ');
+			argsElems = argsVar.split(" ");
+			if (argsElems.length != 9)
 			{
-				argsVar = argsVar[0].split(" ");
-				if (argsVar.length != 9)
-					return null;
-					
-				argsElems = [argsVar[0], argsVar[1], argsVar[2]];
-				argsElems2 = [argsVar[3], argsVar[4], argsVar[5]];
-				argsElems3 = [argsVar[6], argsVar[7], argsVar[8]];
+				return null;
 			}
-			else
-			{
-				argsElems = argsVar[0].split(" ");
-				argsElems2 = argsVar[1].split(" ");
-				argsElems3 = argsVar[2].split(" ");
-				if (argsElems.length != 3 || argsElems2.length != 3 || argsElems3.length != 3)
-					return null;
-			}
-
 
 			// coordinates of each vertex
 			return {
@@ -162,13 +157,13 @@ XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 				y1: parseFloat(argsElems[1]),
 				z1: parseFloat(argsElems[2]),
 
-				x2: parseFloat(argsElems2[0]),
-				y2: parseFloat(argsElems2[1]),
-				z2: parseFloat(argsElems2[2]),
+				x2: parseFloat(argsElems[3]),
+				y2: parseFloat(argsElems[4]),
+				z2: parseFloat(argsElems[5]),
 
-				x3: parseFloat(argsElems3[0]),
-				y3: parseFloat(argsElems3[1]),
-				z3: parseFloat(argsElems3[2])
+				x3: parseFloat(argsElems[6]),
+				y3: parseFloat(argsElems[7]),
+				z3: parseFloat(argsElems[8])
 			};
 
 		default:
