@@ -17,30 +17,23 @@
  * This function calls another function that will efectively go through the tree. Please check processInformation function for more information.
  */
 ProcessTree.prototype.fillTexturesMaterialsAndProcessMatrix = function() {
-	console.log("Started to process the information read.");
+	//console.log("Started to process the information read.");
 	var currentNode;
 
 	var matrix = mat4.create();
 	mat4.identity(matrix);
+	
+	currentNode = this.graph.nodeList[this.graph.rootElem];
 
-	//search for the root node
-	for (var w = 0; w < this.graph.nodeList.length; w++)
-	{
-		if (this.graph.nodeList[w].id == this.graph.rootElem)
-		{
-			currentNode = this.graph.nodeList[w];
+	/*if (currentNode.material == "null")
+		console.log("Warning: using default values for the root's material.");
+	if (currentNode.texture == "null" || currentNode.texture == "clear")
+		console.log("Warning: using default values for the root's texture.");*/
 
-			if (currentNode.material == "null")
-				console.log("Warning: using default values for the root's material.");
-			if (currentNode.texture == "null" || currentNode.texture == "clear")
-				console.log("Warning: using default values for the root's texture.");
-
-			//go through the tree starting on the root element
-			this.processInformation(currentNode.id, "null", "clear", matrix);
-			console.log("Finished to process the information read.");
-			return;
-		}
-	}
+	//go through the tree starting on the root element
+	this.processInformation(this.graph.rootElem, "null", "clear", matrix);
+	//console.log("Finished to process the information read.");
+	return;
 };
 
 /*
@@ -52,35 +45,34 @@ ProcessTree.prototype.fillTexturesMaterialsAndProcessMatrix = function() {
  * This computing is only done once.
  */
 ProcessTree.prototype.processInformation = function(currentNode, material, texture, matrix) {
-	var index = this.findId(this.graph.leafList, currentNode);
 	//if it's a leaf...
-	if (index != -1)
+	if (this.graph.leafList[currentNode] != null)
 	{
-		this.pushInfoToLeaf(index, material, matrix, texture);
+		this.pushInfoToLeaf(currentNode, material, matrix, texture);
 		return;
 	}
 
-	index = this.findId(this.graph.nodeList, currentNode);
-	if (index == -1)
+	if (this.graph.nodeList[currentNode] == null)
 	{
 		console.log("Node " + currentNode + " hasn't been found (lacks implementation). This node will be ignored.");
 		return;
 	}
-	currentNode = this.graph.nodeList[index];
 	
-	var tex = this.getTexture(currentNode.texture, texture);
+	var tex = this.getTexture(this.graph.nodeList[currentNode].texture, texture);
 	
 	//multiply matrix
 	var m = mat4.create();
-	mat4.multiply(m, matrix, currentNode.transformationsMatrix);
+	mat4.multiply(m, matrix, this.graph.nodeList[currentNode].transformationsMatrix);
+
+	//processar aqui as animações
 
 	//recursive
-	for (var i = 0; i < currentNode.descendants.length; i++)
+	for (var i = 0; i < this.graph.nodeList[currentNode].descendants.length; i++)
 	{
-		if (currentNode.material == "null")
-			this.processInformation(currentNode.descendants[i], material, tex, m);
+		if (this.graph.nodeList[currentNode].material == "null")
+			this.processInformation(this.graph.nodeList[currentNode].descendants[i], material, tex, m);
 		else
-			this.processInformation(currentNode.descendants[i], currentNode.material, tex, m);
+			this.processInformation(this.graph.nodeList[currentNode].descendants[i], this.graph.nodeList[currentNode].material, tex, m);
 	}
 };
 
@@ -101,10 +93,7 @@ ProcessTree.prototype.setMaterial = function(materialId, material) {
 		return;
 	}
 
-	var index = this.findId(this.graph.materialList, materialId);
-	var node = this.graph.materialList[index];
-
-	this.copyMaterialProperties(material, node);
+	this.copyMaterialProperties(material, this.graph.materialList[materialId]);
 };
 
 /*
@@ -144,17 +133,7 @@ ProcessTree.prototype.pushInfoToLeaf = function(index, material, matrix, texture
     var mat = new CGFappearance(this.scene);
     this.setMaterial(material, mat);
 
-    var w;
-    for (w = 0; w < this.graph.textureList.length; w++)
-    {
-        if (this.graph.textureList[w].id == texture)
-        {
-            break;
-        }
-    }
-
-    //now the fully computed matrix is on the leaves
-    this.graph.leafList[index].matrixToApply.push([mat, matrix, w]);
+    this.drawScene(index, mat, matrix, texture);
 };
 
 /*
@@ -178,3 +157,44 @@ ProcessTree.prototype.copyMaterialProperties = function(material, node) {
 	material.setEmission(node.emission.r, node.emission.g, node.emission.b, node.emission.a)
 	material.setShininess(node.shininess.value);
 };
+
+ProcessTree.prototype.drawScene = function(index, material, matrix, texture) {
+	var tex = null;
+	var textureHasBeenWritten = false;
+
+	//copy of the texture to a new variable
+	tex = this.graph.textureList[texture];
+
+	//push current scene's matrix
+	this.scene.pushMatrix();
+		//apply node's transformation
+		this.scene.multMatrix(matrix);
+
+		//apply node's material
+		material.apply();
+
+		if (tex != null && texture != "clear")
+		{
+			if (this.graph.leafList[index].type == "triangle" || this.graph.leafList[index].type == "rectangle")
+			{
+				//apply texture scaling in case of triangle or rectangle
+				this.graph.leafList[index].object.scaleTexture(tex.amplif_factor.s, tex.amplif_factor.t);
+			}
+			//draw texture
+			tex.obj.bind();
+			textureHasBeenWritten = true;
+		}
+		else
+		{
+			textureHasBeenWritten = false;
+		}
+		this.graph.leafList[index].object.display();
+
+		if (textureHasBeenWritten)
+		{
+			//undraw texture
+			tex.obj.unbind();
+		}
+		
+	this.scene.popMatrix();
+}

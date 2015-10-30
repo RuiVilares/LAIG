@@ -78,8 +78,7 @@ MySceneGraph.prototype.onXMLReady = function()
         return;
     }
     
-    var processTree = new ProcessTree(this, this.scene);
-    processTree.fillTexturesMaterialsAndProcessMatrix();
+    this.processTree = new ProcessTree(this, this.scene);
 
     this.loadedOk = true;
     
@@ -367,18 +366,17 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
         if (filePathVar == null  || amplifVar == null)
             return "one of the components of the texture " + idVar + " isn't correctly defined.";
         
-        if (this.isRepeatedId(this.textureList, idVar))
+        if (this.textureList[idVar] != null)
             return "texture " + idVar + " already exists.";
 
         filePathVar = path + '/' + filePathVar;
 
-        this.textureList.push(
+        this.textureList[idVar] = 
         {
-            id: idVar,
             file: filePathVar,
             amplif_factor: amplifVar,
             obj: new CGFtexture(this.scene, filePathVar)
-        });
+        };
         /*
 			How to access?
 				this.textureList(index).id;
@@ -458,17 +456,17 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
         if (shininessVar == null  || specularVar == null  || diffuseVar == null  || ambientVar == null  || emissionVar == null )
             return "one of the components of the material " + idVar + " isn't correctly defined.";
         
-        if (this.isRepeatedId(this.materialList, idVar))
+        if (this.materialList[idVar] != null)
             return "material " + idVar + " already exists.";
-        this.materialList.push(
+            
+        this.materialList[idVar] = 
         {
-            id: idVar,
             shininess: shininessVar,
             specular: specularVar,
             diffuse: diffuseVar,
             ambient: ambientVar,
             emission: emissionVar
-        });
+        };
         /*
 			How to access?
 				this.materialList(index).id;
@@ -508,7 +506,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
         typeVar = this.reader.getItem(leaf[i], 'type', ["rectangle", "cylinder", "sphere", "triangle"]);
         argsVar = this.reader.getString(leaf[i], 'args');
 
-        if (this.isRepeatedId(this.leafList, idVar))
+        if (this.leafList[idVar] != null)
             return "leaf " + idVar + " already exists.";
 
 		//argsParser returns number and not text
@@ -518,13 +516,12 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
         
         var leafObj = this.transformToObj(typeVar, argsVar);
 
-        this.leafList.push(
+        this.leafList[idVar] = 
         			{
-        				id: idVar,
         				type: typeVar,
         				object: leafObj,
         				matrixToApply: []
-        			});
+        			};
         /*
 			How to access?
 				this.leafList(index).id;
@@ -574,21 +571,21 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     	var descendantId = [];
 
 		idVar = this.reader.getString(nodes[i], 'id');
-		if (this.isRepeatedId(this.nodeList, idVar))
+		if (this.nodeList[idVar] != null)
 					return "node " + idVar + " already exists.";
 
 		materialIdVar = nodes[i].getElementsByTagName('MATERIAL');
 		if (materialIdVar == null || materialIdVar.length != 1)
 			return "missing material in node " + idVar + ".";
 		materialIdVar = this.reader.getString(materialIdVar[0], 'id');
-		if ("null" != materialIdVar && !this.isRepeatedId(this.materialList, materialIdVar))
-					return "material " + materialIdVar + " of node " + idVar + " is incorrect.";
+		if ("null" != materialIdVar && this.materialList[materialIdVar] == null)
+			return "material " + materialIdVar + " of node " + idVar + " is incorrect.";
 
 		textureIdVar = nodes[i].getElementsByTagName('TEXTURE');
 		if (textureIdVar == null || textureIdVar.length != 1)
 			return "missing texture in node " + idVar + ".";
 		textureIdVar = this.reader.getString(textureIdVar[0], 'id');
-		if ("null" != textureIdVar && "clear" != textureIdVar && !this.isRepeatedId(this.textureList, textureIdVar))
+		if ("null" != textureIdVar && "clear" != textureIdVar && this.textureList[textureIdVar] == null)
 					return "texture " + textureIdVar + " of node " + idVar + " is incorrect.";
 
 		for (var j = 0; j < nodes[i].children.length; j++)
@@ -618,15 +615,14 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			descendantId.push(descendantIdField);
 		}
 		
-		this.nodeList.push({
-			id: idVar,
+		this.nodeList[idVar] = {
 			material: materialIdVar,
 			texture: textureIdVar,
 			transformationsMatrix: matrix,
 			descendants: descendantId
-		});
+		};
 
-		if(!this.isRepeatedId(this.nodeList, this.rootElem))
+		if(this.nodeList[this.rootElem] == null)
 			return "definition of root element " + this.rootElem + " is missing.";
 	}
     
