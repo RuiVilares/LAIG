@@ -62,9 +62,7 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // Handler called when the graph is finally loaded. 
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
-{
-	this.leavesToDraw = this.graph.leafList;
-	
+{	
 	this.camera.near = this.graph.initialsList.frustum.near;
 	this.camera.far = this.graph.initialsList.frustum.far;
 
@@ -119,49 +117,7 @@ XMLscene.prototype.display = function () {
 		
 		this.updateLights();
 		
-		var tex = null;
-		var textureHasBeenWritten = false;
-		//go through all the leaves
-		for (var i = 0; i < this.leavesToDraw.length; i++)
-		{
-			//go through all the leaf's transformations
-			for (var j = 0; j < this.leavesToDraw[i].matrixToApply.length; j++)
-			{
-				//copy of the texture to a new variable
-				tex = this.graph.textureList[this.leavesToDraw[i].matrixToApply[j][this.textureIndex]];
-				//push current scene's matrix
-				this.pushMatrix();
-					//apply node's transformation
-					this.multMatrix(this.leavesToDraw[i].matrixToApply[j][this.matrixIndex]);
-					
-					//apply node's material
-					this.leavesToDraw[i].matrixToApply[j][this.materialIndex].apply();
-
-					if (tex != null && tex.id != "clear")
-					{
-						if (this.leavesToDraw[i].type == "triangle" || this.leavesToDraw[i].type == "rectangle")
-						{
-							//apply texture scaling in case of triangle or rectangle
-							this.leavesToDraw[i].object.scaleTexture(tex.amplif_factor.s, tex.amplif_factor.t);
-						}
-						//draw texture
-						tex.obj.bind();
-						textureHasBeenWritten = true;
-					}
-					else
-					{
-						textureHasBeenWritten = false;
-					}
-					this.leavesToDraw[i].object.display();
-
-					if (textureHasBeenWritten)
-					{
-						//undraw texture
-						tex.obj.unbind();
-					}
-				this.popMatrix();
-			}
-		}
+		this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
 	};
 
     this.shader.unbind();
