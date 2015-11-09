@@ -725,7 +725,6 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			animationList: animationListVar
 		};
 		
-		console.log(animationListVar);
 	}
 	if(this.nodeList[this.rootElem] == null)
 		return "definition of root element " + this.rootElem + " is missing.";

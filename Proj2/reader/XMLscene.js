@@ -31,6 +31,8 @@ XMLscene.prototype.init = function (application) {
 	this.axis=new CGFaxis(this);
 	
 	this.lightsBoolean = [false,false,false,false,false,false,false,false];
+
+	this.setUpdatePeriod(60/1000);
 };
 
 XMLscene.prototype.initLights = function () {
