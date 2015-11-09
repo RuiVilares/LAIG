@@ -154,7 +154,6 @@ ProcessTree.prototype.copyMaterialProperties = function(material, node) {
 	material.setAmbient(node.ambient.r, node.ambient.g, node.ambient.b, node.ambient.a);
 	material.setDiffuse(node.diffuse.r, node.diffuse.g, node.diffuse.b, node.diffuse.a);
 	material.setSpecular(node.specular.r, node.specular.g, node.specular.b, node.specular.a);
-	console.log(node.emission.a);
 	material.setEmission(node.emission.r, node.emission.g, node.emission.b, node.emission.a);
 	material.setShininess(node.shininess.value);
 };

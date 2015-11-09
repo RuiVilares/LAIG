@@ -65,6 +65,12 @@ MySceneGraph.prototype.onXMLReady = function()
         this.onXMLError(error);
         return;
     }
+	
+	error = this.parseAnimations(rootElement);
+    if (error != null ) {
+        this.onXMLError(error);
+        return;
+    }
     
     error = this.parseLeaves(rootElement);
     if (error != null ) {
@@ -480,6 +486,91 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 };
 
 /*
+ * Parse animation's block on lsx
+ */
+
+MySceneGraph.prototype.parseAnimations = function(rootElement) {
+   
+    console.log("Started to read the animation' section.");
+	
+    var elems = rootElement.getElementsByTagName('ANIMATIONS');
+	 
+    if (elems == null ) {
+        return "ANIMATIONS element is missing.";
+    }
+    
+    if (elems.length == 0) {
+        return "animations missing.";
+    }
+	
+    var animationsElems = elems[0].getElementsByTagName('ANIMATION');
+   
+    this.animationsList = [];
+	
+    var idVar, typeVar;
+	var spanVar;
+	 
+	 
+	for (var i = 0; i < animationsElems.length; i++) 
+    {
+        idVar = animationsElems[i].id;
+        if (idVar == null )
+            return "id of animation number " + i + " not found.";
+		if (this.animationsList[idVar] != null)
+			return "id " + idVar + " already exists.";
+		
+		spanVar = this.reader.getFloat(animationsElems[i], "span");
+        if (spanVar == null )
+            return "span of animation number " + i + " not found.";
+		
+		typeVar = this.reader.getString(animationsElems[i], "type");
+        if (typeVar == null )
+            return "type of animation number " + i + " not found.";
+        
+		if (typeVar == "linear"){
+			var children;
+			var controlpointVar;
+			this.controlpointsList = [];
+			children = animationsElems[i].children;
+			for (var j = 0; j < children.length; j++) 
+			{
+				if (children[j].nodeName == "controlpoint"){ 
+					controlpointVar = this.parser.parsePoints(children[j]);
+					this.controlpointsList.push(controlpointVar);
+				}
+				else
+					return "compoment " + children.nodeName + " out of place.";
+            }
+			if (this.controlpointsList.length < 2)
+				return "missing control points on animation id " + idVar;
+			this.animationsList[idVar] = {
+								span: spanVar,
+								type: typeVar,
+								controlpoints: this.controlpointsList
+							};
+        }
+		else if (typeVar == "circular"){
+			var centerVar, radiusVar, startangVar, rotangVar;
+			centerVar = this.parser.parseCenter(this.reader.getString(animationsElems[i], "center"));
+			radiusVar = this.reader.getFloat(animationsElems[i], "radius");
+			startangVar = this.reader.getFloat(animationsElems[i], "startang");
+			rotangVar = this.reader.getFloat(animationsElems[i], "rotang");
+			this.animationsList[idVar] = {
+				span: spanVar,
+				type: typeVar,
+				center: centerVar,
+				radius: radiusVar,
+				startang: startangVar,
+				rotang: rotangVar
+			};
+		}
+		else
+			return "type " + typeVar + " didn't exist.";
+    }
+	console.log("Finished to read the animation' section.");
+}
+
+/*
  * Parse leaf's block on lsx
  */
 MySceneGraph.prototype.parseLeaves = function(rootElement) {
@@ -559,7 +650,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     this.nodeList = [];
     var idVar;
     var materialIdVar, textureIdVar;
-    var transform;
+    var transform, animationIdVar;
     var descendantElems; var descendantIdField;
     var computeMatrix = new MyMatrix();
     var matrix = mat4.create();
@@ -568,6 +659,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 	{
     	var matrix = mat4.create();
 		mat4.identity(matrix);
+		var animationListVar = [];
     	var descendantId = [];
 
 		idVar = this.reader.getString(nodes[i], 'id');
@@ -590,6 +682,16 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 
 		for (var j = 0; j < nodes[i].children.length; j++)
 		{
+			
+			if (nodes[i].children[j].tagName == "animationref") {
+				animationIdVar = this.reader.getString(nodes[i].children[j], "id");
+				if (animationIdVar == null)
+					return "animation " + animationIdVar + " of node id " + idVar + "is incorrectly defined.";
+				
+				animationListVar.push(animationIdVar);
+				continue;
+			}
+			
 			transform = this.parser.parseTranslation(nodes[i].children[j]);
 			if (transform == null)
 				return "transformation incorrectly defined in node " + idVar + ".";
@@ -619,12 +721,14 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			material: materialIdVar,
 			texture: textureIdVar,
 			transformationsMatrix: matrix,
-			descendants: descendantId
+			descendants: descendantId,
+			animationList: animationListVar
 		};
-
-		if(this.nodeList[this.rootElem] == null)
-			return "definition of root element " + this.rootElem + " is missing.";
+		
+		console.log(animationListVar);
 	}
+	if(this.nodeList[this.rootElem] == null)
+		return "definition of root element " + this.rootElem + " is missing.";
     
     console.log("Finished to read the nodes' section.");
 };

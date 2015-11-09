@@ -256,3 +256,34 @@ XMLparser.prototype.parseAmplif_factor = function(root) {
         t: tVar
     };
 };
+
+XMLparser.prototype.parseCenter = function(argsVar) {    
+	argsElems = argsVar.split(" ");
+	if (argsElems.length != 3)
+	{
+		return null;
+	}
+    
+    return {
+        x: parseFloat(argsElems[0]),
+        y: parseFloat(argsElems[1]),
+		z: parseFloat(argsElems[2])
+    }
+};
+
+XMLparser.prototype.parsePoints = function(root) {
+    var xVar, yVar, zVar;
+    
+	xVar = this.reader.getFloat(root, "xx");
+	yVar = this.reader.getFloat(root, "yy");
+	zVar = this.reader.getFloat(root, "zz");
+    
+    if (xVar == null || yVar == null || zVar == null)
+        return null ;
+    
+    return {
+        x: xVar,
+		y: yVar,
+		z: zVar, 
+    };
+};
