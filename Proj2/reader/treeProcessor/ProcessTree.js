@@ -65,6 +65,7 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 	mat4.multiply(m, matrix, this.graph.nodeList[currentNode].transformationsMatrix);
 
 	//processar aqui as animações
+	this.processAnimations(m, this.graph.nodeList[currentNode].animationList);
 
 	//recursive
 	for (var i = 0; i < this.graph.nodeList[currentNode].descendants.length; i++)
@@ -75,6 +76,26 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 			this.processInformation(this.graph.nodeList[currentNode].descendants[i], this.graph.nodeList[currentNode].material, tex, m);
 	}
 };
+
+ProcessTree.prototype.processAnimations=function(matrix, animationList){
+	var m = mat4.create();
+	mat4.identity(m);
+	var startTime = 0;
+	//this.scene.secondsElapsed
+	for (var i = 0; i < animationList.length; i++) {
+		var animation = this.graph.animationsList[animationList[i]];
+		
+		if (animation.type == "linear") {
+			//processar animação linear
+		} else {
+			//processar animação circular
+		}
+
+		startTime += animation.span;
+	}
+
+	mat4.multiply(m, matrix, m);
+}
 
 /*
  * Get material data of materialId (string) and copies to material (CFGappearance).

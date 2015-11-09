@@ -530,29 +530,30 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 		if (typeVar == "linear"){
 			var children;
 			var controlpointVar;
-			this.controlpointsList = [];
+			var controlpointsList = [];
 			children = animationsElems[i].children;
 			for (var j = 0; j < children.length; j++) 
 			{
 				if (children[j].nodeName == "controlpoint"){ 
 					controlpointVar = this.parser.parsePoints(children[j]);
-					this.controlpointsList.push(controlpointVar);
+					controlpointsList.push(controlpointVar);
 				}
 				else
 					return "compoment " + children.nodeName + " out of place.";
             }
-			if (this.controlpointsList.length < 2)
+			if (controlpointsList.length < 2)
 				return "missing control points on animation id " + idVar;
 			this.animationsList[idVar] = {
 								span: spanVar,
 								type: typeVar,
-								controlpoints: this.controlpointsList
+								controlpoints: controlpointsList
 							};
         }
 		else if (typeVar == "circular"){
 			var centerVar, radiusVar, startangVar, rotangVar;
 			centerVar = this.parser.parseCenter(this.reader.getString(animationsElems[i], "center"));
 			radiusVar = this.reader.getFloat(animationsElems[i], "radius");
+			radiusVar = Math.radians(radiusVar);
 			startangVar = this.reader.getFloat(animationsElems[i], "startang");
 			rotangVar = this.reader.getFloat(animationsElems[i], "rotang");
 			this.animationsList[idVar] = {
@@ -685,7 +686,7 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
 			
 			if (nodes[i].children[j].tagName == "animationref") {
 				animationIdVar = this.reader.getString(nodes[i].children[j], "id");
-				if (animationIdVar == null)
+				if (animationIdVar == null || this.animationsList[animationIdVar] == null)
 					return "animation " + animationIdVar + " of node id " + idVar + "is incorrectly defined.";
 				
 				animationListVar.push(animationIdVar);
@@ -767,4 +768,14 @@ MySceneGraph.prototype.transformToObj = function(type, argsVar) {
 		default:
 			return null;
 	}
+};
+
+// Converts from degrees to radians.
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+ 
+// Converts from radians to degrees.
+Math.degrees = function(radians) {
+  return radians * 180 / Math.PI;
 };
