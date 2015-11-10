@@ -594,31 +594,90 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
     for (var i = 0; i < leaf.length; i++) 
     {
         idVar = this.reader.getString(leaf[i], 'id');
-        typeVar = this.reader.getItem(leaf[i], 'type', ["rectangle", "cylinder", "sphere", "triangle"]);
-        argsVar = this.reader.getString(leaf[i], 'args');
-
-        if (this.leafList[idVar] != null)
-            return "leaf " + idVar + " already exists.";
-
-		//argsParser returns number and not text
-		argsVar = this.parser.argsParser(typeVar, argsVar);
-        if (argsVar == null)
-        	return "args of leaf " + idVar + " are incorrect.";
-        
-        var leafObj = this.transformToObj(typeVar, argsVar);
-
-        this.leafList[idVar] = 
-        			{
-        				type: typeVar,
-        				object: leafObj,
-        				matrixToApply: []
-        			};
+		if (this.leafList[idVar] != null)
+			return "leaf " + idVar + " already exists.";
+        typeVar = this.reader.getItem(leaf[i], 'type', ["rectangle", "cylinder", "sphere", "triangle", "plane", "patch", "vehicle", "terrain"]);
+		if (typeVar == "rectangle" || typeVar == "cylinder" || typeVar == "sphere" || typeVar == "triangle"){
+			argsVar = this.reader.getString(leaf[i], 'args');
+			//argsParser returns number and not text
+			argsVar = this.parser.argsParser(typeVar, argsVar);
+			if (argsVar == null)
+				return "args of leaf " + idVar + " are incorrect.";
+			var leafObj = this.transformToObj(typeVar, argsVar);
+			this.leafList[idVar] = 
+        	{
+        		type: typeVar,
+        		object: leafObj,
+        		matrixToApply: []
+        	};
         /*
 			How to access?
 				this.leafList(index).id;
 		*/
+		}
+		else{
+			switch(typeVar){
+				case "plane":
+					var partsVar = this.reader.getInteger(leaf[i], 'parts');
+					if (partsVar < 0)
+						return "parts of leaf id" + idVar + "can't be negative";
+					this.leafList[idVar] = 
+					{
+						type: typeVar,
+						parts: partsVar
+					};
+					break;
+				case "patch":
+					var orderVar = this.reader.getInteger(leaf[i], 'order');
+					if (orderVar < 1 || orderVar > 3)
+						return "Order of id " + idVar + "need be 1, 2, 3"; 
+					var partsUVar = this.reader.getInteger(leaf[i], 'partsU');
+					var partsVVar = this.reader.getInteger(leaf[i], 'partsV');
+					var children = leaf[i].children;
+					this.controlpointsList = [];
+					for (var j = 0; j < children.length; j++) 
+					{
+						if (children[j].nodeName == "controlpoint"){ 
+							controlpointVar = this.parser.parsePointsPatch(children[j]);
+							this.controlpointsList.push(controlpointVar);
+						}
+						else
+							return "compoment " + children.nodeName + " out of place.";
+					}
+					if (this.controlpointsList.length < Math.pow((orderVar+1),2))
+						return "missing control points on left id " + idVar;
+					this.leafList[idVar] = 
+					{
+						type: typeVar,
+						order: orderVar,
+						partsUVar: partsUVar,
+						partsVVar: partsVVar,
+						controlpoints: this.controlpointsList
+					};
+					break;
+				case "vehicle":
+					this.leafList[idVar] = 
+					{
+						type: typeVar,
+					};
+					break;
+				case "terrain":
+					var textureVar = this.reader.getString(leaf[i], 'texture');
+					var heightmapVar = this.reader.getString(leaf[i], 'heightmap');
+					this.leafList[idVar] = 
+					{
+						type: typeVar,
+						texture: textureVar,
+						heightmap: heightmapVar
+					};
+					break;
+				default:
+					return "type of leaf id " + idVar + " didn't exist";
+			}
+			
+		}
     }
-    
+    console.log(this.leafList);
     console.log("Finished to read the leaves' section.");
 };
 

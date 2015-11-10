@@ -287,3 +287,20 @@ XMLparser.prototype.parsePoints = function(root) {
 		z: zVar, 
     };
 };
+
+XMLparser.prototype.parsePointsPatch = function(root) {
+    var xVar, yVar, zVar;
+    
+	xVar = this.reader.getFloat(root, "x");
+	yVar = this.reader.getFloat(root, "y");
+	zVar = this.reader.getFloat(root, "z");
+    
+    if (xVar == null || yVar == null || zVar == null)
+        return null ;
+    
+    return {
+        x: xVar,
+		y: yVar,
+		z: zVar, 
+    };
+};
