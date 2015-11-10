@@ -78,15 +78,23 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 };
 
 ProcessTree.prototype.processAnimations=function(matrix, animationList){
-	var m = mat4.create();
-	mat4.identity(m);
 	var startTime = 0;
-	//this.scene.secondsElapsed
-	for (var i = 0; i < animationList.length; i++) {
+
+	if (animationList.length == 0) {
+		return;
+	}
+
+	for (var i = 0; i < (animationList.length-1); i++) {
 		var animation = this.graph.animationsList[animationList[i]];
+
+		if (this.scene.secondsElapsed > (animation.span + startTime)) {
+			continue;
+		}
 		
 		if (animation.type == "linear") {
 			//processar animação linear
+			animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
+			return;
 		} else {
 			//processar animação circular
 		}
@@ -94,7 +102,16 @@ ProcessTree.prototype.processAnimations=function(matrix, animationList){
 		startTime += animation.span;
 	}
 
-	mat4.multiply(m, matrix, m);
+	var i = animationList.length-1;
+	var animation = this.graph.animationsList[animationList[i]];
+
+	if (animation.type == "linear") {
+		//processar animação linear
+		animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
+	} else {
+		//processar animação circular
+	}
+
 }
 
 /*

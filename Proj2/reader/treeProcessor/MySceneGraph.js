@@ -546,7 +546,8 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 			this.animationsList[idVar] = {
 								span: spanVar,
 								type: typeVar,
-								controlpoints: controlpointsList
+								controlpoints: controlpointsList,
+								obj: new LinearAnimation(controlpointsList, spanVar)
 							};
         }
 		else if (typeVar == "circular"){
