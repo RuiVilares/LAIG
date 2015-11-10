@@ -88,7 +88,8 @@
 <ANIMATIONS>
 	<ANIMATION id="recta" span="10" type="linear">
 			<controlpoint xx="0" yy="0" zz="0" />      
-			<controlpoint xx="10" yy="10" zz="10" />
+			<controlpoint xx="10" yy="00" zz="0" />
+			<controlpoint xx="10" yy="00" zz="10" />
 	</ANIMATION>
 	<ANIMATION id="curva" span="10" type="circular" center="0 10 0"
 			radius="10" startang="0" rotang="360">
@@ -643,7 +644,6 @@
 			</DESCENDANTS>
 			
 			<animationref id="recta" />
-			<animationref id="curva" />
 			
 		</NODE>
 		
