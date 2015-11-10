@@ -554,16 +554,18 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 			var centerVar, radiusVar, startangVar, rotangVar;
 			centerVar = this.parser.parseCenter(this.reader.getString(animationsElems[i], "center"));
 			radiusVar = this.reader.getFloat(animationsElems[i], "radius");
-			radiusVar = Math.radians(radiusVar);
 			startangVar = this.reader.getFloat(animationsElems[i], "startang");
+			startangVar = Math.radians(startangVar);
 			rotangVar = this.reader.getFloat(animationsElems[i], "rotang");
+			rotangVar = Math.radians(rotangVar);
 			this.animationsList[idVar] = {
 				span: spanVar,
 				type: typeVar,
 				center: centerVar,
 				radius: radiusVar,
 				startang: startangVar,
-				rotang: rotangVar
+				rotang: rotangVar,
+				obj: new CircularAnimation(centerVar, radiusVar, spanVar, startangVar, rotangVar)
 			};
 		}
 		else
