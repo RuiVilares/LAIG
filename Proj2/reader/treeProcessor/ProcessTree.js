@@ -65,6 +65,7 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 	mat4.multiply(m, matrix, this.graph.nodeList[currentNode].transformationsMatrix);
 
 	//processar aqui as animações
+	this.processAnimations(m, this.graph.nodeList[currentNode].animationList);
 
 	//recursive
 	for (var i = 0; i < this.graph.nodeList[currentNode].descendants.length; i++)
@@ -75,6 +76,43 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 			this.processInformation(this.graph.nodeList[currentNode].descendants[i], this.graph.nodeList[currentNode].material, tex, m);
 	}
 };
+
+ProcessTree.prototype.processAnimations=function(matrix, animationList){
+	var startTime = 0;
+
+	if (animationList.length == 0) {
+		return;
+	}
+
+	for (var i = 0; i < (animationList.length-1); i++) {
+		var animation = this.graph.animationsList[animationList[i]];
+
+		if (this.scene.secondsElapsed > (animation.span + startTime)) {
+			continue;
+		}
+		
+		if (animation.type == "linear") {
+			//processar animação linear
+			animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
+			return;
+		} else {
+			//processar animação circular
+		}
+
+		startTime += animation.span;
+	}
+
+	var i = animationList.length-1;
+	var animation = this.graph.animationsList[animationList[i]];
+
+	if (animation.type == "linear") {
+		//processar animação linear
+		animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
+	} else {
+		//processar animação circular
+	}
+
+}
 
 /*
  * Get material data of materialId (string) and copies to material (CFGappearance).
