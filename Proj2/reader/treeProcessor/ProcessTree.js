@@ -88,29 +88,19 @@ ProcessTree.prototype.processAnimations=function(matrix, animationList){
 		var animation = this.graph.animationsList[animationList[i]];
 
 		if (this.scene.secondsElapsed > (animation.span + startTime)) {
+			startTime += animation.span;
 			continue;
 		}
 		
-		if (animation.type == "linear") {
-			//processar animação linear
-			animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
-			return;
-		} else {
-			//processar animação circular
-		}
-
+		animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
 		startTime += animation.span;
+		return;
 	}
 
 	var i = animationList.length-1;
 	var animation = this.graph.animationsList[animationList[i]];
 
-	if (animation.type == "linear") {
-		//processar animação linear
-		animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
-	} else {
-		//processar animação circular
-	}
+	animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
 
 }
 
