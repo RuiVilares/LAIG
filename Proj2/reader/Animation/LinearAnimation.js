@@ -50,27 +50,8 @@ LinearAnimation.prototype.createVectors = function(controlPoints) {
 }
 
 LinearAnimation.prototype.compute3dAngle = function(x1,y1,z1, x2,y2,z2) {
-    // Make up two vectors
-    var vectorA = vec3.create(); vec3.set(vectorA, x1, y1, z1);
-    var vectorB = vec3.create(); vec3.set(vectorB, x2, y2, z2);
-
-    // Store some information about them for below
-    var dot = vec3.dot(vectorA, vectorB);
-    var lengthA = vec3.length(vectorA);
-    var lengthB = vec3.length(vectorB);
-
-    // Now to find the angle
-    var theta = Math.acos( dot / (lengthA * lengthB) ); // Theta = x radians
-
-    if (dot == 0 && ((z1 < 0 && x2 < 0) || 
-    				 (x1 > 0 && z2 < 0) ||
-    				 (z1 > 0 && x2 > 0) ||
-    				 (x1 < 0 && z2 > 0)))
-    {
-    	theta += Math.PI;
-    }
-
-    return theta;
+    var angle = Math.atan2(z2, x2) - Math.atan2(z1, x1);
+    return angle;
 }
 
 LinearAnimation.prototype.computeMatrix = function(m, time) {
