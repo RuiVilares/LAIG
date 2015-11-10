@@ -681,7 +681,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 			
 		}
     }
-    console.log(this.leafList);
+    
     console.log("Finished to read the leaves' section.");
 };
 

@@ -20,11 +20,9 @@ CircularAnimation.prototype.computeMatrix = function(m, time) {
 	mat4.identity(matrix);
 
 	time = Math.min(time, this.span-0.01);
-	//console.log("time = " + time);
 	var howLong = Math.min((time % this.span) / this.span, 1);
-	//console.log("howLong = " + howLong);
 
-    mat4.rotate(matrix, matrix, this.angRot * howLong, [0,1,0]);
+    mat4.rotate(matrix, matrix, -this.angRot * howLong, [0,1,0]);
     mat4.translate(matrix, matrix, [this.pointInitial.x,
                                     this.pointInitial.y,
                                     this.pointInitial.z]);

@@ -26,6 +26,7 @@ LinearAnimation.prototype.createVectors = function(controlPoints) {
     }
 
     var angleVar = 0;
+    angleVar -= this.compute3dAngle(1,0,0, vectorsAux[0].x,vectorsAux[0].y,vectorsAux[0].z);
 
     vectors.push({
             x: vectorsAux[0].x,
@@ -35,7 +36,8 @@ LinearAnimation.prototype.createVectors = function(controlPoints) {
             });
 
     for (var i = 1; i < vectorsAux.length; i++) {
-        angleVar += this.compute3dAngle(vectorsAux[i-1].x,vectorsAux[i-1].y,vectorsAux[i-1].z, vectorsAux[i].x,vectorsAux[i].y,vectorsAux[i].z);
+        angleVar -= this.compute3dAngle(vectorsAux[i-1].x,vectorsAux[i-1].y,vectorsAux[i-1].z, vectorsAux[i].x,vectorsAux[i].y,vectorsAux[i].z);
+        
         vectors.push({
             x: vectorsAux[i].x,
             y: vectorsAux[i].y,
@@ -59,6 +61,14 @@ LinearAnimation.prototype.compute3dAngle = function(x1,y1,z1, x2,y2,z2) {
 
     // Now to find the angle
     var theta = Math.acos( dot / (lengthA * lengthB) ); // Theta = x radians
+
+    if (dot == 0 && ((z1 < 0 && x2 < 0) || 
+    				 (x1 > 0 && z2 < 0) ||
+    				 (z1 > 0 && x2 > 0) ||
+    				 (x1 < 0 && z2 > 0)))
+    {
+    	theta += Math.PI;
+    }
 
     return theta;
 }
