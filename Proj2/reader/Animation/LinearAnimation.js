@@ -77,9 +77,7 @@ LinearAnimation.prototype.computeMatrix = function(m, time) {
                                     this.vectors[vectorIndex].z * howLong]);
     mat4.translate(matrix, matrix, [this.controlPoints[vectorIndex].x, this.controlPoints[vectorIndex].y, this.controlPoints[vectorIndex].z]);
    
-    //mat4.translate(matrix, matrix, [this.controlPoints[vectorIndex].x, this.controlPoints[vectorIndex].y, this.controlPoints[vectorIndex].z]);
-    //mat4.translate(matrix, matrix, [-this.controlPoints[vectorIndex].x, -this.controlPoints[vectorIndex].y, -this.controlPoints[vectorIndex].z]);
-mat4.rotate(matrix, matrix, this.vectors[vectorIndex].angle, [0,1,0]);
+    mat4.rotate(matrix, matrix, this.vectors[vectorIndex].angle, [0,1,0]);
     
     mat4.multiply(m, m, matrix);
 }
