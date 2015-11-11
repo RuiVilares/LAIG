@@ -117,11 +117,11 @@
 	
 	<LEAF id="plano" type="plane" parts="20" />
 	
-	<LEAF id="remendo" type="patch" order="1" partsU="1" partsV="1" >
-		<controlpoint x="1" y="1" z="1" />
-		<controlpoint x="2" y="2" z="2" />
-		<controlpoint x="3" y="3" z="3" />
-		<controlpoint x="4" y="4" z="4" />
+	<LEAF id="remendo" type="patch" order="1" partsU="20" partsV="20" >
+		<controlpoint x="-2" y="0" z="2" />
+		<controlpoint x="-2" y="0" z="-2" />
+		<controlpoint x="2" y="0" z="2" />
+		<controlpoint x="2" y="0" z="-2" />
 	</LEAF>
 	
 	<LEAF id="veiculo" type="vehicle"/>
@@ -643,9 +643,11 @@
 		<NODE id="carBuilder">
 			<MATERIAL id="null" />
 			<TEXTURE id="parkingSpace" />
+			
+			<TRANSLATION x="0" y="1" z="0" />
 
 			<DESCENDANTS>
-				<DESCENDANT id="plano" />
+				<DESCENDANT id="remendo" />
 			</DESCENDANTS>
 			
 			<animationref id="recta" />
