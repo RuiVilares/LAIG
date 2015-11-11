@@ -26,6 +26,7 @@ CircularAnimation.prototype.computeMatrix = function(m, time) {
     mat4.translate(matrix, matrix, [this.pointInitial.x,
                                     this.pointInitial.y,
                                     this.pointInitial.z]);
+    mat4.rotate(matrix, matrix, -this.angInitial, [0,1,0]);
     
     mat4.multiply(m, m, matrix);
 }
