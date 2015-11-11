@@ -68,9 +68,7 @@ LinearAnimation.prototype.chooseIndex = function(time) {
     var timeVectors = 0;
 
 	for (var i = 0; i < this.vectors.length; i++) {
-		console.log(time +" < "+ (this.vectors[i].time+timeVectors));
 		if (time < this.vectors[i].time+timeVectors) {
-			console.log("");
 			return i;
 		}
 
