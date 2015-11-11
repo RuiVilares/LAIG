@@ -2,7 +2,6 @@ LinearAnimation.prototype = new Animation();
 LinearAnimation.prototype.constructor=LinearAnimation;
 
 function LinearAnimation(controlPoints, span) {
-    this.timeEachVector = span / (controlPoints.length - 1);
 
     this.span = span;
 
@@ -25,9 +24,6 @@ LinearAnimation.prototype.createVectors = function(controlPoints) {
             });
     }
 
-    var angleVar = 0;
-    angleVar -= this.compute3dAngle(1,0,0, vectorsAux[0].x,vectorsAux[0].y,vectorsAux[0].z);
-
     this.totalSize = 0;
 
     this.totalSize += Math.sqrt(vectorsAux[0].x*vectorsAux[0].x + vectorsAux[0].y*vectorsAux[0].y + vectorsAux[0].z*vectorsAux[0].z);
@@ -36,6 +32,9 @@ LinearAnimation.prototype.createVectors = function(controlPoints) {
     	this.totalSize += Math.sqrt(vectorsAux[i].x*vectorsAux[i].x + vectorsAux[i].y*vectorsAux[i].y + vectorsAux[i].z*vectorsAux[i].z);
     }
 
+    var angleVar = 0;
+    angleVar -= this.compute3dAngle(1,0,0, vectorsAux[0].x,vectorsAux[0].y,vectorsAux[0].z);
+    
     vectors.push({
             x: vectorsAux[0].x,
             y: vectorsAux[0].y,
@@ -68,9 +67,7 @@ LinearAnimation.prototype.chooseIndex = function(time) {
     var timeVectors = 0;
 
 	for (var i = 0; i < this.vectors.length; i++) {
-		console.log(time +" < "+ (this.vectors[i].time+timeVectors));
 		if (time < this.vectors[i].time+timeVectors) {
-			console.log("");
 			return i;
 		}
 
@@ -95,12 +92,6 @@ LinearAnimation.prototype.computeMatrix = function(m, time) {
 	mat4.identity(matrix);
 
 	time = Math.min(time, this.span-0.01);
-
-	/*var vectorIndex = Math.floor(time / this.timeEachVector);
-	var howLong = (time % this.timeEachVector) / this.timeEachVector;
-	howLong = time / this.span;
-	howLong = Math.min(howLong, 1);
-	vectorIndex = Math.floor(this.vectors.length * howLong, this.vectors.length-1);*/
 
 	var vectorIndex = this.chooseIndex(time);
 	var howLong = this.chooseSize(vectorIndex, time);

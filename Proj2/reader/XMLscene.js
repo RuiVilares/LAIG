@@ -113,7 +113,7 @@ XMLscene.prototype.update = function (currTime) {
 	// This is one possible way to do it
 	
 	if (this.graph.loadedOk)
-	{
+	{		
 		this.secondsElapsed = (currTime-this.initTime)/1000;
 		this.multMatrix(this.graph.initialsList.transformation);
 		
@@ -124,6 +124,7 @@ XMLscene.prototype.update = function (currTime) {
 		this.updateLights();
 		
 		this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+
 	};
 };
 
