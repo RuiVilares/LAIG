@@ -30,7 +30,6 @@
  		var arrayU = [];
 
  		for (var j = 0; j <= order; j++) {
- 			console.log("i = " + i + " j = " + j);
  			arrayU.push([controlPoints[i].x, controlPoints[i].y, [controlPoints[i].z], 1]);
  			i++;
  		}
