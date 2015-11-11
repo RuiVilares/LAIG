@@ -86,6 +86,16 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.textureIndex = 2;
 
 	this.initTime = this.lastUpdate;
+
+	this.tempObj = new Plane(this, 20);
+	this.appearance = new CGFappearance(this);
+	this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
+	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
+	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);	
+	this.appearance.setShininess(120);
+	this.texture = new CGFtexture(this, "texture.jpg");
+	this.appearance.setTexture(this.texture);
+	this.appearance.setTextureWrap ('REPEAT', 'REPEAT');
 };
 
 XMLscene.prototype.display = function () {
@@ -113,9 +123,11 @@ XMLscene.prototype.update = function (currTime) {
 	// This is one possible way to do it
 	
 	if (this.graph.loadedOk)
-	{
+	{		
 		this.secondsElapsed = (currTime-this.initTime)/1000;
 		this.multMatrix(this.graph.initialsList.transformation);
+		this.appearance.apply();
+		this.tempObj.display();
 		
 		// Draw axis
 		this.axis.display();
@@ -124,6 +136,7 @@ XMLscene.prototype.update = function (currTime) {
 		this.updateLights();
 		
 		this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+
 	};
 };
 

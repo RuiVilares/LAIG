@@ -13,25 +13,28 @@
 
  Plane.prototype.initBuffers = function(scene, parts) {
 
+
 	this.makeSurface(scene, parts,
-					 1, // degree on U: 2 control vertexes U
+					 2, // degree on U: 3 control vertexes U
 					 1, // degree on V: 2 control vertexes on V
-					[0, 0, 1, 1], // knots for U
+					[0, 0, 0, 1, 1, 1], // knots for U
 					[0, 0, 1, 1], // knots for V
 					[	// U = 0
 						[ // V = 0..1;
-							 [-2.0, -2.0, 0.0, 1 ],
-							 [-2.0,  2.0, 0.0, 1 ]
-							
+							 [ -0.5, 0, 0.5, 1 ],
+							 [ -0.5,  0, -0.5, 1 ]
 						],
 						// U = 1
 						[ // V = 0..1
-							 [ 2.0, -2.0, 0.0, 1 ],
-							 [ 2.0,  2.0, 0.0, 1 ]							 
+							 [ 0, 1, 0.5, 1 ],
+							 [ 0,  1, -0.5, 1 ]							 
+						],
+						// U = 2
+						[ // V = 0..1							 
+							[ 0.5, 0, 0.5, 1 ],
+							[ 0.5,  0, -0.5, 1 ]
 						]
 					]);
- 	
- 	this.initGLBuffers();
  };
 
 Plane.prototype.makeSurface = function (scene, parts, degree1, degree2, knots1, knots2, controlvertexes) {

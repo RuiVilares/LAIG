@@ -642,10 +642,10 @@
 		
 		<NODE id="carBuilder">
 			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
+			<TEXTURE id="parkingSpace" />
 
 			<DESCENDANTS>
-				<DESCENDANT id="car1" />
+				<DESCENDANT id="plano" />
 			</DESCENDANTS>
 			
 			<animationref id="recta" />

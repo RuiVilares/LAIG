@@ -628,7 +628,8 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 					this.leafList[idVar] = 
 					{
 						type: typeVar,
-						parts: partsVar
+						parts: partsVar,
+						object: new Plane(this.scene, partsVar)
 					};
 					break;
 				case "patch":
@@ -662,7 +663,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 				case "vehicle":
 					this.leafList[idVar] = 
 					{
-						type: typeVar,
+						type: typeVar
 					};
 					break;
 				case "terrain":
