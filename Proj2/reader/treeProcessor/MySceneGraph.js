@@ -639,17 +639,17 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 					var partsUVar = this.reader.getInteger(leaf[i], 'partsU');
 					var partsVVar = this.reader.getInteger(leaf[i], 'partsV');
 					var children = leaf[i].children;
-					this.controlpointsList = [];
+					var controlpointsList = [];
 					for (var j = 0; j < children.length; j++) 
 					{
 						if (children[j].nodeName == "controlpoint"){ 
 							controlpointVar = this.parser.parsePointsPatch(children[j]);
-							this.controlpointsList.push(controlpointVar);
+							controlpointsList.push(controlpointVar);
 						}
 						else
 							return "compoment " + children.nodeName + " out of place.";
 					}
-					if (this.controlpointsList.length < Math.pow((orderVar+1),2))
+					if (controlpointsList.length != Math.pow((orderVar+1),2))
 						return "missing control points on left id " + idVar;
 					this.leafList[idVar] = 
 					{
@@ -657,7 +657,8 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 						order: orderVar,
 						partsUVar: partsUVar,
 						partsVVar: partsVVar,
-						controlpoints: this.controlpointsList
+						controlpoints: controlpointsList,
+						object: new Patch(this.scene, orderVar, partsUVar, partsVVar, controlpointsList)
 					};
 					break;
 				case "vehicle":
