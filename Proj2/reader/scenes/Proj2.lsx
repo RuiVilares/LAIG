@@ -115,7 +115,7 @@
 	<!-- triangulo equilatero -->
     <LEAF id="triangle" type="triangle" args="0 0 0  1 0 0  0.5 1 0" />   <!-- coordinates of each vertex --> 
 	
-	<LEAF id="plano" type="plane" parts="5" />
+	<LEAF id="plano" type="plane" parts="20" />
 	
 	<LEAF id="remendo" type="patch" order="1" partsU="1" partsV="1" >
 		<controlpoint x="1" y="1" z="1" />
