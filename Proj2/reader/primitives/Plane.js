@@ -45,9 +45,9 @@ Plane.prototype.makeSurface = function (scene, parts, degree1, degree2, knots1, 
 	};
 
 	this.obj = new CGFnurbsObject(scene, getSurfacePoint, parts, parts);
-}
+};
 
 Plane.prototype.display = function () {
 		
 	this.obj.display();
-}
+};
