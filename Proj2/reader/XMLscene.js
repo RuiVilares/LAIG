@@ -86,6 +86,23 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.textureIndex = 2;
 
 	this.initTime = this.lastUpdate;
+
+
+	this.appearance = new CGFappearance(this);
+	this.appearance.setAmbient(1, 1, 1, 1);
+	this.appearance.setDiffuse(1, 1, 1, 1);
+	this.appearance.setSpecular(1, 1, 1, 1);	
+	this.appearance.setShininess(120);
+	this.texture = new CGFtexture(this, "texture.jpg");
+	this.texture2 = new CGFtexture(this, "Heightmap.png");
+	this.appearance.setTexture(this.texture);
+	this.appearance.setTextureWrap ('REPEAT', 'REPEAT');
+
+	this.plane = new Plane(this, 100);
+
+	this.shader = new CGFshader(this.gl, "texture.vert", "texture.frag");
+	this.shader.setUniformsValues({normScale: 1.0});
+	this.shader.setUniformsValues({uSampler2: 1});
 };
 
 XMLscene.prototype.display = function () {
@@ -115,15 +132,24 @@ XMLscene.prototype.update = function (currTime) {
 	if (this.graph.loadedOk)
 	{		
 		this.secondsElapsed = (currTime-this.initTime)/1000;
-		this.multMatrix(this.graph.initialsList.transformation);
+		//this.multMatrix(this.graph.initialsList.transformation);
 		
 		// Draw axis
-		this.axis.display();
+		//this.axis.display();
 		this.setDefaultAppearance();
 		
 		this.updateLights();
 		
-		this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+		//this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+
+		this.appearance.apply();
+
+		this.setActiveShader(this.shader);
+    this.texture2.bind(1);
+
+		this.plane.display();
+
+		this.setActiveShader(this.defaultShader);
 
 	};
 };
