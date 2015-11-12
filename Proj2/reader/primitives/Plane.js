@@ -15,9 +15,9 @@
 
 
 	this.makeSurface(scene, parts,
-					 2, // degree on U: 3 control vertexes U
+					 1, // degree on U: 2 control vertexes U
 					 1, // degree on V: 2 control vertexes on V
-					[0, 0, 0, 1, 1, 1], // knots for U
+					[0, 0, 1, 1], // knots for U
 					[0, 0, 1, 1], // knots for V
 					[	// U = 0
 						[ // V = 0..1;
@@ -25,11 +25,6 @@
 							 [ -0.5,  0, -0.5, 1 ]
 						],
 						// U = 1
-						[ // V = 0..1
-							 [ 0, 1, 0.5, 1 ],
-							 [ 0,  1, -0.5, 1 ]							 
-						],
-						// U = 2
 						[ // V = 0..1							 
 							[ 0.5, 0, 0.5, 1 ],
 							[ 0.5,  0, -0.5, 1 ]
