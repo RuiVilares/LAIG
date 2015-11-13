@@ -595,6 +595,8 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
     
     this.leafList = [];
     
+    var path=this.filename.substring(0, this.filename.lastIndexOf("/"));
+    
     for (var i = 0; i < leaf.length; i++) 
     {
         idVar = this.reader.getString(leaf[i], 'id');
@@ -675,7 +677,8 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 					{
 						type: typeVar,
 						texture: textureVar,
-						heightmap: heightmapVar
+						heightmap: heightmapVar,
+						object: new Shader(this.scene, path + '/' + textureVar, path + '/' + heightmapVar)
 					};
 					break;
 				default:
