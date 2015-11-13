@@ -57,14 +57,14 @@
 			<controlpoint xx="-3" yy="5" zz="-5" />
 			<controlpoint xx="3" yy="10" zz="-5" />
 	</ANIMATION>
-	<ANIMATION id="curvaInicial" span="3" type="circular" center="3 10 0"
+	<ANIMATION id="curvaInicial" span="5.236" type="circular" center="3 10 0"
 			radius="5" startang="-90" rotang="180">
 	</ANIMATION>
 	<ANIMATION id="retaFinal" span="3" type="linear">
 			<controlpoint xx="3" yy="10" zz="5" />
 			<controlpoint xx="-3" yy="5" zz="5" />
 	</ANIMATION>
-	<ANIMATION id="curvaFinal" span="3" type="circular" center="-3 5 0"
+	<ANIMATION id="curvaFinal" span="5.236" type="circular" center="-3 5 0"
 			radius="5" startang="90" rotang="180">
 	</ANIMATION>
 </ANIMATIONS>
