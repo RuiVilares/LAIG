@@ -284,7 +284,7 @@ XMLparser.prototype.parsePoints = function(root) {
     return {
         x: xVar,
 		y: yVar,
-		z: zVar, 
+		z: zVar 
     };
 };
 
@@ -301,6 +301,6 @@ XMLparser.prototype.parsePointsPatch = function(root) {
     return {
         x: xVar,
 		y: yVar,
-		z: zVar, 
+		z: zVar 
     };
 };
