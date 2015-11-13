@@ -70,32 +70,18 @@
 </ANIMATIONS>
 
 <LEAVES>
-    <!-- next lines define nodes of type leaf; they may be repeated, in any order, as necessary -->
-	<!-- quadrado de lado um -->
-    <LEAF id="rectangle" type="rectangle" args="0 1 1 0" />      <!-- 2D coordinates for left-top and right-bottom vertices. -->
 
-	<LEAF id="cylinder" type="cylinder" args="1 0.5 0.5 20 50" />    <!-- height, bottom radius, top radius, sections along height, parts per section -->    <!-- height, bottom radius, top radius, sections along height, parts per section -->
-	<LEAF id="tyreVehicle" type="cylinder" args="0.2 0.2 0.2 20 30" /> 
-	
-	<!-- esfera de raio 1 -->
-    <LEAF id="sphere" type="sphere" args="1 100 100" />            <!-- radius, parts along radius, parts per section -->
-	
-	<!-- triangulo equilatero -->
-    <LEAF id="triangle" type="triangle" args="0 0 0  1 0 0  0.5 1 0" />   <!-- coordinates of each vertex --> 
-	
-	<LEAF id="plano" type="plane" parts="20" />
-	
 	<LEAF id="remendo" type="patch" order="1" partsU="20" partsV="20" >
 		<controlpoint x="-2" y="0" z="2" />
 		<controlpoint x="-2" y="0" z="-2" />
 		<controlpoint x="2" y="0" z="2" />
 		<controlpoint x="2" y="0" z="-2" />
 	</LEAF>
-	
+
 	<LEAF id="veiculo" type="vehicle"/>
-	
+
 	<LEAF id="terreno" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
-	
+
 </LEAVES>
 
 
