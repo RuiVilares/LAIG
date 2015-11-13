@@ -67,9 +67,6 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 	//processar aqui as animações
 	this.processAnimations(m, this.graph.nodeList[currentNode].animationList);
 	
-	if (currentNode == "vehicleBuilder")
-		this.vehicleAnimations(m, this.graph.leafList[this.graph.nodeList[currentNode].descendants[0]].object.animationList);//_________________________________________________________
-
 	//recursive
 	for (var i = 0; i < this.graph.nodeList[currentNode].descendants.length; i++)
 	{
@@ -104,33 +101,6 @@ ProcessTree.prototype.processAnimations=function(matrix, animationList){
 	var animation = this.graph.animationsList[animationList[i]];
 
 	animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
-
-}
-
-ProcessTree.prototype.vehicleAnimations=function(matrix, animationList){
-	var startTime = 0;
-
-	if (animationList.length == 0) {
-		return;
-	}
-
-	for (var i = 0; i < (animationList.length-1); i++) {
-		var animation = animationList[i];
-
-		if (this.scene.secondsElapsed > (animation.span + startTime)) {
-			startTime += animation.span;
-			continue;
-		}
-		
-		animation.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
-		startTime += animation.span;
-		return;
-	}
-
-	var i = animationList.length-1;
-	var animation = animationList[i];
-
-	animation.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
 
 }
 

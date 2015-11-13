@@ -11,22 +11,11 @@ function Vehicle(scene) {
 	var controlPoint7 = {x: 1, y: 0, z: 1};
 	var controlPoint8 = {x: 1, y: 0, z: 0};
 	var controlPoint9 = {x: 1, y: 0, z: 0.5};
-	var controlpointsList = [];
-	controlpointsList.push(controlPoint1, controlPoint2, controlPoint3, controlPoint4, controlPoint5, controlPoint6, controlPoint7, controlPoint8, controlPoint9);
-	this.wing=new Patch(this.scene, 2, 20, 20, controlpointsList);
-	var point1 = {x: 1, y: 1, z: 1};
-	var point2 = {x: -2, y: 2, z: -2};
-	var point3 = {x: 3, y: 3, z: -3};
-	var point4 = {x: -4, y: 4, z: 4};
-	var point5 = {x: 5, y: 5, z: 0};
-	var pointsList1 = []; var pointsList2 = [];
-	pointsList1.push(point1, point2, point3, point4, point5);
-	pointsList2.push(point5, point4, point3, point2, point1);
-	var linear1 = new LinearAnimation(pointsList1, 6);
-	var circular = new CircularAnimation({x: 0, y: 6, z: 0}, 5, 6, 0, 4*Math.PI);
-	var linear2 = new LinearAnimation(pointsList2, 6);
-	this.animationList = [];
-	this.animationList.push(linear1, circular, linear2);
+	var controlpointsListUpper = []; var controlpointsListBottom = [];
+	controlpointsListUpper.push(controlPoint1, controlPoint2, controlPoint3, controlPoint4, controlPoint5, controlPoint6, controlPoint7, controlPoint8, controlPoint9);
+	controlpointsListBottom.push(controlPoint2, controlPoint3, controlPoint1, controlPoint5, controlPoint6, controlPoint4, controlPoint8, controlPoint9, controlPoint7);
+	this.wingUpper=new Patch(this.scene, 2, 20, 20, controlpointsListUpper);
+	this.wingBottom=new Patch(this.scene, 2, 20, 20, controlpointsListBottom);
  };
 
  Vehicle.prototype = Object.create(CGFobject.prototype);
@@ -75,15 +64,33 @@ function Vehicle(scene) {
 		this.quad.display();
     this.scene.popMatrix();
 	
-	// wing left
+	// wing left upper
     this.scene.pushMatrix();
-		this.scene.translate(0.35, 0, -0.65);
-		this.wing.display();
+		this.scene.translate(-1, 0, -0.5);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+		this.scene.scale(1, 1, 1.5);
+		this.wingUpper.display();
     this.scene.popMatrix();
 	
-	// wing right
+	// wing right upper
     this.scene.pushMatrix();
-		this.scene.translate(-1.35, 0, -0.65);
-		this.wing.display();
+		this.scene.translate(1, 0, 0.5);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.scene.scale(1, 1, 1.5);
+		this.wingUpper.display();
+    this.scene.popMatrix();
+	
+	// wing left bottom
+    this.scene.pushMatrix();
+		this.scene.translate(-0.5, 0, -0.5);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+		this.wingBottom.display();
+    this.scene.popMatrix();
+	
+	// wing right bottom
+    this.scene.pushMatrix();
+		this.scene.translate(0.5, 0, 0.5);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.wingBottom.display();
     this.scene.popMatrix();
 }
