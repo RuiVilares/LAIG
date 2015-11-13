@@ -71,13 +71,6 @@
 
 <LEAVES>
 
-	<LEAF id="remendo" type="patch" order="1" partsU="20" partsV="20" >
-		<controlpoint x="-2" y="0" z="2" />
-		<controlpoint x="-2" y="0" z="-2" />
-		<controlpoint x="2" y="0" z="2" />
-		<controlpoint x="2" y="0" z="-2" />
-	</LEAF>
-
 	<LEAF id="veiculo" type="vehicle"/>
 
 	<LEAF id="terreno" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
