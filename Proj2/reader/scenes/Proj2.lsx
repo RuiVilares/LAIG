@@ -3,11 +3,11 @@
 
 <INITIALS>
     <frustum near="0.1" far="500"/>                      <!-- frustum planes-->
-    <translation x="-10" y="0" z="0" />                 <!-- initial translate (-47,-30,-30)-->
+    <translation x="0" y="0" z="0" />                 <!-- initial translate (-47,-30,-30)-->
     <rotation axis="x" angle="0" />                  <!-- initial rotation 3 -->
     <rotation axis="y" angle="45" />                  <!-- initial rotation 2 -->
     <rotation axis="z" angle="0" />                  <!-- initial rotation 1 -->
-    <scale sx="0.5" sy="0.5" sz="0.5" />                  <!-- initial scaling -->
+    <scale sx="0.3" sy="0.3" sz="0.3" />                  <!-- initial scaling -->
     <reference length="0" />                          <!-- axis length; "0" means no axis-->
 </INITIALS>
 
@@ -29,60 +29,22 @@
 </LIGHTS>
 
 
-<TEXTURES>    
-	<TEXTURE id="parkingSpace">
-        <file path="textures/parkingSpace.png" />           <!-- path to file -->
-        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
-    </TEXTURE>
+<TEXTURES>
 
     <TEXTURE id="glass">
         <file path="textures/glass.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
-    
-    <TEXTURE id="tyre">
-        <file path="textures/tyre.jpg" />           <!-- path to file -->
-        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
-    </TEXTURE>    
-	
-	<TEXTURE id="tree">
-        <file path="textures/tree.jpg" />           <!-- path to file -->
-        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
-    </TEXTURE>  
 </TEXTURES>
 
 
 <MATERIALS>
 
-    <MATERIAL id="black">                                  
-        <shininess value="15.0" />
-        <ambient r="0.01" g="0.01" b="0.01" a="1" />        <!-- ambient component -->
-        <diffuse r="0.01" g="0.01" b="0.01" a="1" />        <!-- diffuse component -->
-        <specular r="0.01" g="0.01" b="0.01" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
-     </MATERIAL>
-	 
-    <MATERIAL id="wheel">                                  
-        <shininess value="1.0" />
-        <ambient r="0.7" g="0.7" b="0.7" a="1" />        <!-- ambient component -->
-        <diffuse r="0.7" g="0.7" b="0.7" a="1" />        <!-- diffuse component -->
-        <specular r="0.7" g="0.7" b="0.7" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
-     </MATERIAL>
-	
 	<MATERIAL id="white">                                  
         <shininess value="1.0" />
         <ambient r="0.9" g="0.9" b="0.9" a="1" />        <!-- ambient component -->
         <diffuse r="0.9" g="0.9" b="0.9" a="1" />        <!-- diffuse component -->
         <specular r="0.9" g="0.9" b="0.9" a="1" />         <!-- ambient reflection -->
-        <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
-    </MATERIAL>
-	
-	<MATERIAL id="carPink">                                  
-        <shininess value="1.0" />
-        <ambient r="0.5" g="0" b="0.25" a="1" />        <!-- ambient component -->
-        <diffuse r="0.5" g="0" b="0.25" a="1" />        <!-- diffuse component -->
-        <specular r="0.6" g="0" b="0.4" a="1" />         <!-- ambient reflection -->
         <emission r="0" g="0" b="0" a="0" />        <!-- emission component -->
     </MATERIAL>
 
@@ -91,18 +53,19 @@
 </MATERIALS>
 
 <ANIMATIONS>
-	<ANIMATION id="recta" span="15" type="linear">
-			<controlpoint xx="0" yy="0" zz="0" />      
-			<controlpoint xx="10" yy="0" zz="0" />
-			<controlpoint xx="10" yy="0" zz="10" />
-			<controlpoint xx="10" yy="0" zz="0" />
-			<controlpoint xx="-10" yy="0" zz="0" />
-			<controlpoint xx="-10" yy="0" zz="10" />
-			<controlpoint xx="-10" yy="0" zz="0" />
-			<controlpoint xx="2" yy="0" zz="0" />
+	<ANIMATION id="retaInicial" span="3" type="linear">
+			<controlpoint xx="-3" yy="5" zz="-5" />
+			<controlpoint xx="3" yy="10" zz="-5" />
 	</ANIMATION>
-	<ANIMATION id="curva" span="10" type="circular" center="0 0 0"
-			radius="2" startang="0" rotang="360">
+	<ANIMATION id="curvaInicial" span="3" type="circular" center="3 10 0"
+			radius="5" startang="-90" rotang="180">
+	</ANIMATION>
+	<ANIMATION id="retaFinal" span="3" type="linear">
+			<controlpoint xx="3" yy="10" zz="5" />
+			<controlpoint xx="-3" yy="5" zz="5" />
+	</ANIMATION>
+	<ANIMATION id="curvaFinal" span="3" type="circular" center="-3 5 0"
+			radius="5" startang="90" rotang="180">
 	</ANIMATION>
 </ANIMATIONS>
 
@@ -131,7 +94,7 @@
 	
 	<LEAF id="veiculo" type="vehicle"/>
 	
-	<LEAF id="terreno" type="terrain" texture="textures/texture.jpg" heightmap="textures/Heightmap.png"/>
+	<LEAF id="terreno" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
 	
 </LEAVES>
 
@@ -145,537 +108,36 @@
 		<TEXTURE id="clear" />
 
 		<DESCENDANTS>
-			<!-- <DESCENDANT id="carBuilder" /> -->
-			<DESCENDANT id="parkingSpaceFloor" />
-			<DESCENDANT id="vehicleBuilder" />
+			<DESCENDANT id="Mapa" />
+			<DESCENDANT id="CuboVoador" />
 		</DESCENDANTS>
 	</NODE>
-	
-	<NODE id="parkingSpaceFloor">
+
+	<NODE id="Mapa">
 		<MATERIAL id="white" />
-		<TEXTURE id="parkingSpace" />
-		
-		<TRANSLATION x="0" y="0" z="24.2" />
-		<ROTATION axis="x" angle="-90" />
-		<SCALE sx="24.2" sy="24.2" sz="1" />
+		<TEXTURE id="glass" />
+
+		<SCALE sx="20" sy="20" sz="20" />
 
 		<DESCENDANTS>
-			<DESCENDANT id="rectangle" />
+			<DESCENDANT id="terreno" />
 		</DESCENDANTS>
-	</NODE>	
-	
-	
-	<!-- WHEEL -->
-		<NODE id="wheelTriangle">
-			<MATERIAL id="wheel" />
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0" y="-0.2" z="0" />
-			<ROTATION axis="z" angle="15" />
-			<TRANSLATION x="0.052" y="0" z="0" />
-			<SCALE sx="0.104" sy="0.193" sz="1" />
-			<TRANSLATION x="-0.5" y="0" z="0" />
+	</NODE>
 
-			<DESCENDANTS>
-				<DESCENDANT id="triangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel1">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
+	<NODE id="CuboVoador">
+		<MATERIAL id="white" />
+		<TEXTURE id="glass" />
 
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel2">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
+		<DESCENDANTS>
+			<DESCENDANT id="veiculo" />
+		</DESCENDANTS>
 
-			<ROTATION axis="z" angle="30" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel3">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
+		<animationref id="retaInicial" />
+		<animationref id="curvaInicial" />
+		<animationref id="retaFinal" />
+		<animationref id="curvaFinal" />
+	</NODE>
 
-			<ROTATION axis="z" angle="60" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel4">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="90" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel5">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="120" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel6">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="150" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel7">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="180" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel8">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="210" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel9">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="240" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel10">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="270" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel11">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="300" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheel12">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-
-			<ROTATION axis="z" angle="330" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelTriangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="carTyre">
-			<MATERIAL id="white" />
-			<TEXTURE id="tyre" />
-
-			<TRANSLATION x="0" y="0" z="-0.2" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="tyreVehicle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="wheelBuilder">
-			<MATERIAL id="null" />
-			<TEXTURE id="clear" />
-			
-			<ROTATION axis="y" angle="90" />
-			<TRANSLATION x="0" y="0.2" z="0.2"  />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheel1" /> 
-				<DESCENDANT id="wheel2" /> 
-				<DESCENDANT id="wheel3" /> 
-				<DESCENDANT id="wheel4" /> 
-				<DESCENDANT id="wheel5" /> 
-				<DESCENDANT id="wheel6" /> 
-				<DESCENDANT id="wheel7" /> 
-				<DESCENDANT id="wheel8" /> 
-				<DESCENDANT id="wheel9" />  
-				<DESCENDANT id="wheel10" /> 
-				<DESCENDANT id="wheel11" /> 
-				<DESCENDANT id="wheel12" />   
-				<DESCENDANT id="carTyre" />             
-			</DESCENDANTS>
-		</NODE>
-	
-	<!-- TYRE -->
-		<NODE id="tyreFL">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="0.8" y="0" z="1.2" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelBuilder" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="tyreBL">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="0.8" y="0" z="-1.2" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelBuilder" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="tyreFR">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="-0.8" y="0" z="1.2" />
-			<ROTATION axis="y" angle="180" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelBuilder" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="tyreBR">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="-0.8" y="0" z="-1.2" />
-			<ROTATION axis="y" angle="180" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="wheelBuilder" />              
-			</DESCENDANTS>
-		</NODE>	
-
-		<NODE id="fourTyresBuilder">
-			<MATERIAL id="black" />
-			<TEXTURE id="clear" />
-			
-			<DESCENDANTS>
-				<DESCENDANT id="tyreFL" /> 
-				<DESCENDANT id="tyreBL" /> 
-				<DESCENDANT id="tyreFR" />  
-				<DESCENDANT id="tyreBR" />           
-			</DESCENDANTS>
-		</NODE>
-		
-		
-	<!-- CAR -->
-		<NODE id="glass">
-			<MATERIAL id="white" />
-			
-			<TEXTURE id="glass" />
-			
-			<SCALE sx="1.6" sy="0.45" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="rectangle" />              
-			</DESCENDANTS>
-		</NODE>	
-		
-		<NODE id="glassFront">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="-0.8" y="0.8" z="0.8" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="glass" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="glassBack">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.8" z="-0.8" />
-			<ROTATION axis="y" angle="180" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="glass" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="cover">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="null" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="rectangle" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverTop">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="1.25" z="0.8" />
-			<ROTATION axis="z" angle="90" />
-			<ROTATION axis="y" angle="90" />
-			<SCALE sx="1.6" sy="1.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverTopFront">
-			<MATERIAL id="white" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.8" z="1.9" />
-			<ROTATION axis="z" angle="90" />
-			<ROTATION axis="y" angle="90" />
-			<SCALE sx="1.1" sy="1.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverTopBack">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.8" z="-0.8" />
-			<ROTATION axis="z" angle="90" />
-			<ROTATION axis="y" angle="90" />
-			<SCALE sx="1.1" sy="1.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverFront">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="-0.8" y="0.2" z="1.9" />
-			<SCALE sx="1.6" sy="0.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverBack">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.2" z="-1.9" />
-			<ROTATION axis="y" angle="180" />
-			<SCALE sx="1.6" sy="0.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverFrontRigth">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="-0.8" y="0.2" z="0.8" />
-			<ROTATION axis="y" angle="-90" />
-			<SCALE sx="1.1" sy="0.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverFrontLeft">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.2" z="1.9" />
-			<ROTATION axis="y" angle="90" />
-			<SCALE sx="1.1" sy="0.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverMiddleRigth">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="-0.8" y="0.2" z="-0.8" />
-			<ROTATION axis="y" angle="-90" />
-			<SCALE sx="1.6" sy="1.05" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverMiddleLeft">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.2" z="0.8" />
-			<ROTATION axis="y" angle="90" />
-			<SCALE sx="1.6" sy="1.05" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverBackRigth">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="-0.8" y="0.2" z="-1.9" />
-			<ROTATION axis="y" angle="-90" />
-			<SCALE sx="1.1" sy="0.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="coverBackLeft">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-			
-			<TRANSLATION x="0.8" y="0.2" z="-0.8" />
-			<ROTATION axis="y" angle="90" />
-			<SCALE sx="1.1" sy="0.6" sz="1" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="cover" />              
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="car">
-			<MATERIAL id="null" />
-			
-			<TEXTURE id="clear" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="glassBack" />
-				<DESCENDANT id="glassFront" />
-				<DESCENDANT id="coverBack" />
-				<DESCENDANT id="coverFront" />
-				<DESCENDANT id="coverTop" />
-				<DESCENDANT id="coverBackLeft" />
-				<DESCENDANT id="coverBackRigth" />
-				<DESCENDANT id="coverFrontLeft" />
-				<DESCENDANT id="coverFrontRigth" />
-				<DESCENDANT id="coverMiddleLeft" />
-				<DESCENDANT id="coverMiddleRigth" />
-				<DESCENDANT id="coverTopBack" />
-				<DESCENDANT id="coverTopFront" />
-				<DESCENDANT id="fourTyresBuilder" />
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="car1">
-			<MATERIAL id="carPink" />
-			
-			<TEXTURE id="clear" />
-	
-			<TRANSLATION x="0" y="0" z="0" />
-			<ROTATION axis="y" angle="90" />
-	
-			<DESCENDANTS>
-				<DESCENDANT id="car" />
-			</DESCENDANTS>
-		</NODE>
-		
-		<NODE id="carBuilder">
-			<MATERIAL id="null" />
-			<TEXTURE id="null" />
-			
-			<TRANSLATION x="0" y="1" z="0" />
-
-			<DESCENDANTS>
-				<DESCENDANT id="terreno" />
-			</DESCENDANTS>
-			
-			<animationref id="recta" />
-			<animationref id="curva" />
-			
-		</NODE>
-		
-		<NODE id="vehicleBuilder">
-			<MATERIAL id="null" />
-			<TEXTURE id="tree" />
-			
-			<TRANSLATION x="0" y="1" z="0" /> 
-
-			<DESCENDANTS>
-				<DESCENDANT id="veiculo" />
-			</DESCENDANTS>
-			
-			<animationref id="recta" />
-			<animationref id="curva" />
-		
 </NODES>
-
-
 
 </SCENE>

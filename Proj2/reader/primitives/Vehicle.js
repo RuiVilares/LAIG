@@ -5,7 +5,7 @@ function Vehicle(scene) {
 	var controlPoint1 = {x: 0, y: 0, z: 1};
 	var controlPoint2 = {x: 0, y: 0, z: 0};
 	var controlPoint3 = {x: 0, y: 0, z: 0.5};
-	var controlPoint4 = {x: 0.5, y: 1, z: 1};
+	var controlPoint4 = {x: 0.5, y: 0, z: 1};
 	var controlPoint5 = {x: 0.5, y: 1, z: 0};
 	var controlPoint6 = {x: 0.5, y: 1, z: 0.5};
 	var controlPoint7 = {x: 1, y: 0, z: 1};

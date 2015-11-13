@@ -9,9 +9,9 @@ function CircularAnimation(center, radius, span, angInitial, angRot) {
     this.angRot = angRot;
 
     this.pointInitial = {
-        x: radius*Math.cos(angInitial) + center.x,
-        y: center.y,
-        z: radius*Math.sin(angInitial) + center.z
+        x: radius*Math.cos(angInitial),
+        y: 0,
+        z: radius*Math.sin(angInitial)
     }
 }
 
@@ -22,11 +22,13 @@ CircularAnimation.prototype.computeMatrix = function(m, time) {
 	time = Math.min(time, this.span-0.01);
 	var howLong = Math.min((time % this.span) / this.span, 1);
 
+    mat4.translate(matrix, matrix, [this.center.x,
+                                    this.center.y,
+                                    this.center.z]);
     mat4.rotate(matrix, matrix, -this.angRot * howLong, [0,1,0]);
     mat4.translate(matrix, matrix, [this.pointInitial.x,
                                     this.pointInitial.y,
                                     this.pointInitial.z]);
-    mat4.rotate(matrix, matrix, -this.angInitial, [0,1,0]);
     
     mat4.multiply(m, m, matrix);
 }
