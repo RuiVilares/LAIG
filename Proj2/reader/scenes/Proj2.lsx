@@ -120,7 +120,7 @@
 		<MATERIAL id="white" />
 		<TEXTURE id="glass" />
 
-		<SCALE sx="20" sy="20" sz="20" />
+		<SCALE sx="40" sy="40" sz="40" />
 
 		<DESCENDANTS>
 			<DESCENDANT id="terreno" />
