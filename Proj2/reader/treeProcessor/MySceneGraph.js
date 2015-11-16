@@ -657,11 +657,11 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 					{
 						type: typeVar,
 						order: orderVar,
-						partsUVar: partsUVar,
-						partsVVar: partsVVar,
+						partsU: partsUVar,
+						partsV: partsVVar,
 						controlpoints: controlpointsList,
 						object: new Patch(this.scene, orderVar, partsUVar, partsVVar, controlpointsList)
-					};
+					};					
 					break;
 				case "vehicle":
 					this.leafList[idVar] = 
@@ -684,7 +684,6 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
 				default:
 					return "type of leaf id " + idVar + " didn't exist";
 			}
-			
 		}
     }
     
@@ -701,7 +700,6 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     if (elems == null ) {
         return "NODES element is missing.";
     }
-    
     if (elems.length == 0) {
         return "nodes missing.";
     }
