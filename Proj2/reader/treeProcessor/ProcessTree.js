@@ -9,7 +9,7 @@
 
  };
 
-/*
+/**
  * Run through the tree starting on the root node.
  * Initial node -> root
  * Initial texture -> clear
@@ -36,7 +36,7 @@ ProcessTree.prototype.fillTexturesMaterialsAndProcessMatrix = function() {
 	return;
 };
 
-/*
+/**
  * This function is recursive. The arguments are the current node/leaf, the current material, texture and matrix (from heritage).
  * The current node is the child node from the parent. If it's a leaf, then the material, texture and matrix are pushed to the leaf (to a special field created with this intent).
  * The matrix is computed through the nodes. So, when it reaches a leaf, it has all the transformations required.
@@ -77,6 +77,11 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 	}
 };
 
+/**
+ * Process the animations of a leaf.
+ * @param {Matrix} matrix - The to be processed and it is computed with the transformations so far
+ * @param {Array|Animations} animationList - The array of animations of the leaf
+*/
 ProcessTree.prototype.processAnimations=function(matrix, animationList){
 	var startTime = 0;
 
@@ -104,8 +109,10 @@ ProcessTree.prototype.processAnimations=function(matrix, animationList){
 
 }
 
-/*
+/**
  * Get material data of materialId (string) and copies to material (CFGappearance).
+ * @param {string} materialId
+ * @param {string} material - The material created with the marterialId info
  */
 ProcessTree.prototype.setMaterial = function(materialId, material) {
 	if (!(typeof materialId === "string" || materialId instanceof String))
@@ -124,8 +131,10 @@ ProcessTree.prototype.setMaterial = function(materialId, material) {
 	this.copyMaterialProperties(material, this.graph.materialList[materialId]);
 };
 
-/*
+/**
  * Decide if the texture should be the one from the parent node or the one on the node.
+ * @param {string} textureId
+ * @param {string} texture - The texture created with the textureId info
  */
 ProcessTree.prototype.getTexture = function(textureId, texture) {
 	if (textureId == "null")
@@ -136,8 +145,11 @@ ProcessTree.prototype.getTexture = function(textureId, texture) {
 	return textureId;
 };
 
-/*
- * Search for a specific id on a given array.
+/**
+ * Search for a repeated id on a given array
+ * @param {Array} array
+ * @param {String} id
+ * @returns {Boolean} Returns true of the id exits, returns false otherwise
  */
 ProcessTree.prototype.findId = function(array, id) {
 	for (var i = 0; i < array.length; i++)
@@ -149,8 +161,12 @@ ProcessTree.prototype.findId = function(array, id) {
 	return -1;
 };
 
-/*
+/**
  * As previously explained on processInformation, this function pushes the material, texture and matrix to an array of a specific leaf.
+ * @param {String} index
+ * @param {Material} material
+ * @param {Matrix} matrix
+ * @param {Texture} texture
  */
 ProcessTree.prototype.pushInfoToLeaf = function(index, material, matrix, texture) {
     if (texture == "null")
@@ -164,8 +180,9 @@ ProcessTree.prototype.pushInfoToLeaf = function(index, material, matrix, texture
     this.drawScene(index, mat, matrix, texture);
 };
 
-/*
+/**
  * This function is only executed when a material is null. This properties (white) are the default.
+ * @param {Material} material
  */
 ProcessTree.prototype.setDefaultMaterialAppearance = function(material) {
 	material.setAmbient(1,1,1,1);
@@ -175,8 +192,10 @@ ProcessTree.prototype.setDefaultMaterialAppearance = function(material) {
 	material.setShininess(10);
 };
 
-/*
+/**
  * Copy the material properties of a node material to a material
+ * @param {Material} material
+ * @param {Node} node
  */
 ProcessTree.prototype.copyMaterialProperties = function(material, node) {
 	material.setAmbient(node.ambient.r, node.ambient.g, node.ambient.b, node.ambient.a);
@@ -186,6 +205,13 @@ ProcessTree.prototype.copyMaterialProperties = function(material, node) {
 	material.setShininess(node.shininess.value);
 };
 
+/**
+ * Draw the object with id index on the scene with the given material and texture in the position computed in the matrix
+ * @param {String} index - The id of the leaf
+ * @param {Material} material
+ * @param {Matrix} matrix
+ * @param {Texture} texture
+*/
 ProcessTree.prototype.drawScene = function(index, material, matrix, texture) {
 	var tex = null;
 	var textureHasBeenWritten = false;

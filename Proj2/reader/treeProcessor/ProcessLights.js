@@ -1,5 +1,5 @@
 /**
- * ProcessTree
+ * ProcessLights
  * @constructor
  */
  function ProcessLights(scene) {
@@ -8,8 +8,9 @@
 
  };
 
-/*
+/**
  * Convert the data read from lsx into a light
+ * @param {Light} lightInfo - The information of the light to be created
  */
  ProcessLights.prototype.transformToLight = function(lightInfo) {
 	this.scene.lights[lightInfo.id].setPosition(lightInfo.position.x, lightInfo.position.y, lightInfo.position.z, lightInfo.position.w);

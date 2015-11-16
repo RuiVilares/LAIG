@@ -1,6 +1,9 @@
 /**
- * MyQuad
+ * MyTriangle
  * @param gl {WebGLRenderingContext}
+ * @param {Number} x1,y1,z1 - The top coordinate
+ * @param {Number} x2,y2,z2 - The left coordinate
+ * @param {Number} x3,y3,z3 - The right coordinate
  * @constructor
  */
 function MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
@@ -30,7 +33,9 @@ function MyTriangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
 MyTriangle.prototype = Object.create(CGFobject.prototype);
 MyTriangle.prototype.constructor=MyTriangle;
 
-
+/**
+ * Initialize the buffers of the primitive
+ */
 MyTriangle.prototype.initBuffers = function () {
 	this.vertices = [
             this.x1, this.y1, this.z1,
@@ -67,6 +72,9 @@ MyTriangle.prototype.initBuffers = function () {
 	this.initGLBuffers();
 };
 
+/**
+ * Computes the texture coordinates
+ */
 MyTriangle.prototype.setTrignometry = function () {
 
 	this.cosB = (Math.pow(this.a, 2) - Math.pow(this.b, 2) + Math.pow(this.c, 2)) / (2 * this.a * this.c);
@@ -75,6 +83,9 @@ MyTriangle.prototype.setTrignometry = function () {
 
 };
 
+/**
+ * Computes the sizes of the triangle
+ */
 MyTriangle.prototype.setTriangleSizes = function () {
 		
 	this.a = Math.sqrt(
@@ -93,6 +104,10 @@ MyTriangle.prototype.setTriangleSizes = function () {
 				Math.pow(this.z3-this.z2 ,2) );
 };
 
+/**
+ * Computes the normal vector of the triangle
+ * @returns {Array|Float} The normal vector (x,y,z)
+ */
 MyTriangle.prototype.getNormalVector = function () {
 	var point1 = {x: this.x1, y: this.y1, z: this.z1};
 	var point2 = {x: this.x2, y: this.y2, z: this.z2};
@@ -108,6 +123,10 @@ MyTriangle.prototype.getNormalVector = function () {
 		};
 };
 
+/**
+ * Scale the texCoords of the primitive
+ * @param {Number} s,t - The scale of the texture
+ */
 MyTriangle.prototype.scaleTexture = function (s, t) {
 	this.texCoords = [
 		this.p2x/s,1-this.p2y/t,

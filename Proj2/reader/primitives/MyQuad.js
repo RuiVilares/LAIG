@@ -1,6 +1,8 @@
 /**
  * MyQuad
  * @param gl {WebGLRenderingContext}
+ * @param {Number} xl,yl - The left top coordinate
+ * @param {Number} xr,yr - The right bottom coordinate
  * @constructor
  */
 function MyQuad(scene, xl, yl, xr, yr) {
@@ -16,7 +18,9 @@ function MyQuad(scene, xl, yl, xr, yr) {
 MyQuad.prototype = Object.create(CGFobject.prototype);
 MyQuad.prototype.constructor=MyQuad;
 
-
+/**
+ * Initialize the buffers of the primitive
+ */
 MyQuad.prototype.initBuffers = function () {
 	this.vertices = [
 		//square
@@ -49,6 +53,10 @@ MyQuad.prototype.initBuffers = function () {
 	this.initGLBuffers();
 };
 
+/**
+ * Scale the texCoords of the primitive
+ * @param {Number} s,t - The scale of the texture
+ */
 MyQuad.prototype.scaleTexture = function (s, t) {
 	var width = this.xr - this.xl;
 	var height = this.yl - this.yr;

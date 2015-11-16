@@ -1,8 +1,18 @@
-
+/**
+ * Creates a custom XML parser
+ * @constructor
+ * @param {XMLParser} reader
+ */
 function XMLparser(reader) {
 	this.reader = reader;
 }
 
+/**
+ * Parse a field from the node
+ * @param {string} root - The node to be read
+ * @param {string} field - The name of the field
+ * @returns {string} The field parsed
+ */
 XMLparser.prototype.parseField = function(root, field) {
     var fieldTemp = root.getNamedItem(field);
     if (fieldTemp == null )
@@ -11,6 +21,11 @@ XMLparser.prototype.parseField = function(root, field) {
     return fieldTemp.value;
 };
 
+/**
+ * Parse the fields r,g,b,a from the node
+ * @param {string} root - The node to be read
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseRGBA = function(root) {
     var rVar, gVar, bVar, aVar;
     
@@ -30,6 +45,11 @@ XMLparser.prototype.parseRGBA = function(root) {
     };
 };
 
+/**
+ * Parse a transformation (translation, scale, rotation) from the node
+ * @param {Node} children - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseTranslation = function(children) {
 
     switch (children.tagName)
@@ -88,6 +108,12 @@ XMLparser.prototype.parseTranslation = function(children) {
 	return null;
 };
 
+/**
+ * Parse the primitives from the node
+ * @param {string} typeVar - The name of the primitive
+ * @param {string} argsVar - The args of the primitive
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 
 	var argsElems;
@@ -173,6 +199,11 @@ XMLparser.prototype.argsParser = function(typeVar, argsVar) {
 	return null;
 };
 
+/**
+ * Parse near and far from the frustum from the node
+ * @param {Node} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseFrustum = function(root) {
     var nearVar, farVar;
     
@@ -188,6 +219,11 @@ XMLparser.prototype.parseFrustum = function(root) {
     };
 };
 
+/**
+ * Parse length from the reference from the node
+ * @param {Node} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseReference = function(root) {
     var referenceVar;
     
@@ -199,6 +235,11 @@ XMLparser.prototype.parseReference = function(root) {
     return referenceVar;
 };
 
+/**
+ * Parse value from the enable from the node
+ * @param {Node} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseEnable = function(root) {
     var enableVar;
     
@@ -212,6 +253,11 @@ XMLparser.prototype.parseEnable = function(root) {
     return enableVar;
 };
 
+/**
+ * Parse position from the position from the node
+ * @param {Node} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parsePosition = function(root) {
     var xVar, yVar, zVar, wVar;
     
@@ -231,6 +277,11 @@ XMLparser.prototype.parsePosition = function(root) {
     };
 };
 
+/**
+ * Parse path from the file from the node
+ * @param {Node} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseFile = function(root) {
     var fileVar;
     
@@ -242,6 +293,11 @@ XMLparser.prototype.parseFile = function(root) {
     return fileVar;
 };
 
+/**
+ * Parse s and t from the amplication factor from the node
+ * @param {Node} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseAmplif_factor = function(root) {
     var sVar, tVar;
     
@@ -257,6 +313,11 @@ XMLparser.prototype.parseAmplif_factor = function(root) {
     };
 };
 
+/**
+ * Parse the field into x, y and z
+ * @param {string} argsVar - The field
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parseCenter = function(argsVar) {    
 	argsElems = argsVar.split(" ");
 	if (argsElems.length != 3)
@@ -271,6 +332,11 @@ XMLparser.prototype.parseCenter = function(argsVar) {
     }
 };
 
+/**
+ * Parse xx, yy and zz from the points from the node
+ * @param {string} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parsePoints = function(root) {
     var xVar, yVar, zVar;
     
@@ -288,6 +354,11 @@ XMLparser.prototype.parsePoints = function(root) {
     };
 };
 
+/**
+ * Parse x, y and z from the points of the patch from the node
+ * @param {string} root - The node
+ * @returns {Array|float} The field parsed
+ */
 XMLparser.prototype.parsePointsPatch = function(root) {
     var xVar, yVar, zVar;
     

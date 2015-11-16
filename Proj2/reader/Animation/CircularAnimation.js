@@ -1,6 +1,15 @@
 CircularAnimation.prototype = new Animation();
 CircularAnimation.prototype.constructor=CircularAnimation;
 
+/**
+ * Creates a circular animation
+ * @constructor
+ * @param {Number} center - The center of the animation
+ * @param {Number} radius - The radius of the animation
+ * @param {Number} span - The span of the animation
+ * @param {Number} angInitial - The angInitial of the animation
+ * @param {Number} angRot - The angRot of the animation
+ */
 function CircularAnimation(center, radius, span, angInitial, angRot) {
     this.center = center;
     this.radius = radius;
@@ -15,6 +24,11 @@ function CircularAnimation(center, radius, span, angInitial, angRot) {
     }
 }
 
+/**
+ * Computes the place of the object at a giving time
+ * @param {Matrix} m - The matrix of the animation
+ * @param {Number} time - The current seconds elapsed
+ */
 CircularAnimation.prototype.computeMatrix = function(m, time) {
     var matrix = mat4.create();
 	mat4.identity(matrix);

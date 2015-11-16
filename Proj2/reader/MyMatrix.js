@@ -1,6 +1,15 @@
+/**
+ * Create an object to process matrix
+ * @constructor
+ */
 function MyMatrix() {
 }
 
+/**
+ * Make a transformation (translation, rotation, scale) on a matrix.
+ * @param {string} transformation - The name of the transformation
+ * @param {Matrix} matrix - The to be processed
+ */
 MyMatrix.prototype.computeMatrix = function(transformation, matrix) {
     switch(transformation.type)
     {
@@ -29,6 +38,11 @@ MyMatrix.prototype.computeMatrix = function(transformation, matrix) {
     }
 };
 
+/**
+ * Convert degrees to radians.
+ * @param {float} degrees
+ * @returns {float} The result of converting degrees to Radians
+ */
 MyMatrix.prototype.degToRad = function(degrees) {
 	return degrees * Math.PI / 180;
 };

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: XMLscene.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: XMLscene.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Creates a custom XML scene
+ * @constructor
+ * @param {Interface} myInterface
+ */
+function XMLscene(myInterface) {
+    CGFscene.call(this);
+	this.myInterface = myInterface;
+}
+
+XMLscene.prototype = Object.create(CGFscene.prototype);
+XMLscene.prototype.constructor = XMLscene;
+
+XMLscene.prototype.init = function (application) {
+    CGFscene.prototype.init.call(this, application);
+
+    this.initCameras();
+
+    this.initLights();
+	this.enableTextures(true);
+
+    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+    this.gl.clearDepth(100.0);
+    this.gl.enable(this.gl.DEPTH_TEST);
+	this.gl.enable(this.gl.CULL_FACE);
+	this.gl.enable(this.gl.BLEND);
+	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA); 
+	this.gl.depthMask(true);
+
+    this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.frontFace(this.gl.CCW);
+    this.gl.cullFace(this.gl.BACK);
+
+	this.axis=new CGFaxis(this);
+	
+	this.lightsBoolean = [false,false,false,false,false,false,false,false];
+
+	var fps = 60;
+	this.setUpdatePeriod(1000/fps);
+};
+
+XMLscene.prototype.initLights = function () {
+
+	this.lights[0].setPosition(0, 1, 1.5, 1);
+    this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
+    this.lights[0].update();
+
+	this.lights[1].setPosition(0, 1, -1.5, 1);
+    this.lights[1].setDiffuse(1.0,1.0,1.0,1.0);
+    this.lights[1].update();
+    
+};
+
+XMLscene.prototype.initCameras = function () {
+    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+};
+
+XMLscene.prototype.setDefaultAppearance = function () {
+    this.setAmbient(0.2, 0.4, 0.8, 1.0);
+    this.setDiffuse(0.2, 0.4, 0.8, 1.0);
+    this.setSpecular(0.2, 0.4, 0.8, 1.0);
+    this.setShininess(10.0);	
+};
+
+// Handler called when the graph is finally loaded. 
+// As loading is asynchronous, this may be called already after the application has started the run loop
+XMLscene.prototype.onGraphLoaded = function () 
+{	
+	this.camera.near = this.graph.initialsList.frustum.near;
+	this.camera.far = this.graph.initialsList.frustum.far;
+
+	this.setGlobalAmbientLight(this.graph.illuminationList.ambient.r, this.graph.illuminationList.ambient.g, this.graph.illuminationList.ambient.b, this.graph.illuminationList.ambient.a);
+
+	var axisLength = this.graph.initialsList.reference;
+	this.axis = new CGFaxis(this, axisLength);
+	
+	var background = this.graph.illuminationList.background;
+	this.gl.clearColor(background.r,background.g,background.b,background.a);
+
+	var processLights = new ProcessLights(this);
+	
+	for (var i = 0; i &lt; this.graph.lightsList.length; i++)
+	{
+		processLights.transformToLight(this.graph.lightsList[i]);
+	}
+
+	this.materialIndex = 0;
+	this.matrixIndex = 1;
+	this.textureIndex = 2;
+
+	this.initTime = this.lastUpdate;
+};
+
+XMLscene.prototype.display = function () {
+	
+};
+
+/**
+ * This funciton will be called every fps (default 60) milliseconds
+ * Draw the scene and the time is specially useful for the animations
+ * @param {Number} currTime - The current time
+ */
+XMLscene.prototype.update = function (currTime) {
+	// ---- BEGIN Background, camera and axis setup
+	// Clear image and depth buffer everytime we update the scene
+    this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
+	// Initialize Model-View matrix as identity (no transformation
+	this.updateProjectionMatrix();
+    this.loadIdentity();
+
+	// Apply transformations corresponding to the camera position relative to the origin
+	this.applyViewMatrix();
+
+	// ---- END Background, camera and axis setup
+
+	// it is important that things depending on the proper loading of the graph
+	// only get executed after the graph has loaded correctly.
+	// This is one possible way to do it
+	
+	if (this.graph.loadedOk)
+	{		
+		this.secondsElapsed = (currTime-this.initTime)/1000;
+		this.multMatrix(this.graph.initialsList.transformation);
+		
+		// Draw axis
+		this.axis.display();
+		this.setDefaultAppearance();
+		
+		this.updateLights();
+		
+		this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+
+	};
+};
+
+XMLscene.prototype.updateLights = function(){
+	for(var i = 0; i &lt; this.lightsBoolean.length; i++){
+		if(this.lightsBoolean[i])
+			this.lights[i].enable();
+		else this.lights[i].disable();
+		this.lights[i].update();
+	}
+};
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Animation.html">Animation</a></li><li><a href="CircularAnimation.html">CircularAnimation</a></li><li><a href="LinearAnimation.html">LinearAnimation</a></li><li><a href="MyCylinder.html">MyCylinder</a></li><li><a href="MyInterface.html">MyInterface</a></li><li><a href="MyMatrix.html">MyMatrix</a></li><li><a href="MyQuad.html">MyQuad</a></li><li><a href="MySceneGraph.html">MySceneGraph</a></li><li><a href="MySphere.html">MySphere</a></li><li><a href="MyTriangle.html">MyTriangle</a></li><li><a href="Patch.html">Patch</a></li><li><a href="Plane.html">Plane</a></li><li><a href="ProcessLights.html">ProcessLights</a></li><li><a href="ProcessTree.html">ProcessTree</a></li><li><a href="Shader.html">Shader</a></li><li><a href="Vehicle.html">Vehicle</a></li><li><a href="XMLparser.html">XMLparser</a></li><li><a href="XMLscene.html">XMLscene</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Mon Nov 16 2015 20:07:33 GMT-0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

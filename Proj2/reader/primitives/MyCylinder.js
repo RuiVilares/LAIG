@@ -1,6 +1,11 @@
 /**
  * MyCylinder
  * @constructor
+ * @param {Number} height
+ * @param {Number} minRadius
+ * @param {Number} maxRadius
+ * @param {Number} stacks
+ * @param {Number} slices
  */
  function MyCylinder(scene, height, minRadius, maxRadius, stacks, slices) {
  	CGFobject.call(this,scene);
@@ -17,6 +22,9 @@
  MyCylinder.prototype = Object.create(CGFobject.prototype);
  MyCylinder.prototype.constructor = MyCylinder;
 
+/**
+ * Initialize the buffers of the primitive
+ */
  MyCylinder.prototype.initBuffers = function() {
 
  	var alpha = Math.PI / (this.slices / 2);

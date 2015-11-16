@@ -1,6 +1,10 @@
 /**
  * Patch
  * @constructor
+ * @param {Number} order
+ * @param {Number} partsU
+ * @param {Number} partsV
+ * @param {Number} controlPoints
  */
  function Patch(scene, order, partsU, partsV, controlPoints) {
  	CGFobject.call(this,scene);
@@ -11,6 +15,11 @@
  Patch.prototype = Object.create(CGFobject.prototype);
  Patch.prototype.constructor = Patch;
 
+/**
+ * Computes the knots from the order
+ * @param {float} order
+ * @returns {Array|Integer} The knots
+ */
  Patch.prototype.getKnotsFromOrder = function(order) {
  	switch(order) {
  		case 1:
@@ -22,6 +31,13 @@
  	}
  };
 
+/**
+ * Initialize the buffers of the primitive
+ * @param {Number} order
+ * @param {Number} partsU
+ * @param {Number} partsV
+ * @param {Number} controlPoints
+ */
  Patch.prototype.initBuffers = function(scene, order, partsU, partsV, controlPoints) {
 
  	var controlPointsArray = [];
@@ -47,6 +63,15 @@
 					controlPointsArray);
  };
 
+/**
+ * Create the nurb surface
+ * @param {Number} degree1
+ * @param {Number} degree2
+ * @param {Number} knots1
+ * @param {Number} knots2
+ * @param {Number} partsV
+ * @param {Number} controlvertexes
+ */
 Patch.prototype.makeSurface = function (scene, degree1, degree2, knots1, knots2, partsU, partsV, controlvertexes) {
 		
 	var nurbsSurface = new CGFnurbsSurface(degree1, degree2, knots1, knots2, controlvertexes);
@@ -57,7 +82,9 @@ Patch.prototype.makeSurface = function (scene, degree1, degree2, knots1, knots2,
 	this.obj = new CGFnurbsObject(scene, getSurfacePoint, partsU, partsV);
 };
 
+/**
+ * Display the primitive
+ */
 Patch.prototype.display = function () {
-		
 	this.obj.display();
 };

@@ -1,4 +1,8 @@
-
+/**
+ * Creates a custom XML scene
+ * @constructor
+ * @param {Interface} myInterface
+ */
 function XMLscene(myInterface) {
     CGFscene.call(this);
 	this.myInterface = myInterface;
@@ -92,7 +96,11 @@ XMLscene.prototype.display = function () {
 	
 };
 
-//esta funcao so e chamada a cada fps
+/**
+ * This funciton will be called every fps (default 60) milliseconds
+ * Draw the scene and the time is specially useful for the animations
+ * @param {Number} currTime - The current time
+ */
 XMLscene.prototype.update = function (currTime) {
 	// ---- BEGIN Background, camera and axis setup
 	// Clear image and depth buffer everytime we update the scene

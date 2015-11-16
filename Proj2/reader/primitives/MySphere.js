@@ -15,6 +15,9 @@
  MySphere.prototype = Object.create(CGFobject.prototype);
  MySphere.prototype.constructor = MySphere;
 
+ /**
+ * Initialize the buffers of the primitive
+ */
  MySphere.prototype.initBuffers = function() {
 
  	this.vertices = [];

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Vehicle.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Vehicle.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Vehicle
+ * @param gl {WebGLRenderingContext}
+ * @constructor
+ */
+function Vehicle(scene) {
+ 	CGFobject.call(this,scene);
+ 	this.scene = scene;
+	this.quad=new MyQuad(this.scene, -0.5, 0.5, 0.5, -0.5);
+	var controlPointU1 = {x: 0, y: 0, z: 0}; var controlPointB1 = {x: 0, y: 0, z: 0};
+	var controlPointU2 = {x: 0, y: 0, z: 0.5}; var controlPointB2 = {x: 0, y: 0, z: 0.5};
+	var controlPointU3 = {x: 0, y: 0, z: 1}; var controlPointB3 = {x: 0, y: 0, z: 1};
+	var controlPointU4 = {x: -0.5, y: 1, z: 0}; var controlPointB4 = {x: 0.5, y: 1, z: 0};
+	var controlPointU5 = {x: -0.5, y: 1, z: 0.5}; var controlPointB5 = {x: 0.5, y: 1, z: 0.5};
+	var controlPointU6 = {x: -0.5, y: 1, z: 1}; var controlPointB6 = {x: 0.5, y: 1, z: 1};
+	var controlPointU7 = {x: -1, y: 0, z: 0}; var controlPointB7 = {x: 1, y: 0, z: 0};
+	var controlPointU8 = {x: -1, y: 0, z: 0.5}; var controlPointB8 = {x: 1, y: 0, z: 0.5};
+	var controlPointU9 = {x: -1, y: 0, z: 1}; var controlPointB9 = {x: 1, y: 0, z: 1};	
+	var controlpointsListUpper = []; var controlpointsListBottom = [];
+	controlpointsListUpper.push(controlPointU1, controlPointU2, controlPointU3, controlPointU4, controlPointU5, controlPointU6, controlPointU7, controlPointU8, controlPointU9);
+	controlpointsListBottom.push(controlPointB1, controlPointB2, controlPointB3, controlPointB4, controlPointB5, controlPointB6, controlPointB7, controlPointB8, controlPointB9);
+	this.wingUpper=new Patch(this.scene, 2, 20, 20, controlpointsListUpper);
+	this.wingBottom=new Patch(this.scene, 2, 20, 20, controlpointsListBottom);
+ };
+
+ Vehicle.prototype = Object.create(CGFobject.prototype);
+ Vehicle.prototype.constructor = Vehicle;
+ 
+/**
+ * Display the primitive
+ */
+ Vehicle.prototype.display = function () {
+
+    // Top face
+    this.scene.pushMatrix();
+		this.scene.translate(0, 0.5, 0);
+		this.scene.rotate(-Math.PI/2, 1.0, 0, 0);
+		this.quad.display();
+    this.scene.popMatrix();
+
+    // Down face
+    this.scene.pushMatrix();
+		this.scene.translate(0, -0.5, 0);
+		this.scene.rotate(Math.PI/2, 1.0, 0, 0);
+		this.quad.display();
+    this.scene.popMatrix();
+
+    // z front face
+    this.scene.pushMatrix();
+		this.scene.translate(0, 0, 0.5);
+		this.quad.display();
+    this.scene.popMatrix();
+
+    // z back face
+    this.scene.pushMatrix();
+		this.scene.translate(0, 0, -0.5);
+		this.scene.rotate(Math.PI, 1.0, 0, 0);
+		this.quad.display();
+    this.scene.popMatrix();
+
+    // x front face
+    this.scene.pushMatrix();
+		this.scene.translate(0.5, 0, 0);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+		this.quad.display();
+    this.scene.popMatrix();
+
+    // x back face
+    this.scene.pushMatrix();
+		this.scene.translate(-0.5, 0, 0);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.quad.display();
+    this.scene.popMatrix();
+	
+	// wing left upper
+    this.scene.pushMatrix();
+		this.scene.translate(0.5, 0, -0.5);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.wingUpper.display();
+    this.scene.popMatrix();
+	
+	// wing right upper
+    this.scene.pushMatrix();
+		this.scene.translate(0.5, 0, 1.5);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.wingUpper.display();
+    this.scene.popMatrix();
+	
+	// wing left bottom
+    this.scene.pushMatrix();
+		this.scene.translate(-0.5, 0, -0.5);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
+		this.wingBottom.display();
+    this.scene.popMatrix();
+	
+	// wing right bottom
+    this.scene.pushMatrix();
+		this.scene.translate(0.5, 0, 0.5);
+		this.scene.rotate(-Math.PI/2, 0, 1, 0);
+		this.wingBottom.display();
+    this.scene.popMatrix();
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Animation.html">Animation</a></li><li><a href="CircularAnimation.html">CircularAnimation</a></li><li><a href="LinearAnimation.html">LinearAnimation</a></li><li><a href="MyCylinder.html">MyCylinder</a></li><li><a href="MyInterface.html">MyInterface</a></li><li><a href="MyMatrix.html">MyMatrix</a></li><li><a href="MyQuad.html">MyQuad</a></li><li><a href="MySceneGraph.html">MySceneGraph</a></li><li><a href="MySphere.html">MySphere</a></li><li><a href="MyTriangle.html">MyTriangle</a></li><li><a href="Patch.html">Patch</a></li><li><a href="Plane.html">Plane</a></li><li><a href="ProcessLights.html">ProcessLights</a></li><li><a href="ProcessTree.html">ProcessTree</a></li><li><a href="Shader.html">Shader</a></li><li><a href="Vehicle.html">Vehicle</a></li><li><a href="XMLparser.html">XMLparser</a></li><li><a href="XMLscene.html">XMLscene</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0-dev</a> on Mon Nov 16 2015 20:07:33 GMT-0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

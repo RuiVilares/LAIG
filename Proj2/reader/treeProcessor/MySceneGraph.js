@@ -1,4 +1,7 @@
-
+/**
+ * Create an object MySceneGraph
+ * @constructor
+ */
 function MySceneGraph(filename, scene) {
     this.loadedOk = null ;
         
@@ -22,7 +25,7 @@ function MySceneGraph(filename, scene) {
     this.reader.open(this.filename, this);
 }
 
-/*
+/**
  * Callback to be executed after successful reading
  */
 MySceneGraph.prototype.onXMLReady = function() 
@@ -92,7 +95,7 @@ MySceneGraph.prototype.onXMLReady = function()
     this.scene.onGraphLoaded();
 };
 
-/*
+/**
  * Callback to be executed on any read error
  */
 MySceneGraph.prototype.onXMLError = function(message) {
@@ -100,7 +103,7 @@ MySceneGraph.prototype.onXMLError = function(message) {
     this.loadedOk = false;
 };
 
-/*
+/**
  * Parse initials' block on lsx
  */
 MySceneGraph.prototype.parseInitials = function(rootElement) {
@@ -170,7 +173,7 @@ MySceneGraph.prototype.parseInitials = function(rootElement) {
 	
 };
 
-/*
+/**
  * Parse illumination's block on lsx
  */
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
@@ -219,7 +222,7 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
     console.log("Finished to read the illumination's section.");
 };
 
-/*
+/**
  * Parse lights'block on lsx
  */
 MySceneGraph.prototype.parseLights = function(rootElement) {
@@ -313,7 +316,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
     console.log("Finished to read the lights' section.");
 };
 
-/*
+/**
  * Parse texture's block on lsx
  */
 MySceneGraph.prototype.parseTextures = function(rootElement) {
@@ -395,7 +398,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
     console.log("Finished to read the textures' section.");
 };
 
-/*
+/**
  * Parse material's block on lsx
  */
 MySceneGraph.prototype.parseMaterials = function(rootElement) {
@@ -485,7 +488,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
     console.log("Finished to read the materials' section.");
 };
 
-/*
+/**
  * Parse animation's block on lsx
  */
 
@@ -574,7 +577,7 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 	console.log("Finished to read the animation' section.");
 }
 
-/*
+/**
  * Parse leaf's block on lsx
  */
 MySceneGraph.prototype.parseLeaves = function(rootElement) {
@@ -690,7 +693,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
     console.log("Finished to read the leaves' section.");
 };
 
-/*
+/**
  * Parse node's block on lsx
  */
 MySceneGraph.prototype.parseNodes = function(rootElement) {
@@ -799,8 +802,11 @@ MySceneGraph.prototype.parseNodes = function(rootElement) {
     console.log("Finished to read the nodes' section.");
 };
 
-/*
+/**
  * Search for a repeated id on a given array
+ * @param {Array} array
+ * @param {String} id
+ * @returns {Boolean} Returns true of the id exits, returns false otherwise
  */
 MySceneGraph.prototype.isRepeatedId = function(array, id) {
     for (var i = 0; i < array.length; i++) 
@@ -812,8 +818,10 @@ MySceneGraph.prototype.isRepeatedId = function(array, id) {
     return false;
 };
 
-/*
+/**
  * Transform the information fecthed from lsx to a primitive
+ * @param {string} typeVar - The name of the primitive
+ * @param {string} argsVar - The args of the primitive
  */
 MySceneGraph.prototype.transformToObj = function(type, argsVar) {
 	switch (type)
@@ -836,12 +844,20 @@ MySceneGraph.prototype.transformToObj = function(type, argsVar) {
 	}
 };
 
-// Converts from degrees to radians.
+/**
+ * Convert degrees to radians.
+ * @param {float} degrees
+ * @returns {float} The result of converting degrees to Radians
+ */
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
- 
-// Converts from radians to degrees.
+
+/**
+ * Convert radians to degrees.
+ * @param {float} radians
+ * @returns {float} The result of converting radians to degrees
+ */
 Math.degrees = function(radians) {
   return radians * 180 / Math.PI;
 };

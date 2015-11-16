@@ -27,6 +27,9 @@ function Shader(scene, texture, heightmap) {
 Shader.prototype = Object.create(CGFobject.prototype);
 Shader.prototype.constructor = Shader;
 
+/**
+ * Display the shader
+ */
 Shader.prototype.display = function () {
 		
 	this.appearance.apply();

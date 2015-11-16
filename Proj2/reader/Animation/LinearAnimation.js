@@ -1,6 +1,12 @@
 LinearAnimation.prototype = new Animation();
 LinearAnimation.prototype.constructor=LinearAnimation;
 
+/**
+ * Creates a linear animation
+ * @constructor
+ * @param {Array|Number} controlPoints - The checkpoints of the animation
+ * @param {Number} span - The span of the animation
+ */
 function LinearAnimation(controlPoints, span) {
 
     this.span = span;
@@ -10,6 +16,12 @@ function LinearAnimation(controlPoints, span) {
     this.vectors = this.createVectors(controlPoints);
 }
 
+/**
+ * Computes the vectors from the control points. It also computes an angle
+ * between the previous and the current vector. Lastly, computes the time for each vector
+ * @param {Array|Number} controlPoints - The checkpoints of the animation
+ * @returns {Array|Vectors} The vectors generated
+ */
 LinearAnimation.prototype.createVectors = function(controlPoints) {
 
     var vectors, vectorsAux;
@@ -58,11 +70,22 @@ LinearAnimation.prototype.createVectors = function(controlPoints) {
     return vectors;
 }
 
+/**
+ * Computes the angle between 2 points. It's only considered the axis x and z
+ * @param {Point} x1,y1,z1
+ * @param {Point} x2,y2,z2
+ * @returns {Number} The angle
+ */
 LinearAnimation.prototype.compute3dAngle = function(x1,y1,z1, x2,y2,z2) {
     var angle = Math.atan2(z2, x2) - Math.atan2(z1, x1);
     return angle;
 }
 
+/**
+ * Choose the index of the vector given the current time
+ * @param {Number} time - Current time
+ * @returns {Number} The index computed
+ */
 LinearAnimation.prototype.chooseIndex = function(time) {
     var timeVectors = 0;
 
@@ -77,6 +100,12 @@ LinearAnimation.prototype.chooseIndex = function(time) {
     return this.vectors.length - 1;
 }
 
+/**
+ * Compute how long the animation went in a given vector
+ * @param {Number} time - Current time
+ * @param {Number} index - Index of the current vector
+ * @returns {Number} The percentage of vector covered
+ */
 LinearAnimation.prototype.chooseSize = function(index, time) {
 	var timeVectors = 0;
 
@@ -87,6 +116,11 @@ LinearAnimation.prototype.chooseSize = function(index, time) {
     return 1-(Math.abs(time - timeVectors) / this.vectors[index].time);
 }
 
+/**
+ * Computes the place of the object at a giving time
+ * @param {Matrix} m - The matrix of the animation
+ * @param {Number} time - The current seconds elapsed
+ */
 LinearAnimation.prototype.computeMatrix = function(m, time) {
     var matrix = mat4.create();
 	mat4.identity(matrix);

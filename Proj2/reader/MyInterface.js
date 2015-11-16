@@ -2,8 +2,6 @@
  * MyInterface
  * @constructor
  */
- 
- 
 function MyInterface() {
 	//call CGFinterface constructor 
 	CGFinterface.call(this);
@@ -46,6 +44,10 @@ MyInterface.prototype.init = function(application) {
 	return true;
 };
 
+/**
+ * @param {int} i - Number of the light.
+ * @param {int} id - ID (name) of the light.
+*/
 MyInterface.prototype.addLightController = function(i, id){
 	this.lightGroup.add(this.scene.lightsBoolean, i, this.scene.lightsBoolean[i]).name(id);
 }
