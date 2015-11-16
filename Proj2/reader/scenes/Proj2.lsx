@@ -1,6 +1,5 @@
 <SCENE>
 
-
 <INITIALS>
     <frustum near="0.1" far="500"/>                      <!-- frustum planes-->
     <translation x="0" y="0" z="0" />                 <!-- initial translate (-47,-30,-30)-->
@@ -35,6 +34,12 @@
         <file path="textures/glass.jpg" />           <!-- path to file -->
         <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
     </TEXTURE>
+
+    <TEXTURE id="grid">
+        <file path="textures/texture.jpg" />           <!-- path to file -->
+        <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
+    </TEXTURE>
+
 </TEXTURES>
 
 
@@ -71,24 +76,30 @@
 
 <LEAVES>
 
-	<LEAF id="veiculo" type="vehicle"/>
+	<LEAF id="veiculo" type="vehicle" />
 	
-	<LEAF id="nurb" type="patch" order=”2” partsU=”20” partsV=”20” >
-		<controlpoint x=”0” y=”0” z=”0” />
-		<controlpoint x=”0” y=”2” z=”5” />
-		<controlpoint x=”0” y=”4” z=”10” />
-		<controlpoint x=”5” y=”2” z=”0” />
-		<controlpoint x=”5” y=”4” z=”5” />
-		<controlpoint x=”5” y=”2” z=”10” />
-		<controlpoint x=”10” y=”4” z=”0” />
-		<controlpoint x=”10” y=”2” z=”5” />
-		<controlpoint x=”10” y=”0” z=”10” />
+	<LEAF id="nurb" type="patch" order="3" partsU="20" partsV="20" >
+		<controlpoint x="-2" y="-2" z="1" />
+		<controlpoint x="-2" y="-1" z="-2" />
+		<controlpoint x="-2" y="1" z="5" />
+		<controlpoint x="-2" y="2" z="-1" />
+		<controlpoint x="0" y="-2" z="0" />
+		<controlpoint x="0" y="-1" z="-1" />
+		<controlpoint x="0" y="1" z="1.5" />
+		<controlpoint x="0" y="2" z="0" />
+		<controlpoint x="0" y="-2" z="0" />
+		<controlpoint x="0" y="-1" z="-1" />
+		<controlpoint x="0" y="1" z="1.5" />
+		<controlpoint x="0" y="2" z="0" />
+		<controlpoint x="2" y="-2" z="-1" />
+		<controlpoint x="2" y="-1" z="2" />
+		<controlpoint x="2" y="1" z="-5" />
+		<controlpoint x="2" y="2" z="1" />
 	</LEAF>
-	
-	<LEAF id="terreno" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg"/>
+
+	<LEAF id="terreno" type="terrain" texture="textures/terrain.jpg" heightmap="textures/heightmap_128.jpg" />
 
 </LEAVES>
-
 
 <NODES>
 
@@ -132,9 +143,9 @@
 	
 	<NODE id="nurbBuilder">
 		<MATERIAL id="white" />
-		<TEXTURE id="glass" />
+		<TEXTURE id="grid" />
 
-		<TRANSLATION x="0" y="5" z="0" />
+		<TRANSLATION x="0" y="5" z="-10" />
 		
 		<DESCENDANTS>
 			<DESCENDANT id="nurb" />

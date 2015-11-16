@@ -12,7 +12,7 @@
 </INITIALS>
 
  
-<ILLUMINATION> 
+<ILLUMINATION>
     <ambient r="0.1" g="0.1" b="0.1" a="1" />            <!-- global ambient -->
     <background r="0" g="0" b="0" a="1" />         <!-- background color -->
 </ILLUMINATION>
