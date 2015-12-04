@@ -90,6 +90,8 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.textureIndex = 2;
 
 	this.initTime = this.lastUpdate;
+
+	var board = new Board();
 };
 
 XMLscene.prototype.display = function () {

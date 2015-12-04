@@ -7,14 +7,17 @@
 :- include('jokerFunctions.pl').
 :- include('gameFunctions.pl').
 :- include('randomPC.pl').
+:- include('server.pl').
 
 % START GAME
 modx:-
 	initializeRandom,
 	mainMenu.
 	startPlayerVSPlayer.
-	
-	
+
+parse_input(tabuleiro, Game):-
+	createPlayerVsPlayer(Game).
+
 % NORMAL GAME	
 playGame(Game):-
 	checkEndConditions(Game),
