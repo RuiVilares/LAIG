@@ -54,6 +54,22 @@
 <LEAVES>
 
 	<LEAF id="marker" type="marker" />
+	<!--markerGhost vai ser sempre transparente, sem material e sem textura.
+	A posição inicial é com o canto superior esquerdo do quadrado na origem do refencial
+	e orientada no eixo positivo Oy.
+	Esta primitiva é a ÚNICA que vai ser adicionada para "picking".
+	Tamanho = 1x1-->
+	<!--<LEAF id="markerGhost" type="markerGhost" />-->
+
+	<!--piece é uma peça em cruz (como as do jogo), suporta materiais e texturas
+	Tamanho = 1x1-->
+	<!--<LEAF id="piece" type="piece" />-->
+
+	<!--board é o tabuleiro do jogo, suporta materiais e texturas
+	A posição inicial é com o canto superior esquerdo do quadrado na origem do refencial
+	e orientada no eixo positivo Oy
+	Tamanho = 9.8x9.8 (espaco entre pecas = 0.2, tamanho das pecas = 1, (9*0.2 + 8*1)x(9*0.2 + 8*1))-->
+	<!--<LEAF id="board" type="board" />-->
 
 </LEAVES>
 
