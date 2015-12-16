@@ -16,28 +16,61 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 	var playerTurn = this.getPlayerTurn(str);
 	console.log(playerTurn);
 
-	//endPoints é o número de Pontos em que o jogo acaba
-	//level1 e level2 e o nivel de dificuldade do jogador 1 e 2
-	//typeOfGame pode ser humanoVShumano, playerVSplayer, ...
-	//timeForEachPlayer e o tempo para cada jogador (se acabar o tempo, passa a vez)
-	var endPoints, level1, level2, typeOfGame, timeForEachPlayer;
-
-	//so sao guardadas as jogadas e tabuleiros validos
-	//para depois fazer o filme (com animacao) basta chamar o prolog com a moveList
-	//para depois fazer undo e so ir buscar o ultimo elemento do array
-	var boardsList = []; //Exemplo: boardsList[0] = tabuleiro
-	var movesList = []; //Exemplo: movesList[0] = [Peca, jogador] (temos de falar como guardamos a peca/jogada)
-
 	this.gameStarted = false;
-	this.ScoreBoard = '14 - 0';
+	this.gameList = [];
+
+	//interface GUI
+	this.ScoreBoard = '0 - 0';
+	this.difficultyPlayer1 = "Human";
+	this.difficultyPlayer2 = "Human";
+	this.RemainingTime = 0;
+	this.ScoreToWin = 5;
+
+	this.server = new Server();
 };
 
 Board.prototype.startGame = function() {
+	var sendMsg = [];
+	sendMsg.push(this.ScoreToWin.toString());		
+	if (this.difficultyPlayer1 == "Human" && this.difficultyPlayer2 == "Human") {
+		sendMsg.push("playerVSplayer");
+	} else if (this.difficultyPlayer1 == "Human" || this.difficultyPlayer2 == "Human") {
+		sendMsg.push("playerVSpc");
+		sendMsg.push(this.getDifficulty(this.difficultyPlayer1));
+	} else {
+		sendMsg.push("pcVSpc");
+		sendMsg.push(this.getDifficulty(this.difficultyPlayer1));
+		sendMsg.push(this.getDifficulty(this.difficultyPlayer2));
+	}
+	console.log(sendMsg.toString());
+	this.server.makeRequest("["+sendMsg.toString()+"]");
 	this.gameStarted = true;
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//falta mandar para começar o jogo
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 };
+
+Board.prototype.getDifficulty = function(text) {
+	if (text == "Random") {
+		return "1";
+	} else {
+		return "2";
+	}
+}
+
+Board.prototype.quit = function() {
+	this.server.quit();
+}
+
+Board.prototype.play = function() {
+	this.startGame();
+	console.log("play");
+}
+
+Board.prototype.undo = function() {
+	console.log("undo");
+}
+
+Board.prototype.redo = function() {
+	console.log("redo");
+}
 
 Board.prototype.getBoardFromRequest = function(request) {
 	var patt=/\[\[\[[^\[](.)*\]\]\]/i;
