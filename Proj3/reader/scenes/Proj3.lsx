@@ -71,7 +71,6 @@
 	e orientada no eixo positivo Oy.
 	Esta primitiva é a ÚNICA que vai ser adicionada para "picking".
 	Tamanho = 1x1-->
-	<LEAF id="markerGhost" type="markerGhost" />
 
 	<!--piece é uma peça em cruz (como as do jogo), suporta materiais e texturas
 	Tamanho = 1x1-->

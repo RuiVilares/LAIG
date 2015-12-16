@@ -40,6 +40,8 @@ XMLscene.prototype.init = function (application) {
   for(var i=0; i<Math.pow(this.boardLenght,2);i++){
     this.objectsForPicking.push(new Marker(this));
   }
+  this.invisibleTexture = new CGFtexture(this, "scenes/textures/invisibleTexture.png");
+  this.boardPosition = 0;
 
   var fps = 60;
   this.setUpdatePeriod(1000/fps);
@@ -156,6 +158,23 @@ XMLscene.prototype.display = function () {
     this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
 
     this.setDefaultAppearance();
+
+    this.pushMatrix();
+    this.multMatrix(this.boardPosition);
+
+    for (var i=0; i<this.boardLenght; i++) {
+      for (var j=0; j<this.boardLenght; j++) {
+        this.pushMatrix();
+        this.translate(0.2+1.2*j, 0.01, 0.2+1.2*i);
+        this.registerForPick(i*this.boardLenght+j+1, this.objectsForPicking[i]);
+        this.invisibleTexture.bind();
+        this.objectsForPicking[i].display();
+        this.invisibleTexture.unbind();
+        this.popMatrix();
+      }
+    }
+    this.popMatrix();
+
 
 
   }

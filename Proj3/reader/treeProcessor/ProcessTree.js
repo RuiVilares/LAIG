@@ -225,15 +225,7 @@ ProcessTree.prototype.drawScene = function(index, material, matrix, texture) {
 		this.scene.multMatrix(matrix);
 
     if (this.graph.leafList[index].type == "board"){
-      for (var i=0; i<this.scene.boardLenght; i++) {
-        for (var j=0; j<this.scene.boardLenght; j++) {
-          this.scene.pushMatrix();
-            this.scene.translate(0.2+1.2*j, 0.01, 0.2+1.2*i);
-            this.scene.registerForPick(i*this.scene.boardLenght+j+1, this.scene.objectsForPicking[i]);
-            this.scene.objectsForPicking[i].display();
-          this.scene.popMatrix();
-        }
-      }
+      this.scene.boardPosition = matrix;
     }
 
 		//apply node's material
