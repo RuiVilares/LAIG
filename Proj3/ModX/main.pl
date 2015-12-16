@@ -13,6 +13,13 @@ modx:-
 	initializeRandom,
 	mainMenu.
 
+% assertNumJokers
+playGame(Game, Row, Col, ResGame):-
+	getGameBoard(Game, Board),
+	assertNumJokers(Board),
+	putJoker(Board, Row, Col, NewBoard),
+	setGameBoard(Game, NewBoard, ResGame).
+
 % NORMAL GAME
 playGame(Game, Row, Col, ResGame):-
 	checkEndConditions(Game),
