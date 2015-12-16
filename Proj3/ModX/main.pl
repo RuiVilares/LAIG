@@ -7,18 +7,13 @@
 :- include('jokerFunctions.pl').
 :- include('gameFunctions.pl').
 :- include('randomPC.pl').
-:- include('server.pl').
 
 % START GAME
 modx:-
 	initializeRandom,
 	mainMenu.
-	startPlayerVSPlayer.
 
-parse_input(tabuleiro, Game):-
-	createPlayerVsPlayer(Game).
-
-% NORMAL GAME	
+% NORMAL GAME
 playGame(Game):-
 	checkEndConditions(Game),
 	(
@@ -40,11 +35,11 @@ playGame(Game):-
 			)
 		)
 	).
-	
+
 % END GAME
 playGame(Game):-
 	clearConsole,
-	getGameBoard(Game, Board), 
+	getGameBoard(Game, Board),
 	printBoard(Board),
 	getPontuationPlayer1(Game, Pont1),
 	getPontuationPlayer2(Game, Pont2),
@@ -64,7 +59,7 @@ playGame(Game):-
 	nl,
 	pressEnterToContinue, !.
 
-% HUMAN TURN 
+% HUMAN TURN
 humanTurn(Game, ResGame):-
 	getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
 	clearConsole,
@@ -76,7 +71,7 @@ humanTurn(Game, ResGame):-
 	endTurn(Game2, TempGame),
 	changePlayer(TempGame, ResGame), !.
 
-% CHANGE PLAYER TURN	
+% CHANGE PLAYER TURN
 changePlayer(Game, ResGame):-
 	getGamePlayerTurn(Game, Player),
 	(
