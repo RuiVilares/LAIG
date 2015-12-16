@@ -16,13 +16,8 @@ Server.prototype.getPrologRequest = function(requestString, onSuccess, onError, 
     request.send();
 }
 
-Server.prototype.makeRequest = function()
+Server.prototype.makeRequest = function(requestString)
 {
-    // Get Parameter Values
-    var requestString = "[5,playerVSplayer]";
-    requestString = "[[[[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]]],[[14,18],[14,18]],player1,playerVSplayer,5,[]],1,1]";
-    //requestString = "quit";
-
     // Make Request
     this.getPrologRequest(requestString, this.handleReply);
 }
@@ -30,4 +25,10 @@ Server.prototype.makeRequest = function()
 //Handle the Reply
 Server.prototype.handleReply = function(data){
     console.log(data.target.response);
+}
+
+
+//Handle the Reply
+Server.prototype.quit = function(){
+    this.makeRequest("quit");
 }
