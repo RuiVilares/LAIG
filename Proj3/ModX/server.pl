@@ -119,4 +119,4 @@ parse_input([Points, playerVSpc, Level1], Game) :- createPlayerVsPc(Game, Points
 
 parse_input([Points, pcVSpc, Level1, Level2], Game) :- createPcVsPc(Game, Points, Level1, Level2).
 
-parse_input([Game, Row, Col], ResGame) :- humanTurn(Game, Row, Col, ResGame).
+parse_input([Game, Row, Col], ResGame) :- playGame(Game, Row, Col, ResGame).

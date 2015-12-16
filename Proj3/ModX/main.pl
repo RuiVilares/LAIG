@@ -14,29 +14,34 @@ modx:-
 	mainMenu.
 
 % NORMAL GAME
-playGame(Game):-
+playGame(Game, Row, Col, ResGame):-
 	checkEndConditions(Game),
 	(
 		% pc vs pc
 		(getGameMode(Game, Mode), Mode == pcVSpc) -> (
-			(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, NewGame), playGame(NewGame), !);
-			(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, NewGame), playGame(NewGame), !)
+			(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, ResGame));
+			(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, ResGame))
 		);
 		% player vs. player or player vs. bot
 		(
 			(
 				% player vs player
-				(getGameMode(Game, Mode), Mode == playerVSplayer) -> (playGame(ResGame), !);
+				(getGameMode(Game, Mode), Mode == playerVSplayer) -> (humanTurn(Game, Row, Col, ResGame));
 
 				% player vs pc
-				(getGamePcLevel(ResGame, Level), Level == 1) -> (pcRandomMove(ResGame, NewGame), playGame(NewGame), !);
-				(getGamePcLevel(ResGame, Level), Level == 2) -> (pcSmartMove(ResGame, NewGame), playGame(NewGame), !)
+				(
+					(getGamePlayerTurn(Game, Player), Player == player1) -> (humanTurn(Game, Row, Col, ResGame));
+					(
+						(getGamePcLevel(ResGame, Level), Level == 1) -> (pcRandomMove(ResGame, ResGame));
+						(getGamePcLevel(ResGame, Level), Level == 2) -> (pcSmartMove(ResGame, ResGame))
+					)
+				)
 			)
 		)
 	).
 
 % END GAME
-playGame(Game):-
+playGame(Game, Row, Col, ResGame):-
 	clearConsole,
 	getGameBoard(Game, Board),
 	printBoard(Board),
@@ -60,10 +65,10 @@ playGame(Game):-
 	% HUMAN TURN
 	humanTurn(Game, Row, Col, ResGame):-
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
+		clearConsole,
 		printBoard(Board),
 		printTurnInfo(Player, Game), nl, nl,
 		putPlayerPiece(Board, Player, Row, Col, NewBoard),
-		printBoard(NewBoard),
 		decNumPiecesPlayer(Game, Player, Game1),
 		setGameBoard(Game1, NewBoard, Game2),
 		endTurn(Game2, TempGame),

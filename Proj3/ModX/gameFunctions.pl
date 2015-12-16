@@ -64,7 +64,7 @@ endTurn(Game, NewGame):-
 	((Player == player1, checkAll(Board, 1, Board1));
 	(Player == player2, checkAll(Board, 2, Board1))),
 	fixBoard(Board1, Board2, Game, Game1),
-	assertNumJokers(Board2, NewBoard),
+	%%assertNumJokers(Board2, NewBoard),-----------------------------------------------------------------------------------------------
 	setGameBoard(Game1, NewBoard, NewGame).
 
 % End pc turn
