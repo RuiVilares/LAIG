@@ -18,6 +18,7 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 
 	this.gameStarted = false;
 	this.gameList = [];
+	Board.currGame = 0;
 
 	//interface GUI
 	this.ScoreBoard = '0 - 0';
@@ -26,7 +27,7 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 	this.RemainingTime = 0;
 	this.ScoreToWin = 5;
 
-	this.server = new Server();
+	this.server = new Server(this);
 };
 
 Board.prototype.startGame = function() {
@@ -34,7 +35,13 @@ Board.prototype.startGame = function() {
 	sendMsg.push(this.ScoreToWin.toString());		
 	if (this.difficultyPlayer1 == "Human" && this.difficultyPlayer2 == "Human") {
 		sendMsg.push("playerVSplayer");
-	} else if (this.difficultyPlayer1 == "Human" || this.difficultyPlayer2 == "Human") {
+	} else if (this.difficultyPlayer1 == "Human") {
+		sendMsg.push("playerVSpc");
+		sendMsg.push(this.getDifficulty(this.difficultyPlayer2));
+	} else if (this.difficultyPlayer2 == "Human") {
+		var temp = this.difficultyPlayer1;
+		this.difficultyPlayer1 = this.difficultyPlayer2;
+		this.difficultyPlayer2 = temp;
 		sendMsg.push("playerVSpc");
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer1));
 	} else {
@@ -93,4 +100,17 @@ Board.prototype.getPlayerTurn = function(request) {
 	var player = parseInt(request[this.nextReadIndex+6]);
 	this.nextReadIndex += ("playerX".length+1);
 	return player;
+};
+
+Board.prototype.sendMove = function(id) {
+	if (!this.gameStarted) {
+		return;
+	}
+
+	var row = Math.floor(id / 8);
+	var col = id - row * 8;
+
+	console.log("[" + Board.currGame + "," + row + "," + col +"]");
+
+	this.server.makeRequest("[" + Board.currGame + "," + row + "," + col +"]");
 };
