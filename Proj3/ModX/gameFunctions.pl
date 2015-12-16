@@ -8,10 +8,9 @@ createPlayerVsPlayer(Game, Points):-
 
 % create game Player vs PC
 createPlayerVsPc(Game, Points, Level1):-
-	write('Choose Player 2 difficult level: '), nl, definePcDifficultLevel(Level),
 	emptyBoard(EmptyBoard),
 	putJokers(EmptyBoard, 5, Board),
-	Game = [Board, [[14, 18], [14, 18]], player1, playerVSpc, Points, [0, Level]].
+	Game = [Board, [[14, 18], [14, 18]], player1, playerVSpc, Points, [0, Level1]].
 
 % create game PC vs PC
 createPcVsPc(Game, Points, Level1, Level2):-
