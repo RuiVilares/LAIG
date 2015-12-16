@@ -44,7 +44,7 @@ playGame(Game, Row, Col, ResGame):-
 playGame(Game, Row, Col, ResGame):-
 	clearConsole,
 	getGameBoard(Game, Board),
-	printBoard(Board),
+	once(printBoard(Board)),
 	getPontuationPlayer1(Game, Pont1),
 	getPontuationPlayer2(Game, Pont2),
 	% check which player won
@@ -66,12 +66,13 @@ playGame(Game, Row, Col, ResGame):-
 	humanTurn(Game, Row, Col, ResGame):-
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
 		clearConsole,
-		printBoard(Board),
+		once(printBoard(Board)),
 		printTurnInfo(Player, Game), nl, nl,
 		putPlayerPiece(Board, Player, Row, Col, NewBoard),
 		decNumPiecesPlayer(Game, Player, Game1),
 		setGameBoard(Game1, NewBoard, Game2),
 		endTurn(Game2, TempGame),
+		once(printBoard(NewBoard)),
 		changePlayer(TempGame, ResGame), !.
 
 	humanTurn(Game, _, _, Game).

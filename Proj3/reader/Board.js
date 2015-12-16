@@ -2,14 +2,14 @@ Board.prototype.constructor=Board;
 
 function Board(scene) {
 	this.scene = scene;
-   
+
 var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[0,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]]],[[14,18],[14,18]],player1,playerVSplayer,5,[]]";
 
 	this.nextReadIndex;
 
 	var board = this.getBoardFromRequest(str);
 	console.log(board);
-	
+
 	var pieces = this.getNumPiecesFromRequest(str);
 	console.log(pieces);
 
@@ -32,7 +32,7 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 
 Board.prototype.startGame = function() {
 	var sendMsg = [];
-	sendMsg.push(this.ScoreToWin.toString());		
+	sendMsg.push(this.ScoreToWin.toString());
 	if (this.difficultyPlayer1 == "Human" && this.difficultyPlayer2 == "Human") {
 		sendMsg.push("playerVSplayer");
 	} else if (this.difficultyPlayer1 == "Human") {
@@ -106,7 +106,7 @@ Board.prototype.sendMove = function(id) {
 	if (!this.gameStarted) {
 		return;
 	}
-
+	id = id - 1;
 	var row = Math.floor(id / 8);
 	var col = id - row * 8;
 
