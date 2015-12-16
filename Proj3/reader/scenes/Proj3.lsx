@@ -71,7 +71,7 @@
 	e orientada no eixo positivo Oy.
 	Esta primitiva é a ÚNICA que vai ser adicionada para "picking".
 	Tamanho = 1x1-->
-	<!--<LEAF id="markerGhost" type="markerGhost" />-->
+	<LEAF id="markerGhost" type="markerGhost" />
 
 	<!--piece é uma peça em cruz (como as do jogo), suporta materiais e texturas
 	Tamanho = 1x1-->
@@ -82,8 +82,6 @@
 	e orientada no eixo positivo Oy
 	Tamanho = 9.8x9.8 (espaco entre pecas = 0.2, tamanho das pecas = 1, (9*0.2 + 8*1)x(9*0.2 + 8*1))-->
 	<LEAF id="board" type="board" />
-
-  <LEAF id="rectangle" type="rectangle" args="0 1 1 0" />
 
 </LEAVES>
 
@@ -98,7 +96,6 @@
 		<DESCENDANTS>
       <DESCENDANT id="gameBoard" />
       <DESCENDANT id="crossPiece" />
-      <DESCENDANT id="markerPiece" />
 		</DESCENDANTS>
 	</NODE>
 

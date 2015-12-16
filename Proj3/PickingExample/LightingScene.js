@@ -21,15 +21,15 @@ LightingScene.prototype.init = function (application) {
     this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
-    
+
 	this.axis=new CGFaxis(this);
-	
+
 	this.appearance = new CGFappearance(this);
 	this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
 	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
-	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);	
+	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
 	this.appearance.setShininess(120);
-	
+
 	this.objects= [
 		new CGFplane(this),
 		new CGFplane(this),
@@ -46,7 +46,7 @@ LightingScene.prototype.initLights = function () {
 	this.lights[0].setAmbient(0.1,0.1,0.1,1);
 	this.lights[0].setDiffuse(0.9,0.9,0.9,1);
 	this.lights[0].setSpecular(0,0,0,1);
-	this.lights[0].enable();		
+	this.lights[0].enable();
 	this.lights[0].update();
 };
 
@@ -63,17 +63,17 @@ LightingScene.prototype.logPicking = function ()
 				var obj = this.pickResults[i][0];
 				if (obj)
 				{
-					var customId = this.pickResults[i][1];				
+					var customId = this.pickResults[i][1];
 					console.log("Picked object: " + obj + ", with pick id " + customId);
 				}
 			}
 			this.pickResults.splice(0,this.pickResults.length);
-		}		
+		}
 	}
 }
 
 
-LightingScene.prototype.display = function () 
+LightingScene.prototype.display = function ()
 {
 	this.logPicking();
 	this.clearPickRegistration();
@@ -91,13 +91,13 @@ LightingScene.prototype.display = function ()
 	this.applyViewMatrix();
 
 	//this.scale(5,5,5);
-	
+
 	// Update all lights used
 	this.lights[0].update();
 
 	// Draw axis
-	this.axis.display();	
-	
+	this.axis.display();
+
 	this.appearance.apply();
 
 	this.rotate(Math.PI/2.0,1,0,0);
@@ -105,12 +105,12 @@ LightingScene.prototype.display = function ()
 	// draw objects
 	for (i =0; i<this.objects.length; i++) {
 		this.pushMatrix();
-	
+
 		this.translate(i*2, 0, 0);
 		this.registerForPick(i+1, this.objects[i]);
-		
+
 		this.objects[i].display();
 		this.popMatrix();
 	}
-	
+
 }

@@ -22,7 +22,7 @@ ProcessTree.prototype.fillTexturesMaterialsAndProcessMatrix = function() {
 
 	var matrix = mat4.create();
 	mat4.identity(matrix);
-	
+
 	currentNode = this.graph.nodeList[this.graph.rootElem];
 
 	/*if (currentNode.material == "null")
@@ -57,16 +57,16 @@ ProcessTree.prototype.processInformation = function(currentNode, material, textu
 		console.log("Node " + currentNode + " hasn't been found (lacks implementation). This node will be ignored.");
 		return;
 	}
-	
+
 	var tex = this.getTexture(this.graph.nodeList[currentNode].texture, texture);
-	
+
 	//multiply matrix
 	var m = mat4.create();
 	mat4.multiply(m, matrix, this.graph.nodeList[currentNode].transformationsMatrix);
 
 	//processar aqui as animações
 	this.processAnimations(m, this.graph.nodeList[currentNode].animationList);
-	
+
 	//recursive
 	for (var i = 0; i < this.graph.nodeList[currentNode].descendants.length; i++)
 	{
@@ -96,7 +96,7 @@ ProcessTree.prototype.processAnimations=function(matrix, animationList){
 			startTime += animation.span;
 			continue;
 		}
-		
+
 		animation.obj.computeMatrix(matrix, this.scene.secondsElapsed - startTime);
 		startTime += animation.span;
 		return;
@@ -224,6 +224,18 @@ ProcessTree.prototype.drawScene = function(index, material, matrix, texture) {
 		//apply node's transformation
 		this.scene.multMatrix(matrix);
 
+    if (this.graph.leafList[index].type == "board"){
+      for (var i=0; i<this.scene.boardLenght; i++) {
+        for (var j=0; j<this.scene.boardLenght; j++) {
+          this.scene.pushMatrix();
+            this.scene.translate(0.2+1.2*j, 0.01, 0.2+1.2*i);
+            this.scene.registerForPick(i*this.scene.boardLenght+j+1, this.scene.objectsForPicking[i]);
+            this.scene.objectsForPicking[i].display();
+          this.scene.popMatrix();
+        }
+      }
+    }
+
 		//apply node's material
 		material.apply();
 
@@ -234,6 +246,7 @@ ProcessTree.prototype.drawScene = function(index, material, matrix, texture) {
 				//apply texture scaling in case of triangle or rectangle
 				this.graph.leafList[index].object.scaleTexture(tex.amplif_factor.s, tex.amplif_factor.t);
 			}
+
 			//draw texture
 			tex.obj.bind();
 			textureHasBeenWritten = true;
@@ -249,6 +262,6 @@ ProcessTree.prototype.drawScene = function(index, material, matrix, texture) {
 			//undraw texture
 			tex.obj.unbind();
 		}
-		
+
 	this.scene.popMatrix();
 }

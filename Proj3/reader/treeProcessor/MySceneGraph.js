@@ -605,7 +605,7 @@ MySceneGraph.prototype.parseLeaves = function(rootElement) {
     idVar = this.reader.getString(leaf[i], 'id');
     if (this.leafList[idVar] != null)
     return "leaf " + idVar + " already exists.";
-    typeVar = this.reader.getItem(leaf[i], 'type', ["rectangle", "cylinder", "sphere", "triangle", "plane", "patch", "marker", "piece", "board"]);
+    typeVar = this.reader.getItem(leaf[i], 'type', ["rectangle", "cylinder", "sphere", "triangle", "plane", "patch", "marker", "markerghost", "piece", "board"]);
     if (typeVar == "rectangle" || typeVar == "cylinder" || typeVar == "sphere" || typeVar == "triangle"){
       argsVar = this.reader.getString(leaf[i], 'args');
       //argsParser returns number and not text
