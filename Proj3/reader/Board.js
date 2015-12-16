@@ -30,6 +30,7 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 
 	this.mode1;
 	this.mode2;
+	this.gameState = "0";
 
 	this.server = new Server(this);
 };
@@ -120,7 +121,10 @@ Board.prototype.sendMove = function(id) {
 	if (!this.gameStarted) {
 		return;
 	}
-	
+	if (this.gameState != "0" && this.gameState != "3") {
+		return;
+	}
+
 	id = id - 1;
 	var row = Math.floor(id / 8);
 	var col = id - row * 8;
@@ -140,15 +144,26 @@ Board.prototype.makePlay = function() {
 		console.log(this.board);
 
 		this.pieces = this.getNumPiecesFromRequest(Board.currGame);
+		this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
 		console.log(this.pieces);
 
 		this.playerTurn = this.getPlayerTurn(Board.currGame);
 		console.log(this.playerTurn);
+
+		this.gameState = Board.currGame[Board.currGame.length - 2];
+		console.log(this.gameState);
+
+		this.scene.initTime = this.scene.lastUpdate;
 	}
 	else {
 		return;
 	}
-	
+
+	if (this.gameState != "0" && this.gameState != "3") {
+		this.ScoreBoard = "Player " + this.gameState + " won!";
+		return;
+	}
+
 	if (this.playerTurn == 1 && this.mode1 == "PC") {
 		console.log("this.playerTurn == 1");
         this.server.makeRequest("[" + Board.currGame +"]");

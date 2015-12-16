@@ -1,5 +1,8 @@
 % AUXILIRY FUNCTIONS
-	
+
+setInfoMode(Game, Elem, ResGame):-
+	setListElemAtWith(6, Elem, Game, ResGame).
+
 %getMatrixElemAt(Row, Col, Matrix, Result)
 getMatrixElemAt(0, Col, [X|_], Elem):-
 	getListElemAt(Col, X, Elem).
@@ -37,7 +40,7 @@ initializeRandom:-
 	getrand(random(X, Y, Z, _)),
 	setrand(random(Seed, X, Y, Z)), !.
 
-% CLEAN CONSOLE	
+% CLEAN CONSOLE
 clearConsole:-
 	clearConsole(40), !.
 clearConsole(0).
@@ -47,16 +50,16 @@ clearConsole(N):-
 	clearConsole(N1).
 
 
-% INPUT FUNCTIONS	
+% INPUT FUNCTIONS
 getInt(Input):-
 	get_code(TempInput),
 	Input is TempInput - 48.
-	
+
 getChar(Input):-
 	get_char(Input),
 	get_char(_).
 
-% discard input	
+% discard input
 discardInputChar:-
 	get_code(_).
 
@@ -67,16 +70,16 @@ pressEnterToContinue:-
 
 waitForEnter:-
 	get_char(_).
-	
+
 % insert piece
 insertPiece(Row, Col):-
 	readCoords(Row, Col), nl.
 
-% read coordinates	
+% read coordinates
 readCoords(Row, Col):-
 	write('Line: '),
 	getInt(SrcRow),
-	
+
 	discardInputChar,
 	write('Col: '),
 	getInt(SrcCol),

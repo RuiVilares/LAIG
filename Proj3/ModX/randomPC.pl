@@ -17,10 +17,10 @@ pcMove(Board, player2, NewBoard):-
 
 %PC INSERT PIECE PLAYER1 AND PLAYER2 SMART ALGORITHM
 pcSmartMoveAlgorithm(Board, Player, NewBoard, Game):-
-	findBestOption(Board, 20, Player, NewBoardTemp, NewBoard, Game, -1).
+	findBestOption(Board, 20, Player, _, NewBoard, Game, -1).
 
 findBestOption(_, 0, _, Board, Board, _, _).
-findBestOption(Board, Num, Player, NewBoardTemp, NewBoard, Game, Points):-
+findBestOption(Board, Num, Player, _, NewBoard, Game, Points):-
 	Num > 0,
 	Num1 is Num - 1,
 	pcMove(Board, Player, BoardTemp),

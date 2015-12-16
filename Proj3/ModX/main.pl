@@ -38,9 +38,10 @@ playGame(Game, Row, Col, ResGame):-
 				% player vs pc
 				(
 					(getGamePlayerTurn(Game, Player), Player == player1) -> (humanTurn(Game, Row, Col, ResGame));
+					(getGamePlayerTurn(Game, Player), Player == player2) ->
 					(
-						(getGamePcLevel(ResGame, Level), Level == 1) -> (pcRandomMove(ResGame, ResGame));
-						(getGamePcLevel(ResGame, Level), Level == 2) -> (pcSmartMove(ResGame, ResGame))
+						(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, ResGame));
+						(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, ResGame))
 					)
 				)
 			)
@@ -48,7 +49,7 @@ playGame(Game, Row, Col, ResGame):-
 	).
 
 % END GAME
-playGame(Game, Row, Col, ResGame):-
+playGame(Game, _, _, ResGame):-
 	clearConsole,
 	getGameBoard(Game, Board),
 	once(printBoard(Board)),
@@ -57,20 +58,21 @@ playGame(Game, Row, Col, ResGame):-
 	% check which player won
 	(
 		(Pont1 > Pont2 ->
-			(write('# Game over. Player 1 won, congratulations!'), nl));
+			(setInfoMode(Game, 1, ResGame)));
 		(Pont1 < Pont2 ->
-			(write('# Game over. Player 2 won, congratulations!'), nl));
+			(setInfoMode(Game, 2, ResGame)));
 		(getNumPiecesPlayer1(Game, Num1), getNumPiecesPlayer2(Game, Num2),
 			(Num1 @>  Num2 ->
-			(write('# Game over. Player 1 won, Player 1 was more unused pieces'), nl));
+			(setInfoMode(Game, 1, ResGame)));
 			(Num1 @< Num2 ->
-			(write('# Game over. Player 2 won, Player 2 was more unused pieces'), nl))
+			(setInfoMode(Game, 2, ResGame)))
 		)
 	),
 	nl, !.
 
 	% HUMAN TURN
-	humanTurn(Game, Row, Col, ResGame):-
+	humanTurn(Game1, Row, Col, ResGame):-
+		setInfoMode(Game1, 3, Game),
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
 		clearConsole,
 		once(printBoard(Board)),
@@ -80,7 +82,8 @@ playGame(Game, Row, Col, ResGame):-
 		setGameBoard(Game1, NewBoard, Game2),
 		endTurn(Game2, TempGame),
 		once(printBoard(NewBoard)),
-		changePlayer(TempGame, ResGame), !.
+		setInfoMode(TempGame, 0, TempGame1),
+		changePlayer(TempGame1, ResGame), !.
 
 	humanTurn(Game, _, _, Game).
 
