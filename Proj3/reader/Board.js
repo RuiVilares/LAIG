@@ -7,18 +7,19 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 
 	this.nextReadIndex;
 
-	var board = this.getBoardFromRequest(str);
-	console.log(board);
+	this.board = this.getBoardFromRequest(str);
+	console.log(this.board);
 
-	var pieces = this.getNumPiecesFromRequest(str);
-	console.log(pieces);
+	this.pieces = this.getNumPiecesFromRequest(str);
+	console.log(this.pieces);
 
-	var playerTurn = this.getPlayerTurn(str);
-	console.log(playerTurn);
+	this.playerTurn = this.getPlayerTurn(str);
+	console.log(this.playerTurn);
 
 	this.gameStarted = false;
 	this.gameList = [];
 	Board.currGame = 0;
+	Board.updatedBoard = false;
 
 	//interface GUI
 	this.ScoreBoard = '0 - 0';
@@ -27,6 +28,9 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 	this.RemainingTime = 0;
 	this.ScoreToWin = 5;
 
+	this.mode1;
+	this.mode2;
+
 	this.server = new Server(this);
 };
 
@@ -34,17 +38,27 @@ Board.prototype.startGame = function() {
 	var sendMsg = [];
 	sendMsg.push(this.ScoreToWin.toString());
 	if (this.difficultyPlayer1 == "Human" && this.difficultyPlayer2 == "Human") {
+	    this.mode1 = "Human";
+	    this.mode2 = "Human";
 		sendMsg.push("playerVSplayer");
 	} else if (this.difficultyPlayer1 == "Human") {
+	    this.mode1 = "Human";
+	    this.mode2 = "PC";
 		sendMsg.push("playerVSpc");
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer2));
 	} else if (this.difficultyPlayer2 == "Human") {
+	    this.mode1 = "Human";
+	    this.mode2 = "PC";
 		var temp = this.difficultyPlayer1;
 		this.difficultyPlayer1 = this.difficultyPlayer2;
 		this.difficultyPlayer2 = temp;
+	    this.mode = "playerVSpc";
 		sendMsg.push("playerVSpc");
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer1));
 	} else {
+	    this.mode1 = "PC";
+	    this.mode2 = "PC";
+	    this.mode = "pcVSpc";
 		sendMsg.push("pcVSpc");
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer1));
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer2));
@@ -106,11 +120,40 @@ Board.prototype.sendMove = function(id) {
 	if (!this.gameStarted) {
 		return;
 	}
+	
 	id = id - 1;
 	var row = Math.floor(id / 8);
 	var col = id - row * 8;
 
-	console.log("[" + Board.currGame + "," + row + "," + col +"]");
-
 	this.server.makeRequest("[" + Board.currGame + "," + row + "," + col +"]");
+
+};
+
+Board.prototype.makePlay = function() {
+	if (!this.gameStarted) {
+		return;
+	}
+
+	if (Board.updatedBoard) {
+		Board.updatedBoard = false;
+		this.board = this.getBoardFromRequest(Board.currGame);
+		console.log(this.board);
+
+		this.pieces = this.getNumPiecesFromRequest(Board.currGame);
+		console.log(this.pieces);
+
+		this.playerTurn = this.getPlayerTurn(Board.currGame);
+		console.log(this.playerTurn);
+	}
+	else {
+		return;
+	}
+	
+	if (this.playerTurn == 1 && this.mode1 == "PC") {
+		console.log("this.playerTurn == 1");
+        this.server.makeRequest("[" + Board.currGame +"]");
+	} else if (this.playerTurn == 2 && this.mode2 == "PC") {
+		console.log("this.playerTurn == 2");
+        this.server.makeRequest("[" + Board.currGame +"]");
+	}
 };
