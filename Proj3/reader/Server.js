@@ -1,7 +1,6 @@
 Server.prototype.constructor=Server;
 
 function Server() {
-   this.makeRequest();
 };
 
 Server.prototype.getPrologRequest = function(requestString, onSuccess, onError, port)
@@ -20,7 +19,9 @@ Server.prototype.getPrologRequest = function(requestString, onSuccess, onError, 
 Server.prototype.makeRequest = function()
 {
     // Get Parameter Values
-    var requestString = [];
+    var requestString = "[5,playerVSplayer]";
+    requestString = "[[[[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]]],[[14,18],[14,18]],player1,playerVSplayer,5,[]],1,1]";
+    //requestString = "quit";
 
     // Make Request
     this.getPrologRequest(requestString, this.handleReply);

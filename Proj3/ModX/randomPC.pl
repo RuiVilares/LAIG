@@ -6,7 +6,7 @@ pcMove(Board, player1, NewBoard):-
 		once(checkValidPosition(Board, Row, Col)),
 		insertPiece(Board, 1, Row, Col, NewBoard),
 	!.
-	
+
 pcMove(Board, player2, NewBoard):-
 	repeat,
 		once(random(0, 8, Row)),
@@ -18,7 +18,7 @@ pcMove(Board, player2, NewBoard):-
 %PC INSERT PIECE PLAYER1 AND PLAYER2 SMART ALGORITHM
 pcSmartMoveAlgorithm(Board, Player, NewBoard, Game):-
 	findBestOption(Board, 20, Player, NewBoardTemp, NewBoard, Game, -1).
-	
+
 findBestOption(_, 0, _, Board, Board, _, _).
 findBestOption(Board, Num, Player, NewBoardTemp, NewBoard, Game, Points):-
 	Num > 0,
@@ -39,31 +39,29 @@ findBestOption(Board, Num, Player, NewBoardTemp, NewBoard, Game, Points):-
 	Pontuation > Points->
 			(findBestOption(Board, Num1, Player, BoardTemp, NewBoard, Game, Pontuation));
 		findBestOption(Board, Num1, Player, BoardTemp, NewBoard, Game, Points)
-	).	
+	).
 
-	
-% PC RANDOM MOVE TURN
-pcRandomMove(Game, NewGame):-
-	getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
-	clearConsole,
-	printBoard(Board),
-	printTurnInfo(Player, Game), nl, nl,
-	pcMove(Board, Player, NewBoard),				
-	decNumPiecesPlayer(Game, Player, Game1),
-	setGameBoard(Game1, NewBoard, Game2),
-	endRandomTurn(Game2, TempGame),
-	changePlayer(TempGame, NewGame), !.
-	
-% PC SMART MOVE TURN
-pcSmartMove(Game, NewGame):-
-	getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
-	clearConsole,
-	printBoard(Board),
-	printTurnInfo(Player, Game), nl, nl,
-	pcSmartMoveAlgorithm(Board, Player, NewBoard, Game),
-	decNumPiecesPlayer(Game, Player, Game1),
-	setGameBoard(Game1, NewBoard, Game2),
-	endRandomTurn(Game2, TempGame),
-	changePlayer(TempGame, NewGame), !.
-	
-	
+
+	% PC RANDOM MOVE TURN
+	pcRandomMove(Game, NewGame):-
+		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
+		clearConsole,
+		printBoard(Board),
+		printTurnInfo(Player, Game), nl, nl,
+		pcMove(Board, Player, NewBoard),
+		decNumPiecesPlayer(Game, Player, Game1),
+		setGameBoard(Game1, NewBoard, Game2),
+		endRandomTurn(Game2, TempGame),
+		changePlayer(TempGame, NewGame), !.
+
+	% PC SMART MOVE TURN
+	pcSmartMove(Game, NewGame):-
+		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
+		clearConsole,
+		printBoard(Board),
+		printTurnInfo(Player, Game), nl, nl,
+		pcSmartMoveAlgorithm(Board, Player, NewBoard, Game),
+		decNumPiecesPlayer(Game, Player, Game1),
+		setGameBoard(Game1, NewBoard, Game2),
+		endRandomTurn(Game2, TempGame),
+		changePlayer(TempGame, NewGame), !.

@@ -47,6 +47,10 @@ XMLscene.prototype.init = function (application) {
   this.setUpdatePeriod(1000/fps);
 
   this.setPickEnabled(true);
+
+
+  this.server = new Server();
+  this.server.makeRequest();
 };
 
 XMLscene.prototype.initLights = function () {

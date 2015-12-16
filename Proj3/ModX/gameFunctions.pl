@@ -445,28 +445,22 @@ putPlayer2Marker(Board, Row, Col, NewBoard):-
 	putPlayerMarker(Board, ResElem, Row, Col, NewBoard).
 
 %put player 1 piece
-putPlayerPiece(Board, player1,NewBoard):-
-	putPlayer1Piece(Board, NewBoard).
+putPlayerPiece(Board, player1, Row, Col, NewBoard):-
+	putPlayer1Piece(Board, Row, Col, NewBoard).
 
 %put player 2 piece
-putPlayerPiece(Board, player2,NewBoard):-
-	putPlayer2Piece(Board, NewBoard).
+putPlayerPiece(Board, player2, Row, Col, NewBoard):-
+	putPlayer2Piece(Board, Row, Col, NewBoard).
 
 %put player 1 piece AUX
-putPlayer1Piece(Board, NewBoard):-
-	repeat,
-		once(readCoords(Row, Col)),
-		once(checkValidPosition(Board, Row, Col)),
-		insertPiece(Board, 1, Row, Col, NewBoard),
-	!.
+putPlayer1Piece(Board, Row, Col, NewBoard):-
+	checkValidPosition(Board, Row, Col),
+	insertPiece(Board, 1, Row, Col, NewBoard).
 
 %put player 2 piece AUX
-putPlayer2Piece(Board, NewBoard):-
-	repeat,
-		once(readCoords(Row, Col)),
-		once(checkValidPosition(Board, Row, Col)),
-		insertPiece(Board, 2, Row, Col, NewBoard),
-	!.
+putPlayer2Piece(Board, Row, Col, NewBoard):-
+		checkValidPosition(Board, Row, Col),
+		insertPiece(Board, 2, Row, Col, NewBoard).
 
 % Insert a piece in the board
 insertPiece(Board, Piece, Row, Col, NewBoard):-

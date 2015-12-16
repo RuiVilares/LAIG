@@ -113,11 +113,10 @@ test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
 
 %%----------------------------------------------------------------
 
-parse_input([Game,[X,Y]], SendGame) :-
-	write('Jogo'), nl.
+parse_input([Points, playerVSplayer], Game) :- createPlayerVsPlayer(Game, Points).
 
-parse_input([Points, playerVSplayer], Game) :- createPlayerVsPlayer(Game, Points), write('Player vs Player'), nl.
+parse_input([Points, playerVSpc, Level1], Game) :- createPlayerVsPc(Game, Points, Level1).
 
-parse_input([Points, playerVSpc, Level1], Game) :- createPlayerVsPc(Game, Points, Level1), write('playerVSpc'), nl.
+parse_input([Points, pcVSpc, Level1, Level2], Game) :- createPcVsPc(Game, Points, Level1, Level2).
 
-parse_input([Points, pcVSpc, Level1, Level2], Game) :- createPcVsPc(Game, Points, Level1, Level2), write('pcVSpc'), nl.
+parse_input([Game, Row, Col], ResGame) :- humanTurn(Game, Row, Col, ResGame).
