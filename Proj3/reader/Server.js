@@ -1,6 +1,7 @@
 Server.prototype.constructor=Server;
 
-function Server() {
+function Server(board) {
+    this.board = board;
 };
 
 Server.prototype.getPrologRequest = function(requestString, onSuccess, onError, port)
@@ -14,21 +15,21 @@ Server.prototype.getPrologRequest = function(requestString, onSuccess, onError, 
 
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send();
-}
+};
 
 Server.prototype.makeRequest = function(requestString)
 {
     // Make Request
     this.getPrologRequest(requestString, this.handleReply);
-}
+};
 
 //Handle the Reply
 Server.prototype.handleReply = function(data){
     console.log(data.target.response);
-}
-
+    Board.currGame = data.target.response;
+};
 
 //Handle the Reply
 Server.prototype.quit = function(){
     this.makeRequest("quit");
-}
+};
