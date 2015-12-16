@@ -48,9 +48,23 @@ XMLscene.prototype.init = function (application) {
 
   this.setPickEnabled(true);
 
-
+  this.RemainingTime = 0;
+  this.board = new Board(this);
   this.server = new Server();
-  this.server.makeRequest();
+  this.quit = function() {
+    this.server.quit();
+  }
+  this.play = function() {
+    console.log("play");
+  }
+  this.undo = function() {
+    console.log("undo");
+  }
+  this.redo = function() {
+    console.log("redo");
+  }
+  this.difficultyPlayer1 = "";
+  this.difficultyPlayer2 = "";
 };
 
 XMLscene.prototype.initLights = function () {
@@ -103,8 +117,6 @@ XMLscene.prototype.onGraphLoaded = function ()
   this.textureIndex = 2;
 
   this.initTime = this.lastUpdate;
-
-  var board = new Board();
 };
 
 
@@ -127,6 +139,8 @@ XMLscene.prototype.logPicking = function ()
 
 
 XMLscene.prototype.display = function () {
+  this.RemainingTime = Math.abs(60 - this.secondsElapsed) % 60;
+
   this.logPicking();
   this.clearPickRegistration();
 
@@ -190,7 +204,6 @@ XMLscene.prototype.display = function () {
 * @param {Number} currTime - The current time
 */
 XMLscene.prototype.update = function (currTime) {
-
   this.secondsElapsed = (currTime-this.initTime)/1000;
 };
 

@@ -1,13 +1,9 @@
 Board.prototype.constructor=Board;
 
-function Board() {
+function Board(scene) {
+	this.scene = scene;
    
 var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[0,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]]],[[14,18],[14,18]],player1,playerVSplayer,5,[]]";
-
-	//o request vai ter que devolver qual foi a jogada (a peca movida)
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//temos de falar sobre como e que vamos dizer qual peca
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	this.nextReadIndex;
 
@@ -29,11 +25,18 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 	//so sao guardadas as jogadas e tabuleiros validos
 	//para depois fazer o filme (com animacao) basta chamar o prolog com a moveList
 	//para depois fazer undo e so ir buscar o ultimo elemento do array
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//(temos de falar sobre quando e que o undo e possivel!!!)
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	var boardsList = []; //Exemplo: boardsList[0] = tabuleiro
 	var movesList = []; //Exemplo: movesList[0] = [Peca, jogador] (temos de falar como guardamos a peca/jogada)
+
+	this.gameStarted = false;
+	this.ScoreBoard = '14 - 0';
+};
+
+Board.prototype.startGame = function() {
+	this.gameStarted = true;
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//falta mandar para começar o jogo
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 };
 
 Board.prototype.getBoardFromRequest = function(request) {
