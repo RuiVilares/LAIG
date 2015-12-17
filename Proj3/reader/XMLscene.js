@@ -142,6 +142,12 @@ XMLscene.prototype.display = function () {
   this.updateProjectionMatrix();
   this.loadIdentity();
 
+  /********************************************
+  //HUD
+  this.piece.orange.apply();
+  this.piece.display();
+  ********************************************/
+
   // Apply transformations corresponding to the camera position relative to the origin
   this.applyViewMatrix();
 
