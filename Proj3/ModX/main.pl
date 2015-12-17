@@ -71,8 +71,7 @@ playGame(Game, _, _, ResGame):-
 	nl, !.
 
 	% HUMAN TURN
-	humanTurn(Game1, Row, Col, ResGame):-
-		setInfoMode(Game1, 3, Game),
+	humanTurn(Game, Row, Col, ResGame):-
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
 		clearConsole,
 		once(printBoard(Board)),
@@ -85,7 +84,8 @@ playGame(Game, _, _, ResGame):-
 		setInfoMode(TempGame, 0, TempGame1),
 		changePlayer(TempGame1, ResGame), !.
 
-	humanTurn(Game, _, _, Game).
+	humanTurn(Game, _, _, ResGame):-
+			setInfoMode(Game, 3, ResGame).
 
 
 % CHANGE PLAYER TURN
