@@ -40,28 +40,7 @@ XMLscene.prototype.init = function (application) {
   for(var i=0; i<Math.pow(this.boardLenght,2);i++){
     this.objectsForPicking.push(new Marker(this));
   }
-  this.invisibleTexture = new CGFtexture(this, "scenes/textures/invisibleTexture.png");
   this.boardPosition = 0;
-
-  /*
-  this.numPieces = 14;
-  this.numMarkers = 18;
-  this.piecesPlayer1 = [];
-  for(var i=0; i<this.numPieces;i++){
-    this.piecesPlayer1.push(new Piece(this));
-  }
-  this.piecesPlayer2 = [];
-  for(var i=0; i<this.numPieces;i++){
-    this.piecesPlayer2.push(new Piece(this));
-  }
-  this.markersPlayer1 = [];
-  for(var i=0; i<this.numMarkers;i++){
-    this.markersPlayer1.push(new Marker(this));
-  }
-  this.markersPlayer2 = [];
-  for(var i=0; i<this.numMarkers;i++){
-    this.markersPlayer2.push(new Marker(this));
-  }*/
 
   var fps = 60;
   this.setUpdatePeriod(1000/fps);
@@ -69,6 +48,7 @@ XMLscene.prototype.init = function (application) {
   this.setPickEnabled(true);
 
   this.board = new Board(this);
+  this.markerColors = new MarkerColors(this);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -190,27 +170,23 @@ XMLscene.prototype.display = function () {
         this.pushMatrix();
         this.translate(0.2+1.2*j, 0.01, 0.2+1.2*i);
         this.registerForPick(i*this.boardLenght+j+1, this.objectsForPicking[i]);
-        this.invisibleTexture.bind();
-        this.objectsForPicking[i].display();
-        this.invisibleTexture.unbind();
+        if (this.board.board[i][j][1] == -1) {
+          this.markerColors.invisibleTexture.bind();
+          this.objectsForPicking[i].display();
+          this.markerColors.invisibleTexture.unbind();
+        } else {
+          if (this.board.board[i][j][1] == 11) {
+            this.markerColors.red.apply();
+          }
+          else {
+            this.markerColors.orange.apply();
+          }
+          this.objectsForPicking[i].display();
+        }
         this.popMatrix();
       }
     }
     this.popMatrix();
-
-    //_________________________________________________
-
-    /*for (var i=0; i<this.numMarkers; i++) {
-      this.pushMatrix();
-        this.translate(, 0.01, );
-        this.markersPlayer1[i].display();
-      this.popMatrix();
-    }*/
-
-    //_________________________________________________
-
-
-
   }
 };
 
