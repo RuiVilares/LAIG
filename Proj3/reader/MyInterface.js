@@ -41,6 +41,8 @@ MyInterface.prototype.init = function(application) {
 	//this.lightGroup = this.gui.addFolder("Lights");
 	this.gui.add(this.scene.board, 'difficultyPlayer1', [ 'Human', 'Random', 'Smart' ]).listen();
 	this.gui.add(this.scene.board, 'difficultyPlayer2', [ 'Human', 'Random', 'Smart' ]).listen();
+	
+	this.gui.add(this.scene,'changeScene').name("Scene");
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;

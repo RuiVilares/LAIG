@@ -49,6 +49,10 @@ XMLscene.prototype.init = function (application) {
 
   this.board = new Board(this);
   this.markerColors = new MarkerColors(this);
+  this.piece = new Piece(this);
+  this.scene = "Scene1.lsx";
+
+  this.initTime = this.lastUpdate;
 };
 
 XMLscene.prototype.initLights = function () {
@@ -159,6 +163,27 @@ XMLscene.prototype.display = function () {
 
 
     this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+    for (var i=0; i<this.boardLenght; i++) {
+      for (var j=0; j<this.boardLenght; j++) {
+        if (this.board.board[i][j][0] == -1) {
+          continue;
+        }
+
+        this.pushMatrix();
+        this.translate(0.3+1.2*j, 0.01, 0.3+1.2*i);
+
+        if (this.board.board[i][j][0] == 0) {
+            this.piece.white.apply();
+        } else if (this.board.board[i][j][0] == 1) {
+            this.piece.red.apply();
+        } else {
+            this.piece.orange.apply();
+        }
+        this.piece.display();
+
+        this.popMatrix();
+      }
+    }
 
     this.setDefaultAppearance();
 
@@ -207,3 +232,14 @@ XMLscene.prototype.updateLights = function(){
     this.lights[i].update();
   }
 };
+
+XMLscene.prototype.changeScene = function() {
+	console.log("scene");
+	if (this.scene == "Scene1.lsx") {
+	  this.scene = "Scene2.lsx";
+	} else {
+	  this.scene = "Scene1.lsx";
+	}
+
+	new MySceneGraph(this.scene, this);
+}
