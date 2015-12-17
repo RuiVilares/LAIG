@@ -6,6 +6,8 @@ function Board(scene) {
 var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1],[-1,-1],[0,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[0,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]]],[[14,18],[14,18]],player1,playerVSplayer,5,[]]";
 
 	this.nextReadIndex;
+	this.gameList = [];
+	this.currGameIndex = 0;
 
 	this.board = this.getBoardFromRequest(str);
 	console.log(this.board);
@@ -141,6 +143,15 @@ Board.prototype.makePlay = function() {
 
 	if (Board.updatedBoard) {
 		Board.updatedBoard = false;
+
+		if (Board.currGame[Board.currGame.length-2] != "3") {
+			this.gameList.push(Board.currGame);
+			this.currGameIndex = this.gameList.length - 1;
+		}
+		else {
+			return;
+		}
+
 		this.board = this.getBoardFromRequest(Board.currGame);
 		console.log(this.board);
 
