@@ -91,10 +91,52 @@ Board.prototype.play = function() {
 
 Board.prototype.undo = function() {
 	console.log("undo");
+	if (this.currGameIndex < 1) {
+		return;
+	}
+
+	this.currGameIndex--;
+	Board.currGame = this.gameList[this.currGameIndex];
+
+	this.board = this.getBoardFromRequest(Board.currGame);
+	console.log(this.board);
+
+	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
+	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
+	console.log(this.pieces);
+
+	this.playerTurn = this.getPlayerTurn(Board.currGame);
+	console.log(this.playerTurn);
+
+	this.gameState = Board.currGame[Board.currGame.length - 2];
+	console.log(this.gameState);
+
+	this.scene.initTime = this.scene.lastUpdate;
 }
 
 Board.prototype.redo = function() {
 	console.log("redo");
+	if (this.currGameIndex >= (this.gameList.length - 1)) {
+		return;
+	}
+	
+	this.currGameIndex++;
+	Board.currGame = this.gameList[this.currGameIndex];
+
+	this.board = this.getBoardFromRequest(Board.currGame);
+	console.log(this.board);
+
+	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
+	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
+	console.log(this.pieces);
+
+	this.playerTurn = this.getPlayerTurn(Board.currGame);
+	console.log(this.playerTurn);
+
+	this.gameState = Board.currGame[Board.currGame.length - 2];
+	console.log(this.gameState);
+
+	this.scene.initTime = this.scene.lastUpdate;
 }
 
 Board.prototype.getBoardFromRequest = function(request) {
@@ -145,8 +187,11 @@ Board.prototype.makePlay = function() {
 		Board.updatedBoard = false;
 
 		if (Board.currGame[Board.currGame.length-2] != "3") {
+			if (this.currGameIndex < (this.gameList.length-1)) {
+				this.gameList.splice(this.currGameIndex+1, this.gameList.length-this.currGameIndex-1);
+			}
+			this.currGameIndex++;
 			this.gameList.push(Board.currGame);
-			this.currGameIndex = this.gameList.length - 1;
 		}
 		else {
 			return;
