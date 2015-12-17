@@ -177,6 +177,8 @@
     <NODE id="scene">
       <MATERIAL id="white" />
       <TEXTURE id="clear" />
+	  
+      <TRANSLATION x="-4.8" y="0" z="0" />
 
       <DESCENDANTS>
         <DESCENDANT id="gameBoard" />

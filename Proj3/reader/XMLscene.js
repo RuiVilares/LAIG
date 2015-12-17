@@ -68,7 +68,7 @@ XMLscene.prototype.initLights = function () {
 };
 
 XMLscene.prototype.initCameras = function () {
-  this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+  this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)), vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
@@ -151,6 +151,8 @@ XMLscene.prototype.display = function () {
   // Apply transformations corresponding to the camera position relative to the origin
   this.applyViewMatrix();
 
+  //this.camera.orbit(1,Math.PI/180);
+
   // ---- END Background, camera and axis setup
 
   // it is important that things depending on the proper loading of the graph
@@ -169,6 +171,8 @@ XMLscene.prototype.display = function () {
 
 
     this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
+    
+    this.translate(-4.8,0,0);
     for (var i=0; i<this.boardLenght; i++) {
       for (var j=0; j<this.boardLenght; j++) {
         if (this.board.board[i][j][0] == -1) {
@@ -195,6 +199,7 @@ XMLscene.prototype.display = function () {
 
     this.pushMatrix();
     this.multMatrix(this.boardPosition);
+    this.translate(4.8,0,0);
 
     for (var i=0; i<this.boardLenght; i++) {
       for (var j=0; j<this.boardLenght; j++) {
