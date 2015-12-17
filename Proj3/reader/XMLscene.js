@@ -144,7 +144,6 @@ XMLscene.prototype.logPicking = function ()
 
 
 XMLscene.prototype.display = function () {
-  this.board.RemainingTime = Math.abs(60 - this.secondsElapsed) % 60;
   this.board.makePlay();
 
   this.logPicking();

@@ -25,7 +25,7 @@ var str = "[[[[-1,-1],[0,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]],[[
 	this.ScoreBoard = '0 - 0';
 	this.difficultyPlayer1 = "Human";
 	this.difficultyPlayer2 = "Human";
-	this.RemainingTime = 0;
+	this.RemainingTime = 60;
 	this.ScoreToWin = 5;
 
 	this.mode1;
@@ -66,6 +66,7 @@ Board.prototype.startGame = function() {
 	}
 	console.log(sendMsg.toString());
 	this.server.makeRequest("["+sendMsg.toString()+"]");
+	this.scene.initTime = this.scene.lastUpdate;
 	this.gameStarted = true;
 };
 
@@ -130,13 +131,13 @@ Board.prototype.sendMove = function(id) {
 	var col = id - row * 8;
 
 	this.server.makeRequest("[" + Board.currGame + "," + row + "," + col +"]");
-
 };
 
 Board.prototype.makePlay = function() {
 	if (!this.gameStarted) {
 		return;
 	}
+  	this.RemainingTime = 60 - this.scene.secondsElapsed;
 
 	if (Board.updatedBoard) {
 		Board.updatedBoard = false;
@@ -155,12 +156,18 @@ Board.prototype.makePlay = function() {
 
 		this.scene.initTime = this.scene.lastUpdate;
 	}
-	else {
+	else if (this.RemainingTime < 0) {
+		(this.playerTurn == 1) ? (this.playerTurn = 2) : (this.playerTurn = 1);
+		Board.currGame = Board.currGame.replaceAt(this.nextReadIndex-2, this.playerTurn.toString());
+		console.log("Timeout -> " + Board.currGame);
+		this.scene.initTime = this.scene.lastUpdate;
+	} else {
 		return;
 	}
 
 	if (this.gameState != "0" && this.gameState != "3") {
 		this.ScoreBoard = "Player " + this.gameState + " won!";
+		this.scene.initTime = this.scene.lastUpdate;
 		return;
 	}
 
@@ -172,3 +179,7 @@ Board.prototype.makePlay = function() {
         this.server.makeRequest("[" + Board.currGame +"]");
 	}
 };
+
+String.prototype.replaceAt=function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+}
