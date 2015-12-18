@@ -189,6 +189,10 @@ Board.prototype.makePlay = function() {
 	if (!this.gameStarted) {
 		return;
 	}
+	if (this.scene.moveCamera && this.scene.rotatingCamera) {
+		this.scene.initTime = this.scene.lastUpdate;
+		return;
+	}
   	this.RemainingTime = 60 - this.scene.secondsElapsed;
 
 	if (Board.updatedBoard) {

@@ -142,7 +142,9 @@ XMLscene.prototype.logPicking = function ()
         {
           var customId = this.pickResults[i][1];
           console.log("Picked object: " + obj + ", with pick id " + customId);
-          this.board.sendMove(customId);
+          if (!(this.scene.moveCamera && this.scene.rotatingCamera)) {
+          		this.board.sendMove(customId);
+		  }
         }
       }
       this.pickResults.splice(0,this.pickResults.length);
@@ -289,7 +291,6 @@ XMLscene.prototype.changeScene = function() {
 };
 
 XMLscene.prototype.orbitTheCamera = function() {
-	this.angleCamera++;
 	
     if (!this.moveCamera || !this.rotatingCamera) {
       this.angleCamera = 0;
@@ -301,6 +302,8 @@ XMLscene.prototype.orbitTheCamera = function() {
       return;
     }
     
+	this.angleCamera++;
+
     this.cameraIndependent.setPosition(vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)));
     this.cameraIndependent.setTarget(vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
 	
