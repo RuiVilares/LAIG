@@ -15,6 +15,7 @@ modx:-
 
 % assertNumJokers
 playGame(Game, Row, Col, ResGame):-
+	checkEndConditions(Game),
 	getGameBoard(Game, Board),
 	assertNumJokers(Board),
 	putJoker(Board, Row, Col, NewBoard),
@@ -22,37 +23,43 @@ playGame(Game, Row, Col, ResGame):-
 
 % NORMAL GAME
 playGame(Game, Row, Col, ResGame):-
-	checkEndConditions(Game),
 	(
 		% pc vs pc
 		(getGameMode(Game, Mode), Mode == pcVSpc) -> (
-			(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, ResGame));
-			(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, ResGame))
+			(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, TempGame));
+			(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, TempGame))
 		);
 		% player vs. player or player vs. bot
 		(
 			(
 				% player vs player
-				(getGameMode(Game, Mode), Mode == playerVSplayer) -> (humanTurn(Game, Row, Col, ResGame));
+				(getGameMode(Game, Mode), Mode == playerVSplayer) -> (humanTurn(Game, Row, Col, TempGame));
 
 				% player vs pc
 				(
-					(getGamePlayerTurn(Game, Player), Player == player1) -> (humanTurn(Game, Row, Col, ResGame));
+					(getGamePlayerTurn(Game, Player), Player == player1) -> (humanTurn(Game, Row, Col, TempGame));
 					(getGamePlayerTurn(Game, Player), Player == player2) ->
 					(
-						(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, ResGame));
-						(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, ResGame))
+						(getGamePcLevel(Game, Level), Level == 1) -> (pcRandomMove(Game, TempGame));
+						(getGamePcLevel(Game, Level), Level == 2) -> (pcSmartMove(Game, TempGame))
 					)
 				)
 			)
 		)
-	).
+	),
+	condition(TempGame, ResGame).
+
+condition(TempGame, TempGame):-
+	checkEndConditions(TempGame).
+
+condition(TempGame, ResGame):-
+	endGame(TempGame, ResGame).
 
 % END GAME
-playGame(Game, _, _, ResGame):-
-	clearConsole,
+endGame(Game, ResGame):-
+	%%clearConsole,
 	getGameBoard(Game, Board),
-	once(printBoard(Board)),
+	%%once(printBoard(Board)),
 	getPontuationPlayer1(Game, Pont1),
 	getPontuationPlayer2(Game, Pont2),
 	% check which player won
@@ -73,14 +80,14 @@ playGame(Game, _, _, ResGame):-
 	% HUMAN TURN
 	humanTurn(Game, Row, Col, ResGame):-
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
-		clearConsole,
-		once(printBoard(Board)),
-		printTurnInfo(Player, Game), nl, nl,
+		%%clearConsole,
+		%%once(printBoard(Board)),
+		%%printTurnInfo(Player, Game), nl, nl,
 		putPlayerPiece(Board, Player, Row, Col, NewBoard),
 		decNumPiecesPlayer(Game, Player, Game1),
 		setGameBoard(Game1, NewBoard, Game2),
 		endTurn(Game2, TempGame),
-		once(printBoard(NewBoard)),
+		%%once(printBoard(NewBoard)),
 		setInfoMode(TempGame, 0, TempGame1),
 		changePlayer(TempGame1, ResGame), !.
 

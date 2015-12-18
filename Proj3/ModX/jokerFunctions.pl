@@ -43,7 +43,7 @@ putPlayerJokers(Board, Num, NewBoard):-
 
 % check if the joker can be added
 putJoker(Board, Row, Col, NewBoard):-
-	printBoard(Board),
+	%%printBoard(Board),
 	checkValidPosition(Board, Row, Col),
 	checkPatern(Board, Row, Col),
 	insertPiece(Board, 0, Row, Col, NewBoard).

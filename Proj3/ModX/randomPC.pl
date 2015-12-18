@@ -45,9 +45,9 @@ findBestOption(Board, Num, Player, _, NewBoard, Game, Points):-
 	% PC RANDOM MOVE TURN
 	pcRandomMove(Game, NewGame):-
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
-		clearConsole,
-		printBoard(Board),
-		printTurnInfo(Player, Game), nl, nl,
+		%%clearConsole,
+		%%printBoard(Board),
+		%%printTurnInfo(Player, Game), nl, nl,
 		pcMove(Board, Player, NewBoard),
 		decNumPiecesPlayer(Game, Player, Game1),
 		setGameBoard(Game1, NewBoard, Game2),
@@ -57,9 +57,9 @@ findBestOption(Board, Num, Player, _, NewBoard, Game, Points):-
 	% PC SMART MOVE TURN
 	pcSmartMove(Game, NewGame):-
 		getGameBoard(Game, Board), getGamePlayerTurn(Game, Player),
-		clearConsole,
-		printBoard(Board),
-		printTurnInfo(Player, Game), nl, nl,
+		%%clearConsole,
+		%%printBoard(Board),
+		%%printTurnInfo(Player, Game), nl, nl,
 		pcSmartMoveAlgorithm(Board, Player, NewBoard, Game),
 		decNumPiecesPlayer(Game, Player, Game1),
 		setGameBoard(Game1, NewBoard, Game2),
