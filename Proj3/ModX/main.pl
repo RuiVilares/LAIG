@@ -19,7 +19,8 @@ playGame(Game, Row, Col, ResGame):-
 	getGameBoard(Game, Board),
 	assertNumJokers(Board),
 	putJoker(Board, Row, Col, NewBoard),
-	setGameBoard(Game, NewBoard, ResGame).
+	setGameBoard(Game, NewBoard, TempGame),
+	change(TempGame, ResGame).
 
 % NORMAL GAME
 playGame(Game, Row, Col, ResGame):-
@@ -89,13 +90,20 @@ endGame(Game, ResGame):-
 		endTurn(Game2, TempGame),
 		%%once(printBoard(NewBoard)),
 		setInfoMode(TempGame, 0, TempGame1),
-		changePlayer(TempGame1, ResGame), !.
+		change(TempGame1, ResGame), !.
 
 	humanTurn(Game, _, _, ResGame):-
 			setInfoMode(Game, 3, ResGame).
 
 
 % CHANGE PLAYER TURN
+change(Game, Game):-
+	getGameBoard(Game, Board),
+	(assertNumJokers(Board)).
+
+change(Game, ResGame):-
+	changePlayer(Game, ResGame).
+
 changePlayer(Game, ResGame):-
 	getGamePlayerTurn(Game, Player),
 	(
