@@ -33,6 +33,7 @@ MyInterface.prototype.init = function(application) {
 	this.gui.add(this.scene.board,'play').name("Play Game");
 	this.gui.add(this.scene.board,'undo').name("Undo");
 	this.gui.add(this.scene.board,'redo').name("Redo");
+	this.gui.add(this.scene,'moveCamera');
 	this.gui.add(this.scene.board, 'ScoreToWin', 1, 18).step(1);
 	this.gui.add(this.scene.board, 'RemainingTime', 0, 60).listen();
 	this.gui.add(this.scene.board, 'ScoreBoard').listen();

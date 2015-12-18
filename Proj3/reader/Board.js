@@ -105,8 +105,12 @@ Board.prototype.undo = function() {
 	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
 	console.log(this.pieces);
 
+	var oldTurn = this.playerTurn;
 	this.playerTurn = this.getPlayerTurn(Board.currGame);
 	console.log(this.playerTurn);
+	if (oldTurn != this.playerTurn) {
+		this.scene.rotatingCamera = true;
+	}
 
 	this.gameState = Board.currGame[Board.currGame.length - 2];
 	console.log(this.gameState);
@@ -130,8 +134,12 @@ Board.prototype.redo = function() {
 	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
 	console.log(this.pieces);
 
+	var oldTurn = this.playerTurn;
 	this.playerTurn = this.getPlayerTurn(Board.currGame);
 	console.log(this.playerTurn);
+	if (oldTurn != this.playerTurn) {
+		this.scene.rotatingCamera = true;
+	}
 
 	this.gameState = Board.currGame[Board.currGame.length - 2];
 	console.log(this.gameState);
@@ -204,8 +212,12 @@ Board.prototype.makePlay = function() {
 		this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
 		console.log(this.pieces);
 
+		var oldTurn = this.playerTurn;
 		this.playerTurn = this.getPlayerTurn(Board.currGame);
-		console.log(this.playerTurn);
+		console.log("playerTurn = " + this.playerTurn);
+		if (oldTurn != this.playerTurn) {
+			this.scene.rotatingCamera = true;
+		}
 
 		this.gameState = Board.currGame[Board.currGame.length - 2];
 		console.log(this.gameState);
@@ -217,6 +229,7 @@ Board.prototype.makePlay = function() {
 		Board.currGame = Board.currGame.replaceAt(this.nextReadIndex-2, this.playerTurn.toString());
 		console.log("Timeout -> " + Board.currGame);
 		this.scene.initTime = this.scene.lastUpdate;
+		this.scene.rotatingCamera = true;
 	} else {
 		return;
 	}

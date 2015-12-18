@@ -52,7 +52,30 @@ XMLscene.prototype.init = function (application) {
   this.piece = new Piece(this);
   this.scene = "Scene1.lsx";
 
+  this.moveCamera = false;
+  this.rotatingCamera = false;
+  this.angleCamera = 0;
+
   this.initTime = this.lastUpdate;
+
+
+/*
+	this.appearance = new CGFappearance(this);
+	this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
+	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
+	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);	
+	this.appearance.setShininess(120);
+  this.fontTexture = new CGFtexture(this, "scenes/textures/oolite-font.png");
+	this.appearance.setTexture(this.fontTexture);
+
+	// plane where texture character will be rendered
+	this.plane=new PlaneShader(this);
+	
+	// instatiate text shader
+	this.textShader=new CGFshader(this.gl, "scenes/shaders/font.vert", "scenes/shaders/font.frag");
+
+	// set number of rows and columns in font texture
+	this.textShader.setUniformsValues({'dims': [16, 16]});*/
 };
 
 XMLscene.prototype.initLights = function () {
@@ -69,6 +92,7 @@ XMLscene.prototype.initLights = function () {
 
 XMLscene.prototype.initCameras = function () {
   this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)), vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
+  this.cameraIndependent = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)), vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
 };
 
 XMLscene.prototype.setDefaultAppearance = function () {
@@ -142,16 +166,25 @@ XMLscene.prototype.display = function () {
   this.updateProjectionMatrix();
   this.loadIdentity();
 
-  /********************************************
+/*
   //HUD
-  this.piece.orange.apply();
-  this.piece.display();
-  ********************************************/
+  this.pushMatrix();
+    this.translate(-3.65,1.52,-10);
+    this.scale(0.1,0.1,1);
+    this.setActiveShaderSimple(this.textShader);
+    this.activeShader.setUniformsValues({'charCoords': [12,4]});
+    this.appearance.apply();
+    this.plane.display();
+    this.setActiveShaderSimple(this.defaultShader);
+  this.popMatrix();*/
 
   // Apply transformations corresponding to the camera position relative to the origin
-  this.applyViewMatrix();
+  //this.applyViewMatrix();
+  this.multMatrix(this.cameraIndependent.getViewMatrix());
 
-  //this.camera.orbit(1,Math.PI/180);
+  this.orbitTheCamera();
+
+  //this.camera.orbit(1,Math.PI/360);
 
   // ---- END Background, camera and axis setup
 
@@ -253,4 +286,29 @@ XMLscene.prototype.changeScene = function() {
 	}
 
 	new MySceneGraph(this.scene, this);
-}
+};
+
+XMLscene.prototype.orbitTheCamera = function() {
+	this.angleCamera++;
+	
+    if (!this.moveCamera || !this.rotatingCamera) {
+      this.angleCamera = 0;
+	  this.rotatingCamera = false;
+      this.cameraIndependent.setPosition(vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)));
+      this.cameraIndependent.setTarget(vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
+      if (this.moveCamera)
+        this.cameraIndependent.orbit(1,Math.PI*(this.board.playerTurn-1));
+      return;
+    }
+    
+    this.cameraIndependent.setPosition(vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)));
+    this.cameraIndependent.setTarget(vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
+	
+	this.cameraIndependent.orbit(1,Math.PI*this.board.playerTurn);
+	this.cameraIndependent.orbit(1,(Math.PI*this.angleCamera)/180);
+
+	if (this.angleCamera > 180) {
+	  this.angleCamera = 0;
+	  this.rotatingCamera = false;
+	}
+};
