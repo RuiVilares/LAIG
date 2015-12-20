@@ -10,13 +10,13 @@ function Board(scene) {
 	this.currGameIndex = 0;
 
 	this.board = this.getBoardFromRequest(str);
-	console.log(this.board);
+	//console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(str);
-	console.log(this.pieces);
+	//console.log(this.pieces);
 
 	this.playerTurn = this.getPlayerTurn(str);
-	console.log(this.playerTurn);
+	//console.log(this.playerTurn);
 
 	this.gameStarted = false;
 	this.gameList = [];
@@ -80,7 +80,7 @@ Board.prototype.startGame = function() {
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer1));
 		sendMsg.push(this.getDifficulty(this.difficultyPlayer2));
 	}
-	console.log(sendMsg.toString());
+	//console.log(sendMsg.toString());
 	this.server.makeRequest("["+sendMsg.toString()+"]");
 	this.gameList = [];
 	this.scene.initTime = this.scene.lastUpdate;
@@ -116,11 +116,11 @@ Board.prototype.quit = function() {
 
 Board.prototype.play = function() {
 	this.startGame();
-	console.log("play");
+	//console.log("play");
 }
 
 Board.prototype.undo = function() {
-	console.log("undo");
+	//console.log("undo");
 	if (this.currGameIndex < 1) {
 		return;
 	}
@@ -129,21 +129,21 @@ Board.prototype.undo = function() {
 	Board.currGame = this.gameList[this.currGameIndex-1];
 
 	this.board = this.getBoardFromRequest(Board.currGame);
-	console.log(this.board);
+	//console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
 	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
-	console.log(this.pieces);
+	//console.log(this.pieces);
 
 	var oldTurn = this.playerTurn;
 	this.playerTurn = this.getPlayerTurn(Board.currGame);
-	console.log(this.playerTurn);
+	//console.log(this.playerTurn);
 	if (oldTurn != this.playerTurn) {
 		this.scene.rotatingCamera = true;
 	}
 
 	this.gameState = Board.currGame[Board.currGame.length - 2];
-	console.log(this.gameState);
+	//console.log(this.gameState);
 
 	if (this.gameList[this.currGameIndex-1] != null) {
 		var boardOld, boardNew;
@@ -156,8 +156,8 @@ Board.prototype.undo = function() {
 }
 
 Board.prototype.redo = function() {
-	console.log("redo");
-	console.log(this.currGameIndex + " " + this.gameList.length);
+	//console.log("redo");
+	//console.log(this.currGameIndex + " " + this.gameList.length);
 	if (this.currGameIndex > (this.gameList.length - 1)) {
 		return;
 	}
@@ -166,21 +166,21 @@ Board.prototype.redo = function() {
 	Board.currGame = this.gameList[this.currGameIndex-1];
 
 	this.getBoardFromRequest(Board.currGame);
-	console.log(this.board);
+	//console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
 	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
-	console.log(this.pieces);
+	//console.log(this.pieces);
 
 	var oldTurn = this.playerTurn;
 	this.playerTurn = this.getPlayerTurn(Board.currGame);
-	console.log(this.playerTurn);
+	//console.log(this.playerTurn);
 	if (oldTurn != this.playerTurn) {
 		this.scene.rotatingCamera = true;
 	}
 
 	this.gameState = Board.currGame[Board.currGame.length - 2];
-	console.log(this.gameState);
+	//console.log(this.gameState);
 
 	var boardOld, boardNew;
 	boardOld = this.getBoardFromRequest(this.gameList[this.currGameIndex-2]);
@@ -268,35 +268,35 @@ Board.prototype.makePlay = function() {
 		if (Board.currGame[Board.currGame.length-2] != "3") {
 			if (this.currGameIndex <= (this.gameList.length-1)) {
 				this.gameList.splice(this.currGameIndex, this.gameList.length-this.currGameIndex+1);
-				console.log("splice");
+				//console.log("splice");
 				this.currGameIndex = this.gameList.length+1;
 			}
 			else {
 				this.currGameIndex++;
 			}
 			this.gameList.push(Board.currGame);
-			console.log("Tamanho -> " + this.gameList.length + " " + this.currGameIndex);
+			//console.log("Tamanho -> " + this.gameList.length + " " + this.currGameIndex);
 		}
 		else {
 			return;
 		}
 
 		var boardReceived = this.getBoardFromRequest(Board.currGame);
-		console.log(this.board);
+		//console.log(this.board);
 
 		this.pieces = this.getNumPiecesFromRequest(Board.currGame);
 		this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
-		console.log(this.pieces);
+		//console.log(this.pieces);
 
 		var oldTurn = this.playerTurn;
 		this.playerTurn = this.getPlayerTurn(Board.currGame);
-		console.log("playerTurn = " + this.playerTurn);
+		//console.log("playerTurn = " + this.playerTurn);
 		if (oldTurn != this.playerTurn) {
 			this.scene.rotatingCamera = true;
 		}
 
 		this.gameState = Board.currGame[Board.currGame.length - 2];
-		console.log(this.gameState);
+		//console.log(this.gameState);
 		
 		if (this.gameList[this.currGameIndex-2] != null && this.gameList[this.currGameIndex-1] != null) {
 			var boardOld, boardNew;
@@ -325,7 +325,7 @@ Board.prototype.makePlay = function() {
 	else if (this.RemainingTime < 0) {
 		(this.playerTurn == 1) ? (this.playerTurn = 2) : (this.playerTurn = 1);
 		Board.currGame = Board.currGame.replaceAt(this.nextReadIndex-2, this.playerTurn.toString());
-		console.log("Timeout -> " + Board.currGame);
+		//console.log("Timeout -> " + Board.currGame);
 		this.scene.initTime = this.scene.lastUpdate;
 		this.scene.rotatingCamera = true;
 	} else {
@@ -333,10 +333,10 @@ Board.prototype.makePlay = function() {
 	}
 
 	if (this.playerTurn == 1 && this.mode1 == "PC") {
-		console.log("this.playerTurn == 1");
+		//console.log("this.playerTurn == 1");
         this.server.makeRequest("[" + Board.currGame +"]");
 	} else if (this.playerTurn == 2 && this.mode2 == "PC") {
-		console.log("this.playerTurn == 2");
+		//console.log("this.playerTurn == 2");
         this.server.makeRequest("[" + Board.currGame +"]");
 	}
 };

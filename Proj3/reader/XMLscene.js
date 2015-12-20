@@ -142,7 +142,7 @@ XMLscene.prototype.logPicking = function ()
         if (obj)
         {
           var customId = this.pickResults[i][1];
-          console.log("Picked object: " + obj + ", with pick id " + customId);
+          //console.log("Picked object: " + obj + ", with pick id " + customId);
           if (!(this.scene.moveCamera && this.scene.rotatingCamera)) {
           		this.board.sendMove(customId);
 		  }
@@ -292,7 +292,7 @@ XMLscene.prototype.updateLights = function(){
 };
 
 XMLscene.prototype.changeScene = function() {
-	console.log("scene");
+	//console.log("scene");
 	if (this.scene == "Scene1.lsx") {
 	  this.scene = "Scene2.lsx";
 	} else {

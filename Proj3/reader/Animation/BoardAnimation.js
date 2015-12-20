@@ -206,7 +206,7 @@ BoardAnimation.prototype.firstEmptyPosition = function(vectorList) {
 	    }
 	}
 
-	console.log("Not found an empty position!!");
+	//console.log("Not found an empty position!!");
 	return -1;
 };
 
@@ -217,7 +217,7 @@ BoardAnimation.prototype.firstFilledPosition = function(vectorList) {
 	    }
 	}
 
-	console.log("Not found a filled position!!");
+	//console.log("Not found a filled position!!");
 	return -1;
 };
 
