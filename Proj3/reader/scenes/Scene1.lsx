@@ -78,11 +78,6 @@
       <amplif_factor s="15" t="7" />                <!-- x/s, y/t -->
     </TEXTURE>
 
-    <TEXTURE id="boardTexture">
-      <file path="textures/Board.png" />           <!-- path to file -->
-      <amplif_factor s="1" t="1" />                <!-- x/s, y/t -->
-    </TEXTURE>
-
 
   </TEXTURES>
 
@@ -188,7 +183,7 @@
 
     <NODE id="gameBoard">
       <MATERIAL id="white" />
-      <TEXTURE id="boardTexture" />
+      <TEXTURE id="clear" />
 
       <TRANSLATION x="0" y="-0.1" z="0" />
 

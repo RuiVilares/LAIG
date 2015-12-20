@@ -50,6 +50,7 @@ XMLscene.prototype.init = function (application) {
   this.board = new Board(this);
   this.markerColors = new MarkerColors(this);
   this.piece = new Piece(this);
+  this.marker = new Marker(this);
   this.scene = "Scene1.lsx";
 
   this.moveCamera = false;
@@ -181,12 +182,13 @@ XMLscene.prototype.display = function () {
   this.popMatrix();*/
 
   // Apply transformations corresponding to the camera position relative to the origin
-  //this.applyViewMatrix();
-  this.multMatrix(this.cameraIndependent.getViewMatrix());
-
-  this.orbitTheCamera();
-
-  //this.camera.orbit(1,Math.PI/360);
+  if (this.moveCamera) {
+	this.multMatrix(this.cameraIndependent.getViewMatrix());
+  	//this.orbitTheCamera();
+  }
+  else {
+  	this.applyViewMatrix();
+  }
 
   // ---- END Background, camera and axis setup
 
@@ -208,6 +210,9 @@ XMLscene.prototype.display = function () {
     this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
     
     this.translate(-4.8,0,0);
+
+    this.board.boardAnimation.drawAnimation();
+
     for (var i=0; i<this.boardLenght; i++) {
       for (var j=0; j<this.boardLenght; j++) {
         if (this.board.board[i][j][0] == -1) {
@@ -233,8 +238,8 @@ XMLscene.prototype.display = function () {
     this.setDefaultAppearance();
 
     this.pushMatrix();
-    this.multMatrix(this.boardPosition);
-    this.translate(4.8,0,0);
+    //this.multMatrix(this.boardPosition);
+    //this.translate(4.8,0,0);
 
     for (var i=0; i<this.boardLenght; i++) {
       for (var j=0; j<this.boardLenght; j++) {
@@ -258,16 +263,23 @@ XMLscene.prototype.display = function () {
       }
     }
     this.popMatrix();
+
+    this.drawPiecesOutside();
+    this.drawMarkersOutside();
   }
 };
 
 /**
-* This funciton will be called every fps (default 60) milliseconds
+* This function will be called every fps (default 60) milliseconds
 * Draw the scene and the time is specially useful for the animations
 * @param {Number} currTime - The current time
 */
 XMLscene.prototype.update = function (currTime) {
   this.secondsElapsed = (currTime-this.initTime)/1000;
+  this.currTime = currTime;
+  if (this.moveCamera) {
+  	this.orbitTheCamera();
+  }
 };
 
 XMLscene.prototype.updateLights = function(){
@@ -313,5 +325,57 @@ XMLscene.prototype.orbitTheCamera = function() {
 	if (this.angleCamera > 180) {
 	  this.angleCamera = 0;
 	  this.rotatingCamera = false;
+	}
+};
+
+XMLscene.prototype.drawPiecesOutside = function() {
+
+    this.piece.red.apply();
+	for (var i=0; i<this.board.player1PiecesOutside.length; i++) {
+		if (this.board.player1PiecesOutside[i]) {
+			this.pushMatrix();
+				this.translate(1.3*(i%7)+0.6,0.01,-1-Math.floor(i/7));
+        		this.piece.display();
+			this.popMatrix();
+		}
+	}
+	
+    this.piece.orange.apply();
+	for (var i=0; i<this.board.player2PiecesOutside.length; i++) {
+		if (this.board.player2PiecesOutside[i]) {
+			this.pushMatrix();
+				this.translate(1.3*(i%7)+0.6,0.01,10.8+Math.floor(i/7));
+        		this.piece.display();
+			this.popMatrix();
+		}
+	}
+	
+    this.piece.white.apply();
+	for (var i=0; i<this.board.jokerPiecesOutside.length; i++) {
+		if (this.board.jokerPiecesOutside[i]) {
+			this.pushMatrix();
+				this.translate(10.4,0.01,1.5+1.6*i);
+        		this.piece.display();
+			this.popMatrix();
+		}
+	}
+};
+
+XMLscene.prototype.drawMarkersOutside = function() {
+
+    this.markerColors.red.apply();
+	for (var i=0; i<this.board.player1MarkersOutside; i++) {
+		this.pushMatrix();
+			this.translate(1.2*((17-i)%8)+0.2,0.01,-3.5-Math.floor((17-i)/8));
+			this.marker.display();
+		this.popMatrix();
+	}
+
+	this.markerColors.orange.apply();
+	for (var i=0; i<this.board.player2MarkersOutside; i++) {
+		this.pushMatrix();
+			this.translate(1.2*((17-i)%8)+0.2,0.01,12.8+Math.floor((17-i)/8));
+			this.marker.display();
+		this.popMatrix();
 	}
 };

@@ -35,6 +35,20 @@ function Board(scene) {
 	this.gameState = "0";
 
 	this.server = new Server(this);
+	this.boardAnimation = new BoardAnimation(this.scene, this);
+	this.movieIndex = 1;
+	this.startMovie = false;
+
+	this.player1PiecesOutside = [];
+	this.player2PiecesOutside = [];
+	this.player1MarkersOutside = 18;
+	this.player2MarkersOutside = 18;
+	this.jokerPiecesOutside = [false,false,false,false,false];
+
+	for (var i = 0; i < 14; i++) {
+		this.player1PiecesOutside.push(true);
+		this.player2PiecesOutside.push(true);
+	}
 };
 
 Board.prototype.startGame = function() {
@@ -68,8 +82,24 @@ Board.prototype.startGame = function() {
 	}
 	console.log(sendMsg.toString());
 	this.server.makeRequest("["+sendMsg.toString()+"]");
+	this.gameList = [];
 	this.scene.initTime = this.scene.lastUpdate;
 	this.gameStarted = true;
+	this.currGameIndex = 0;
+	this.startMovie = false;
+	this.movieIndex = 1;
+	this.boardAnimation = new BoardAnimation(this.scene, this);
+
+	this.player1PiecesOutside = [];
+	this.player2PiecesOutside = [];
+	this.player1MarkersOutside = 18;
+	this.player2MarkersOutside = 18;
+	this.jokerPiecesOutside = [false,false,false,false,false];
+
+	for (var i = 0; i < 14; i++) {
+		this.player1PiecesOutside.push(true);
+		this.player2PiecesOutside.push(true);
+	}
 };
 
 Board.prototype.getDifficulty = function(text) {
@@ -96,7 +126,7 @@ Board.prototype.undo = function() {
 	}
 
 	this.currGameIndex--;
-	Board.currGame = this.gameList[this.currGameIndex];
+	Board.currGame = this.gameList[this.currGameIndex-1];
 
 	this.board = this.getBoardFromRequest(Board.currGame);
 	console.log(this.board);
@@ -114,20 +144,28 @@ Board.prototype.undo = function() {
 
 	this.gameState = Board.currGame[Board.currGame.length - 2];
 	console.log(this.gameState);
+
+	if (this.gameList[this.currGameIndex-1] != null) {
+		var boardOld, boardNew;
+		boardOld = this.getBoardFromRequest(this.gameList[this.currGameIndex-1]);
+		boardNew = this.getBoardFromRequest(this.gameList[this.currGameIndex]);
+		this.boardAnimation.makeAnimation(boardNew, boardOld, false);
+	}
 
 	this.scene.initTime = this.scene.lastUpdate;
 }
 
 Board.prototype.redo = function() {
 	console.log("redo");
-	if (this.currGameIndex >= (this.gameList.length - 1)) {
+	console.log(this.currGameIndex + " " + this.gameList.length);
+	if (this.currGameIndex > (this.gameList.length - 1)) {
 		return;
 	}
 	
 	this.currGameIndex++;
-	Board.currGame = this.gameList[this.currGameIndex];
+	Board.currGame = this.gameList[this.currGameIndex-1];
 
-	this.board = this.getBoardFromRequest(Board.currGame);
+	this.getBoardFromRequest(Board.currGame);
 	console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
@@ -143,6 +181,11 @@ Board.prototype.redo = function() {
 
 	this.gameState = Board.currGame[Board.currGame.length - 2];
 	console.log(this.gameState);
+
+	var boardOld, boardNew;
+	boardOld = this.getBoardFromRequest(this.gameList[this.currGameIndex-2]);
+	boardNew = this.getBoardFromRequest(this.gameList[this.currGameIndex-1]);
+	this.boardAnimation.makeAnimation(boardOld, boardNew, true);
 
 	this.scene.initTime = this.scene.lastUpdate;
 }
@@ -189,27 +232,56 @@ Board.prototype.makePlay = function() {
 	if (!this.gameStarted) {
 		return;
 	}
-	if (this.scene.moveCamera && this.scene.rotatingCamera) {
+
+	if (this.gameState != "0" && this.gameState != "3") {
+		this.ScoreBoard = "Player " + this.gameState + " won!";
+  		this.RemainingTime = 5 - this.scene.secondsElapsed;
+		if (this.scene.secondsElapsed > 5) {
+			this.jokerPiecesOutside = [false,false,false,false,false];
+			this.startMovie = true;
+		}
+		if (this.startMovie) {
+			if (this.boardAnimation.animationList.length == 0 && this.movieIndex < this.gameList.length) {
+				var boardOld, boardNew;
+				boardOld = this.getBoardFromRequest(this.gameList[this.movieIndex-1]);
+				boardNew = this.getBoardFromRequest(this.gameList[this.movieIndex]);
+				this.boardAnimation.makeAnimation(boardOld, boardNew, true);
+				this.movieIndex++;
+			}
+			this.scene.initTime = this.scene.lastUpdate;
+		} else {
+  			this.RemainingTime = 60 - this.scene.secondsElapsed;
+		}
+		return;
+	}
+
+	if ((this.scene.moveCamera && this.scene.rotatingCamera) || (this.boardAnimation.animationList.length != 0)) {
 		this.scene.initTime = this.scene.lastUpdate;
 		return;
 	}
+
   	this.RemainingTime = 60 - this.scene.secondsElapsed;
 
 	if (Board.updatedBoard) {
 		Board.updatedBoard = false;
 
 		if (Board.currGame[Board.currGame.length-2] != "3") {
-			if (this.currGameIndex < (this.gameList.length-1)) {
-				this.gameList.splice(this.currGameIndex+1, this.gameList.length-this.currGameIndex-1);
+			if (this.currGameIndex <= (this.gameList.length-1)) {
+				this.gameList.splice(this.currGameIndex, this.gameList.length-this.currGameIndex+1);
+				console.log("splice");
+				this.currGameIndex = this.gameList.length+1;
 			}
-			this.currGameIndex++;
+			else {
+				this.currGameIndex++;
+			}
 			this.gameList.push(Board.currGame);
+			console.log("Tamanho -> " + this.gameList.length + " " + this.currGameIndex);
 		}
 		else {
 			return;
 		}
 
-		this.board = this.getBoardFromRequest(Board.currGame);
+		var boardReceived = this.getBoardFromRequest(Board.currGame);
 		console.log(this.board);
 
 		this.pieces = this.getNumPiecesFromRequest(Board.currGame);
@@ -225,6 +297,28 @@ Board.prototype.makePlay = function() {
 
 		this.gameState = Board.currGame[Board.currGame.length - 2];
 		console.log(this.gameState);
+		
+		if (this.gameList[this.currGameIndex-2] != null && this.gameList[this.currGameIndex-1] != null) {
+			var boardOld, boardNew;
+			boardOld = this.getBoardFromRequest(this.gameList[this.currGameIndex-2]);
+			boardNew = this.getBoardFromRequest(this.gameList[this.currGameIndex-1]);
+			this.boardAnimation.makeAnimation(boardOld, boardNew, true);
+		} else {
+			this.board = boardReceived;
+		}
+
+		if (this.gameState != "0" && this.gameState != "3") {
+			this.player1PiecesOutside = [];
+			this.player2PiecesOutside = [];
+			this.player1MarkersOutside = 18;
+			this.player2MarkersOutside = 18;
+			this.jokerPiecesOutside = [false,false,false,false,false];
+
+			for (var i = 0; i < 14; i++) {
+				this.player1PiecesOutside.push(true);
+				this.player2PiecesOutside.push(true);
+			}
+		}
 
 		this.scene.initTime = this.scene.lastUpdate;
 	}
@@ -235,12 +329,6 @@ Board.prototype.makePlay = function() {
 		this.scene.initTime = this.scene.lastUpdate;
 		this.scene.rotatingCamera = true;
 	} else {
-		return;
-	}
-
-	if (this.gameState != "0" && this.gameState != "3") {
-		this.ScoreBoard = "Player " + this.gameState + " won!";
-		this.scene.initTime = this.scene.lastUpdate;
 		return;
 	}
 
