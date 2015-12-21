@@ -89,7 +89,7 @@ BoardAnimation.prototype.takeOutPiece = function(i,j,playerVar) {
         this.temporaryPlace2[placeVar] = true;
         end = {
           x: 1.3*(placeVar%7)+0.6,
-          z: 10.8+Math.floor(placeVar/7)
+          z: 10.2+Math.floor(placeVar/7)
         };
     } else {
         placeVar = this.firstEmptyPosition(this.temporaryPlaceJoker);
@@ -135,7 +135,7 @@ BoardAnimation.prototype.takeMarker = function(i,j,playerVar) {
     	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
         end = {
           x: 1.2*(position%8)+0.2,
-          z: -3.5-Math.floor(position/8)
+          z: -3.5-1.2*Math.floor(position/8)
         };
     } else {
     	this.temporaryMarker2++;
@@ -143,7 +143,7 @@ BoardAnimation.prototype.takeMarker = function(i,j,playerVar) {
     	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
         end = {
           x: 1.2*(position%8)+0.2,
-          z: 12.8+Math.floor(position/8)
+          z: 12.2+1.2*Math.floor(position/8)
         };
     }
     
@@ -181,7 +181,7 @@ BoardAnimation.prototype.putMarker = function(i,j,playerVar) {
     	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
         beginVar = {
           x: 1.2*(position%8)+0.2,
-          z: -3.5-Math.floor(position/8)
+          z: -3.5-1.2*Math.floor(position/8)
         };
     } else {
     	this.board.player2MarkersOutside--;
@@ -190,7 +190,7 @@ BoardAnimation.prototype.putMarker = function(i,j,playerVar) {
     	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
         beginVar = {
           x: 1.2*(position%8)+0.2,
-          z: 12.8+Math.floor(position/8)
+          z: 12.2+1.2*Math.floor(position/8)
         };
     }
     
@@ -235,7 +235,7 @@ BoardAnimation.prototype.putPiece = function(i,j,playerVar) {
         this.temporaryPlace2[placeVar] = false;
         beginVar = {
           x: 1.3*(placeVar%7)+0.6,
-          z: 10.8+Math.floor(placeVar/7)
+          z: 10.2+Math.floor(placeVar/7)
         };
     } else {
         placeVar = this.firstFilledPosition(this.temporaryPlaceJoker);

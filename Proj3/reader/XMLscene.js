@@ -343,7 +343,7 @@ XMLscene.prototype.drawPiecesOutside = function() {
 	for (var i=0; i<this.board.player2PiecesOutside.length; i++) {
 		if (this.board.player2PiecesOutside[i]) {
 			this.pushMatrix();
-				this.translate(1.3*(i%7)+0.6,0.01,10.8+Math.floor(i/7));
+				this.translate(1.3*(i%7)+0.6,0.01,10.2+Math.floor(i/7));
         		this.piece.display();
 			this.popMatrix();
 		}
@@ -365,7 +365,7 @@ XMLscene.prototype.drawMarkersOutside = function() {
     this.markerColors.red.apply();
 	for (var i=0; i<this.board.player1MarkersOutside; i++) {
 		this.pushMatrix();
-			this.translate(1.2*((17-i)%8)+0.2,0.01,-3.5-Math.floor((17-i)/8));
+			this.translate(1.2*((17-i)%8)+0.2,0.01,-3.5-1.2*Math.floor((17-i)/8));
 			this.marker.display();
 		this.popMatrix();
 	}
@@ -373,7 +373,7 @@ XMLscene.prototype.drawMarkersOutside = function() {
 	this.markerColors.orange.apply();
 	for (var i=0; i<this.board.player2MarkersOutside; i++) {
 		this.pushMatrix();
-			this.translate(1.2*((17-i)%8)+0.2,0.01,12.8+Math.floor((17-i)/8));
+			this.translate(1.2*((17-i)%8)+0.2,0.01,12.2+1.2*Math.floor((17-i)/8));
 			this.marker.display();
 		this.popMatrix();
 	}

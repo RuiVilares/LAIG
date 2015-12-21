@@ -234,7 +234,7 @@
         <MATERIAL id="materialMesa" />
         <TEXTURE id="madeiraPreta" />
 
-        <TRANSLATION x="3" y="0" z="2.8" />
+        <TRANSLATION x="3" y="0" z="2.75" />
     <SCALE sx="1" sy="0.7" sz="1" />
 
         <DESCENDANTS>
