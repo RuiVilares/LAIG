@@ -59,24 +59,7 @@ XMLscene.prototype.init = function (application) {
 
   this.initTime = this.lastUpdate;
 
-
-/*
-	this.appearance = new CGFappearance(this);
-	this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
-	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
-	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);	
-	this.appearance.setShininess(120);
-  this.fontTexture = new CGFtexture(this, "scenes/textures/oolite-font.png");
-	this.appearance.setTexture(this.fontTexture);
-
-	// plane where texture character will be rendered
-	this.plane=new PlaneShader(this);
-	
-	// instatiate text shader
-	this.textShader=new CGFshader(this.gl, "scenes/shaders/font.vert", "scenes/shaders/font.frag");
-
-	// set number of rows and columns in font texture
-	this.textShader.setUniformsValues({'dims': [16, 16]});*/
+  this.hud = new Hud(this);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -169,17 +152,33 @@ XMLscene.prototype.display = function () {
   this.updateProjectionMatrix();
   this.loadIdentity();
 
-/*
-  //HUD
-  this.pushMatrix();
-    this.translate(-3.65,1.52,-10);
-    this.scale(0.1,0.1,1);
-    this.setActiveShaderSimple(this.textShader);
-    this.activeShader.setUniformsValues({'charCoords': [12,4]});
-    this.appearance.apply();
-    this.plane.display();
-    this.setActiveShaderSimple(this.defaultShader);
-  this.popMatrix();*/
+
+  //HUD ---------------------------------------------------------------------------------
+
+  var remainingTime = "Time: " + parseInt(this.board.RemainingTime).toString();
+  var score = "Score: " + this.board.ScoreBoard;
+
+  var ScoreToWin = "To win: " + this.board.ScoreToWin;
+
+  var player1 = "Player 1";
+  var player1Markers = "-Markers: " + this.board.pieces[0][1].toString();
+  var player1Pieces = "-Pieces: " + this.board.pieces[0][0].toString();
+
+  var player2 = "Player 2";
+  var player2Markers = "-Markers: " + this.board.pieces[1][1].toString();
+  var player2Pieces = "-Pieces: " + this.board.pieces[1][0].toString();
+
+  if (this.board.gameState != 0 && this.board.gameState != 3){
+    if ((60-this.board.RemainingTime) < 10)
+      this.hud.display(["Start movie", "      " + parseInt(10-(60-this.board.RemainingTime)).toString(), "", "", "Player " + this.board.gameState + " won"]);
+    else
+      this.hud.display(["   MOVIE", "", "", "", "", "Player " + this.board.gameState + " won", "", "", "", "   MOVIE"]);
+  }
+  else
+    this.hud.display([remainingTime, score, "", ScoreToWin, "", player1, player1Pieces, player1Markers, "", player2, player2Pieces, player2Markers]);
+
+  // ----------------------------------------------------------------------------------
+
 
   // Apply transformations corresponding to the camera position relative to the origin
   if (this.moveCamera) {
@@ -208,7 +207,7 @@ XMLscene.prototype.display = function () {
 
 
     this.graph.processTree.fillTexturesMaterialsAndProcessMatrix();
-    
+
     this.translate(-4.8,0,0);
 
     this.board.boardAnimation.drawAnimation();
@@ -303,7 +302,7 @@ XMLscene.prototype.changeScene = function() {
 };
 
 XMLscene.prototype.orbitTheCamera = function() {
-	
+
     if (!this.moveCamera || !this.rotatingCamera) {
       this.angleCamera = 0;
 	  this.rotatingCamera = false;
@@ -313,12 +312,12 @@ XMLscene.prototype.orbitTheCamera = function() {
         this.cameraIndependent.orbit(1,Math.PI*(this.board.playerTurn-1));
       return;
     }
-    
+
 	this.angleCamera++;
 
     this.cameraIndependent.setPosition(vec3.fromValues(-7*Math.sin((Math.PI*45)/180), 10, -7*Math.cos((Math.PI*45)/180)));
     this.cameraIndependent.setTarget(vec3.fromValues(1.47*Math.sin((Math.PI*45)/180), 0, 1.47*Math.cos((Math.PI*45)/180)));
-	
+
 	this.cameraIndependent.orbit(1,Math.PI*this.board.playerTurn);
 	this.cameraIndependent.orbit(1,(Math.PI*this.angleCamera)/180);
 
@@ -339,7 +338,7 @@ XMLscene.prototype.drawPiecesOutside = function() {
 			this.popMatrix();
 		}
 	}
-	
+
     this.piece.orange.apply();
 	for (var i=0; i<this.board.player2PiecesOutside.length; i++) {
 		if (this.board.player2PiecesOutside[i]) {
@@ -349,7 +348,7 @@ XMLscene.prototype.drawPiecesOutside = function() {
 			this.popMatrix();
 		}
 	}
-	
+
     this.piece.white.apply();
 	for (var i=0; i<this.board.jokerPiecesOutside.length; i++) {
 		if (this.board.jokerPiecesOutside[i]) {

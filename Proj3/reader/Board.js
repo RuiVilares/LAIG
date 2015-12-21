@@ -24,7 +24,7 @@ function Board(scene) {
 	Board.updatedBoard = false;
 
 	//interface GUI
-	this.ScoreBoard = '0 - 0';
+	this.ScoreBoard = '0-0';
 	this.difficultyPlayer1 = "Human";
 	this.difficultyPlayer2 = "Human";
 	this.RemainingTime = 60;
@@ -132,7 +132,7 @@ Board.prototype.undo = function() {
 	//console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
-	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
+	this.ScoreBoard = (18-this.pieces[0][1]) + "-" + (18-this.pieces[1][1]);
 	//console.log(this.pieces);
 
 	var oldTurn = this.playerTurn;
@@ -161,7 +161,7 @@ Board.prototype.redo = function() {
 	if (this.currGameIndex > (this.gameList.length - 1)) {
 		return;
 	}
-	
+
 	this.currGameIndex++;
 	Board.currGame = this.gameList[this.currGameIndex-1];
 
@@ -169,7 +169,7 @@ Board.prototype.redo = function() {
 	//console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
-	this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
+	this.ScoreBoard = (18-this.pieces[0][1]) + "-" + (18-this.pieces[1][1]);
 	//console.log(this.pieces);
 
 	var oldTurn = this.playerTurn;
@@ -234,9 +234,9 @@ Board.prototype.makePlay = function() {
 	}
 
 	if (this.gameState != "0" && this.gameState != "3") {
-		this.ScoreBoard = "Player " + this.gameState + " won!";
-  		this.RemainingTime = 5 - this.scene.secondsElapsed;
-		if (this.scene.secondsElapsed > 5) {
+		//this.ScoreBoard = "Player " + this.gameState + " won!";
+  		this.RemainingTime = 10 - this.scene.secondsElapsed;
+		if (this.scene.secondsElapsed > 10) {
 			this.jokerPiecesOutside = [false,false,false,false,false];
 			this.startMovie = true;
 		}
@@ -285,7 +285,7 @@ Board.prototype.makePlay = function() {
 		//console.log(this.board);
 
 		this.pieces = this.getNumPiecesFromRequest(Board.currGame);
-		this.ScoreBoard = (18-this.pieces[0][1]) + " - " + (18-this.pieces[1][1]);
+		this.ScoreBoard = (18-this.pieces[0][1]) + "-" + (18-this.pieces[1][1]);
 		//console.log(this.pieces);
 
 		var oldTurn = this.playerTurn;
@@ -297,7 +297,7 @@ Board.prototype.makePlay = function() {
 
 		this.gameState = Board.currGame[Board.currGame.length - 2];
 		//console.log(this.gameState);
-		
+
 		if (this.gameList[this.currGameIndex-2] != null && this.gameList[this.currGameIndex-1] != null) {
 			var boardOld, boardNew;
 			boardOld = this.getBoardFromRequest(this.gameList[this.currGameIndex-2]);
