@@ -10,16 +10,22 @@ function BoardAnimation(scene, board) {
     this.temporaryPlace1 = [];
     this.temporaryPlace2 = [];
     this.temporaryPlaceJoker = [];
+
+    this.piecesHeigth = 5;
+    this.markerHeigth = 3;
 };
 
 BoardAnimation.prototype.makeAnimation = function(boardPrev, boardAfter, normal) {
 	this.timeStarted = this.scene.currTime;
 	
 	this.normal = normal;
+	this.boardPrev = boardPrev;
 
     this.temporaryPlace1 = this.board.player1PiecesOutside.slice();
     this.temporaryPlace2 = this.board.player2PiecesOutside.slice();
     this.temporaryPlaceJoker = this.board.jokerPiecesOutside.slice();
+    this.temporaryMarker1 = this.board.player1MarkersOutside;
+    this.temporaryMarker2 = this.board.player2MarkersOutside;
 
     for (var i = 0; i < boardPrev.length; i++) {
         for (var j = 0; j < boardPrev[i].length; j++) {
@@ -42,8 +48,13 @@ BoardAnimation.prototype.makeAnimation = function(boardPrev, boardAfter, normal)
             }
 
             if (boardPrev[i][j][1] != boardAfter[i][j][1]) {
-                //por
-                this.putMarker(i,j,boardAfter[i][j][1]);
+            	if (boardAfter[i][j][1] == -1) {
+            		//tirar
+            		this.takeMarker(i,j,boardPrev[i][j][1]);
+            	} else {
+					//por
+					this.putMarker(i,j,boardAfter[i][j][1]);
+            	}
             }
         }
     }
@@ -100,7 +111,54 @@ BoardAnimation.prototype.takeOutPiece = function(i,j,playerVar) {
         player: playerVar,
         place: placeVar,
         placeBool: true,
+        heigth: this.piecesHeigth,
         type: "piece"
+    });
+};
+
+BoardAnimation.prototype.takeMarker = function(i,j,playerVar) {
+	if (playerVar == -1) {
+	    return;
+	}
+    
+    var beginVar, end, routeVectorVar, heigthVar;
+    beginVar = {
+      x: 0.3+1.2*j,
+      z: 0.3+1.2*i
+    };
+    this.boardPrev[i][j][1] = -1;
+
+    var placeVar;
+    if (playerVar == 11) {
+    	this.temporaryMarker1++;
+    	var position = 18-this.temporaryMarker1;
+    	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
+        end = {
+          x: 1.2*(position%8)+0.2,
+          z: -3.5-Math.floor(position/8)
+        };
+    } else {
+    	this.temporaryMarker2++;
+    	var position = 18-this.temporaryMarker2;
+    	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
+        end = {
+          x: 1.2*(position%8)+0.2,
+          z: 12.8+Math.floor(position/8)
+        };
+    }
+    
+    routeVectorVar = {
+        x: end.x - beginVar.x,
+        z: end.z - beginVar.z
+    };
+
+    this.animationList.push({
+        begin: beginVar,
+        routeVector: routeVectorVar,
+        player: playerVar,
+        heigth: heigthVar,
+        action: "take",
+        type: "marker"
     });
 };
 
@@ -115,18 +173,21 @@ BoardAnimation.prototype.putMarker = function(i,j,playerVar) {
       z: 0.3+1.2*i
     };
 
-
     var placeVar;
     if (playerVar == 11) {
     	this.board.player1MarkersOutside--;
+    	this.temporaryMarker1--;
     	var position = 18 - this.board.player1MarkersOutside;
+    	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
         beginVar = {
           x: 1.2*(position%8)+0.2,
           z: -3.5-Math.floor(position/8)
         };
     } else {
     	this.board.player2MarkersOutside--;
+    	this.temporaryMarker2--;
     	var position = 18 - this.board.player2MarkersOutside;
+    	heigthVar = (position / 18) * Math.abs(this.piecesHeigth - this.markerHeigth) + this.markerHeigth;
         beginVar = {
           x: 1.2*(position%8)+0.2,
           z: 12.8+Math.floor(position/8)
@@ -142,6 +203,8 @@ BoardAnimation.prototype.putMarker = function(i,j,playerVar) {
         begin: beginVar,
         routeVector: routeVectorVar,
         player: playerVar,
+        action: "put",
+        heigth: heigthVar,
         type: "marker"
     });
 };
@@ -195,6 +258,7 @@ BoardAnimation.prototype.putPiece = function(i,j,playerVar) {
         player: playerVar,
         place: placeVar,
         placeBool: false,
+        heigth: this.piecesHeigth,
         type: "piece"
     });
 };
@@ -233,9 +297,9 @@ BoardAnimation.prototype.drawAnimation= function() {
 	while (i < this.animationList.length) {
 	    this.scene.pushMatrix();
             this.scene.translate(this.animationList[i].begin.x,0.01,this.animationList[i].begin.z);
-            this.scene.translate(this.animationList[i].routeVector.x * time, 0.01+Math.sin(Math.PI*time)*3, this.animationList[i].routeVector.z * time);
+            this.scene.translate(this.animationList[i].routeVector.x * time, 0.01+Math.sin(Math.PI*time)*this.animationList[i].heigth, this.animationList[i].routeVector.z * time);
             if (this.animationList[i].type == "piece") {
-                if (this.animationList[i].player == 0) {
+            	if (this.animationList[i].player == 0) {
                     this.scene.piece.white.apply();
 					if (time >= 1) {
 						this.board.jokerPiecesOutside[this.animationList[i].place] = this.animationList[i].placeBool;
@@ -255,6 +319,15 @@ BoardAnimation.prototype.drawAnimation= function() {
                 this.scene.piece.display();
 
             } else {
+            	if (this.animationList[i].action == "take") {
+            		if (time >= 1) {
+            			if (this.animationList[i].player == 11) {
+    						this.board.player1MarkersOutside++;
+            			} else {
+            				this.board.player2MarkersOutside++;
+            			}
+					}
+            	}
 				if (this.animationList[i].player == 11) {
                     this.scene.markerColors.red.apply();
                 } else {

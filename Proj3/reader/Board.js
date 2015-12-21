@@ -128,7 +128,7 @@ Board.prototype.undo = function() {
 	this.currGameIndex--;
 	Board.currGame = this.gameList[this.currGameIndex-1];
 
-	this.board = this.getBoardFromRequest(Board.currGame);
+	this.getBoardFromRequest(Board.currGame);//this.board = this.getBoardFromRequest(Board.currGame);
 	//console.log(this.board);
 
 	this.pieces = this.getNumPiecesFromRequest(Board.currGame);
@@ -149,7 +149,7 @@ Board.prototype.undo = function() {
 		var boardOld, boardNew;
 		boardOld = this.getBoardFromRequest(this.gameList[this.currGameIndex-1]);
 		boardNew = this.getBoardFromRequest(this.gameList[this.currGameIndex]);
-		this.boardAnimation.makeAnimation(boardNew, boardOld, false);
+		this.boardAnimation.makeAnimation(boardNew, boardOld, true);
 	}
 
 	this.scene.initTime = this.scene.lastUpdate;
