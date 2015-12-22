@@ -26,9 +26,11 @@ Server.prototype.makeRequest = function(requestString)
 //Handle the Reply
 Server.prototype.handleReply = function(data){
     //console.log(data.target.response);
-    Board.currGame = data.target.response;
-    Board.updatedBoard = true;
-    console.log("handleReply -> " + Board.currGame);
+    if (data.target.response != "goodbye") {
+        Board.currGame = data.target.response;
+        Board.updatedBoard = true;
+        console.log("handleReply -> " + Board.currGame);
+    }
 };
 
 //Handle the Reply
