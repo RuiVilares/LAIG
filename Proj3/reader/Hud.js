@@ -13,11 +13,14 @@ function Hud(scene) {
 	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
 	this.appearance.setShininess(120);
 
-  this.blackAppearance = new CGFappearance(scene);
-	this.blackAppearance.setAmbient(0, 0, 0, 1);
-	this.blackAppearance.setDiffuse(0, 0, 0, 1);
-	this.blackAppearance.setSpecular(0, 0, 0, 1);
-	this.blackAppearance.setShininess(120);
+  this.BackgroundAppearance = new CGFappearance(scene);
+	this.BackgroundAppearance.setAmbient(1, 1, 1, 1);
+	this.BackgroundAppearance.setDiffuse(1, 1, 1, 1);
+	this.BackgroundAppearance.setSpecular(1, 1, 1, 1);
+	this.BackgroundAppearance.setShininess(120);
+
+  var orangeTexture = new CGFtexture(this.scene, "scenes/textures/orange.png");
+	this.BackgroundAppearance.setTexture(orangeTexture);
 
   this.fontTexture = new CGFtexture(this.scene, "scenes/textures/oolite-font.png");
 	this.appearance.setTexture(this.fontTexture);
@@ -38,9 +41,13 @@ function Hud(scene) {
  Hud.prototype.display = function (array) {
 
    this.scene.pushMatrix();
-     this.scene.translate(-3.655,1.53,-10);
-     this.blackAppearance.apply();
-     this.plane.display();
+     this.scene.translate(-3.425,1.3,-10);
+     //this.scene.translate(0,0,-10);
+     this.scene.pushMatrix();
+		 this.scene.scale(1.5,1.5,1);
+		 this.BackgroundAppearance.apply();
+		 this.plane.display();
+     this.scene.popMatrix();
      for (var i = 0; i < array.length; i++){
        this.displayString(array[i], i);
      }

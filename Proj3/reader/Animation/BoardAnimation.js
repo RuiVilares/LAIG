@@ -11,8 +11,8 @@ function BoardAnimation(scene, board) {
     this.temporaryPlace2 = [];
     this.temporaryPlaceJoker = [];
 
-    this.piecesHeigth = 5;
-    this.markerHeigth = 3;
+    this.piecesHeigth = 3;
+    this.markerHeigth = 1;
 };
 
 BoardAnimation.prototype.makeAnimation = function(boardPrev, boardAfter, normal) {
